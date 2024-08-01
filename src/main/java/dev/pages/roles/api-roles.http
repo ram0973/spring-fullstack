@@ -1,0 +1,31 @@
+# ROLE
+
+### Create role
+POST http://localhost:8000/api/v1/roles
+Content-Type: application/json
+
+{
+  "name": "ROLE_ADMIN"
+}
+
+
+### Read roles
+GET http://localhost:8000/api/v1/roles
+
+
+### Read role 1
+GET http://localhost:8000/api/v1/roles/1
+
+
+### Update role 1
+PUT http://localhost:8000/api/v1/roles/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "ROLE_ADMIN"
+}
+
+
+### Delete role by id
+DELETE http://localhost:8000/api/v1/roles/1

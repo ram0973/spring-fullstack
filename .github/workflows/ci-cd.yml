@@ -1,0 +1,42 @@
+name: CI-CD
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./src/main/react
+
+      - name: Build frontend
+        run: npm run build
+        working-directory: ./src/main/react
+
+      - name: Set up Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: '21'
+
+      - name: Build backend
+        run: |
+          ./gradlew build
+        working-directory: ./
+
+      - name: Test
+        run: |
+          npm test
+          ./mvnw test

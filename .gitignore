@@ -1,0 +1,5 @@
+.gradle/
+build/
+/web.log
+/src/main/resources/.env
+*.log

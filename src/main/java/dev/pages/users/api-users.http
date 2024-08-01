@@ -1,0 +1,35 @@
+# ROLE
+
+### Create user
+POST http://localhost:8000/api/v1/users
+Content-Type: application/json
+
+{
+  "enabled": true,
+  "password": "password",
+  "roles": ["ROLE_USER"],
+  "email": "bilbo@baggins.com"
+}
+
+### Read users
+GET http://localhost:8000/api/v1/users
+
+
+### Read user 1
+GET http://localhost:8000/api/v1/users/1
+
+
+### Update user 1
+PUT http://localhost:8000/api/v1/users/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "email": "gendalf@white.com",
+  "enabled": true,
+  "roles": ["ROLE_ADMIN", "ROLE_MODERATOR", "ROLE_USER"]
+}
+
+
+### DELETE User by id
+DELETE http://localhost:8000/api/v1/users/1
