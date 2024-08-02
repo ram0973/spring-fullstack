@@ -43,8 +43,9 @@ public class AuthController {
         if (authentication != null && authentication.isAuthenticated()) {
             authService.logout(authentication, request, response);
             log.info("Successful logout of user: {}", authentication.getName());
+        } else {
+            log.info("Tried to logout when not logged in");
         }
-        log.info("Tried to logout when not logged in");
         return new ResponseEntity<>("Tried to logout when not logged in", HttpStatus.OK);
     }
 

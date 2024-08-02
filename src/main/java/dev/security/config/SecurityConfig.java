@@ -1,5 +1,6 @@
 package dev.security.config;
 
+import dev.pages.users.UserRepository;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -39,12 +40,13 @@ import java.util.List;
 @Log4j2
 public class SecurityConfig {
     private final UserDetailsService userDetailsService;
+    private final UserRepository userRepository;
 
     @Bean
     protected SecurityFilterChain filterChain(@NotNull HttpSecurity http) throws Exception {
         http
             .sessionManagement(o -> o
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
             )
             .authorizeHttpRequests(o -> o
                 .requestMatchers("/error").permitAll()

@@ -39,7 +39,7 @@ public abstract class BaseEntity {
     private LocalDateTime lastModifiedDate;
 
     @CreatedBy
-    @Column(nullable = false, updatable = false)
+    @Column(updatable = false)
     private Integer createdBy;
 
     @LastModifiedBy

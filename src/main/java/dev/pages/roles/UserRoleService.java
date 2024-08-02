@@ -20,28 +20,28 @@ public class UserRoleService {
         return userRoleRepository.findAll();
     }
 
-    public Optional<UserRole> findById(int id) {
-        return userRoleRepository.findById(id);
-    }
-
-    public Optional<UserRole> findUserByRole(User.Role roleEnum) {
-        return userRoleRepository.findByName(User.Role.valueOf(roleEnum.name()));
+    public Optional<UserRole> findUserRole(User.Role roleEnum) {
+        return userRoleRepository.findByRole(roleEnum);
     }
 
     public UserRole createUserRole(@NotNull UserRoleCreateRequest dto) {
-        UserRole userRole = UserRoleMapper.INSTANCE.userRoleFromUserRoleRequest(dto);
-        return userRoleRepository.save(userRole);
+        UserRole role = UserRoleMapper.INSTANCE.userRoleFromUserRoleRequest(dto);
+        if (userRoleRepository.findByRole(role.getRole()).isPresent())
+            throw new Exceptions.NoSuchEntityException("This role already exists: " + role);
+        return userRoleRepository.save(role);
     }
 
-    public UserRole updateUserRole(int id, @NotNull UserRoleUpdateRequest dto) {
-        UserRole userRole = userRoleRepository.findById(id).orElseThrow(
-            () -> new Exceptions.NoSuchEntityException("No such User Role with id: " + id));
+    public UserRole updateUserRole(User.Role role, @NotNull UserRoleUpdateRequest dto) {
+        UserRole userRole = userRoleRepository.findByRole(role).orElseThrow(
+            () -> new Exceptions.NoSuchEntityException("No such user role: " + role));
         UserRoleMapper.INSTANCE.update(userRole, dto);
         return userRoleRepository.save(userRole);
     }
 
-    public void deleteUserRole(int id) {
-        findById(id).orElseThrow(() -> new Exceptions.NoSuchEntityException("No such User Role with id: " + id));
-        userRoleRepository.deleteById(id);
+    public void deleteUserRole(User.Role roleEnum) {
+        UserRole role = userRoleRepository
+            .findByRole(roleEnum)
+            .orElseThrow(() -> new Exceptions.NoSuchEntityException("No such User Role with role: " + roleEnum));
+        userRoleRepository.delete(role);
     }
 }

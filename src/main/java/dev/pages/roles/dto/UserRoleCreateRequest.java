@@ -1,6 +1,8 @@
 package dev.pages.roles.dto;
 
+import dev.pages.users.User;
+
 public record UserRoleCreateRequest(
-    String name
+    User.Role role
 ) {
 }

@@ -3,7 +3,6 @@
 # in development with: $ docker compose up
 
 services:
-
   postgres:
     container_name: postgres-web
     image: postgres:16.3
@@ -13,10 +12,15 @@ services:
     build:
       context: .
       dockerfile: ./docker/postgresql/Dockerfile
+    # not working command: bash -c "echo 'ru_RU.UTF-8 UTF-8' >> /etc/locale.gen && locale-gen && localedef -i ru_RU -c -f UTF-8 -A /usr/share/locale/locale.alias ru_RU.UTF-8 && echo 'UTC' > /etc/timezone && ln -snf /usr/share/zoneinfo/UTC /etc/localtime"
+#    volumes:
+#      - /var/lib/postgresql/data
     environment:
       - POSTGRES_DB=web
       - POSTGRES_USER=web
       - POSTGRES_PASSWORD=web
+    #  - LANG=ru_RU.utf8
+
 
   maildev:
     container_name: maildev-web
@@ -57,4 +61,6 @@ services:
       - postgres
     ports:
       - 8040:8080
+volumes:
+  pgadmin_data:
 

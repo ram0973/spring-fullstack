@@ -1,0 +1,102 @@
+# AUTHENTICATION
+
+
+### Register user
+POST http://localhost:8000/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "email": "frodo@baggins.com",
+  "password": "password"
+}
+
+
+### Login Admin
+POST http://localhost:8000/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "gendalf@white.com",
+  "password": "password"
+}
+
+
+### Logout
+POST http://localhost:8000/api/v1/auth/logout
+
+
+### Me
+GET http://localhost:8000/api/v1/auth/me
+
+
+################################################################
+
+
+# ROLE
+
+### Create role
+POST http://localhost:8000/api/v1/roles
+Content-Type: application/json
+
+{
+  "role": "ROLE_TESTER"
+}
+
+
+### Read roles
+GET http://localhost:8000/api/v1/roles
+
+
+### Read role
+GET http://localhost:8000/api/v1/roles/ROLE_USER
+
+
+### Update role
+PUT http://localhost:8000/api/v1/roles/ROLE_MODERATOR
+Content-Type: application/json
+
+{
+  "role": "ROLE_MODERATOR"
+}
+
+
+### Delete role by id
+DELETE http://localhost:8000/api/v1/roles/ROLE_TESTER
+
+
+################################################################
+
+
+### Create user
+POST http://localhost:8000/api/v1/users
+Content-Type: application/json
+
+{
+  "enabled": true,
+  "password": "password",
+  "roles": ["ROLE_USER"],
+  "email": "bilbo@baggins.com"
+}
+
+### Read users
+GET http://localhost:8000/api/v1/users
+
+
+### Read user 1
+GET http://localhost:8000/api/v1/users/1
+
+
+### Update user 1
+PUT http://localhost:8000/api/v1/users/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "email": "gendalf@white.com",
+  "enabled": true,
+  "roles": ["ROLE_ADMIN", "ROLE_MODERATOR", "ROLE_USER"]
+}
+
+
+### DELETE User by id
+DELETE http://localhost:8000/api/v1/users/1

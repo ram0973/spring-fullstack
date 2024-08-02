@@ -44,6 +44,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    // this is for admin
     @PostMapping("")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> createUser(@Valid @RequestBody UserCreateRequest dto) {

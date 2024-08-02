@@ -23,6 +23,8 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Optional;
 
 @Service
@@ -48,13 +50,17 @@ public class AuthService {
         }
         User user = AuthMapper.INSTANCE.userFromRegisterRequest(dto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        UserRole userRole;
         if (dto.email().equals(adminEmail)) {
-            UserRole userRole =
-                userRoleRepository
-                    .findByName(User.Role.ROLE_USER)
-                    .orElseThrow(() -> new Exceptions.NoSuchEntityException("User role not exists"));
-            user.addRole(userRole);
+            userRole = userRoleRepository
+                .findByRole(User.Role.ROLE_ADMIN)
+                .orElseThrow(() -> new Exceptions.NoSuchEntityException("Admin role not exists"));
+        } else {
+            userRole = userRoleRepository
+                .findByRole(User.Role.ROLE_USER)
+                .orElseThrow(() -> new Exceptions.NoSuchEntityException("User role not exists"));
         }
+        user.addRole(userRole);
         userRepository.save(user);
         return user;
     }

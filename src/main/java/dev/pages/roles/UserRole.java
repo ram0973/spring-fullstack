@@ -22,8 +22,9 @@ import java.util.Set;
 public class UserRole extends BaseEntity {
 
     @Column(unique = true)
-    @Enumerated(EnumType.STRING)
-    private User.Role name;
+    @Enumerated(EnumType.ORDINAL)
+    @Convert(converter = UserRoleConverter.class)
+    private User.Role role;
 
     @NotNull
     @ManyToMany(mappedBy = "roles")

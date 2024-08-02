@@ -1,7 +1,8 @@
 package dev.pages.roles.dto;
 
+import dev.pages.users.User;
+
 public record UserRoleUpdateRequest(
-    Integer id,
-    String name
+    User.Role role
 ) {
 }

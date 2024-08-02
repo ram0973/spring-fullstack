@@ -28,20 +28,20 @@ public class UserRoleController {
         return ResponseEntity.ok(userRoles);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{role}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserRole> getUserRoleById(@PathVariable("id") int id) {
-        UserRole userRole = userRoleService.findById(id).orElseThrow(
-            () -> new Exceptions.NoSuchEntityException("No such user role with id: " + id));
+    public ResponseEntity<UserRole> getUserRoleByRole(@PathVariable("role") User.Role role) {
+        UserRole userRole = userRoleService.findUserRole(role).orElseThrow(
+            () -> new Exceptions.EntityAlreadyExistsException("No such user role with name: " + role));
         return ResponseEntity.ok(userRole);
     }
 
     @PostMapping("")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserRole> createUserRole(@Valid @RequestBody UserRoleCreateRequest dto) {
-        Optional<UserRole> optionalUserRole = userRoleService.findUserByRole(User.Role.valueOf(dto.name()));
+        Optional<UserRole> optionalUserRole = userRoleService.findUserRole(dto.role());
         if (optionalUserRole.isPresent()) {
-            throw new Exceptions.EntityAlreadyExistsException("This User Role already exists");
+            throw new Exceptions.EntityAlreadyExistsException("This user role already exists");
         } else {
             // check exceptions?
             UserRole userRole = userRoleService.createUserRole(dto);
@@ -49,18 +49,18 @@ public class UserRoleController {
         }
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{role}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserRole> updateUserRole(
-        @PathVariable("id") int id, @Valid @RequestBody UserRoleUpdateRequest dto) {
-        UserRole userRole = userRoleService.updateUserRole(id, dto);
+        @PathVariable("role") User.Role role, @Valid @RequestBody UserRoleUpdateRequest dto) {
+        UserRole userRole = userRoleService.updateUserRole(role, dto);
         return ResponseEntity.ok(userRole);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{role}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> deleteUserRole(@PathVariable("id") int id) {
-        userRoleService.deleteUserRole(id);
-        return ResponseEntity.ok("Successfully deleted user role with id: " + id);
+    public ResponseEntity<String> deleteUserRole(@PathVariable("role") User.Role roleEnum) {
+        userRoleService.deleteUserRole(roleEnum);
+        return ResponseEntity.ok("Successfully deleted user role with id: " + roleEnum);
     }
 }

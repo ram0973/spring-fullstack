@@ -5,7 +5,8 @@
 
 Используемые технологии:
 
-- Java 21+ - Graal VM JDK
+- Java 21+ - Graal VM JDK (not supports Shenandoah GC) or others
+(not OpenJDK, it's slowest. BellSoft JDK Full have JavaFX support from the box)
 - Spring 3.3+
 - Docker
 - Liquibase
@@ -65,6 +66,10 @@ distributionUrl=https\://services.gradle.org/distributions/gradle-8.8-bin.zip
 
 Указываем GraalVM в настройках File - Project structure.
 Лучше удалить все остальные JDK.
+Указываем Help - Edit Custom VM Options:
+-Xms2048m
+-Xmx2048m
+-XX:+UseShenandoahGC
 
 В настройках Idea в поиске пишем encod.
 В File Encodings и Console ставим UTF-8.

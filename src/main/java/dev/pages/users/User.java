@@ -12,9 +12,13 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.security.Principal;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -23,7 +27,7 @@ import java.util.stream.Collectors;
 @Setter
 @Table(name="user_")
 @SuperBuilder
-public class User extends BaseEntity {
+public class User extends BaseEntity implements UserDetails {
     @Column(nullable = false, unique = true)
     @NotBlank
     @Email
@@ -37,31 +41,43 @@ public class User extends BaseEntity {
     private boolean isEnabled = true;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<UserRole> roles;
+    private Set<UserRole> roles = new HashSet<>();
 
     public void addRole(UserRole role) {
+        if (this.roles == null) {
+            this.roles = new HashSet<>();
+        }
         this.roles.add(role);
     }
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (this.roles == null) {
+            return null;
+        }
         return this
             .roles
             .stream()
-            .map(role -> new SimpleGrantedAuthority(role.getName().toString()))
+            .map(role -> new SimpleGrantedAuthority(role.getRole().toString()))
             .collect(Collectors.toSet());
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 
     @Getter
     public enum Role {
-        ROLE_ADMIN(1,"Admin"),
+        ROLE_ADMIN(100,"Admin"),
         ROLE_MODERATOR(2,"Moderator"),
-        ROLE_USER(3,"User");
+        ROLE_USER(3,"User"),
+        ROLE_TESTER(4,"Editor");
 
+        private final Integer index;
         private final String label;
-        private final Integer id;
 
-        Role(Integer id, String label) {
-            this.id = id;
+        Role(Integer index, String label) {
+            this.index = index;
             this.label = label;
         }
     }

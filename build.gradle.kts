@@ -40,7 +40,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	//implementation("org.liquibase:liquibase-core")
-	implementation("org.springframework.shell:spring-shell-starter")
+
 	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
     // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
@@ -55,7 +55,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.boot:spring-boot-testcontainers")
 	testImplementation("org.springframework.security:spring-security-test")
-	testImplementation("org.springframework.shell:spring-shell-starter-test")
+
 	testImplementation("org.testcontainers:junit-jupiter")
 	testImplementation("org.testcontainers:postgresql")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
@@ -63,7 +63,7 @@ dependencies {
 
 dependencyManagement {
 	imports {
-		mavenBom("org.springframework.shell:spring-shell-dependencies:${property("springShellVersion")}")
+
 	}
 }
 

@@ -59,7 +59,7 @@ public class UserService {
         if (dto.email().equals(adminEmail)) {
             UserRole adminRole =
                 userRoleRepository
-                    .findByName(User.Role.ROLE_ADMIN)
+                    .findByRole(User.Role.ROLE_ADMIN)
                     .orElseThrow(() -> new Exceptions.NoSuchEntityException("Admin Role not exists"));
             user.addRole(adminRole);
         }
