@@ -16,6 +16,7 @@
 - OpenApi
 - React
 - TypeScript
+- Bun
 - Mantine
 - PostCSS (with Mantine)
 
@@ -25,6 +26,7 @@
 - Docker desktop
 - Graal VM JDK
 - Git
+- Bun
 - Punto switcher :)
 
 ## Graal VM JDK

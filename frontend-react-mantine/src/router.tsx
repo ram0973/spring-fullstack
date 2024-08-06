@@ -5,7 +5,10 @@ import {ProtectedRoute} from "@/common/layout/ProtectedRoute.tsx";
 import {AdminLayout} from "@/common/layout/AdminLayout.tsx";
 import {Login} from "@/pages/auth/Login.tsx";
 import {ForgotPassword} from "@/pages/auth/ForgotPassword.tsx";
-import {UsersTable} from "@/pages/users/UsersTable.tsx";
+import {UsersTable} from "@/pages/users/table/UsersTable.tsx";
+import {CreateUser} from "@/pages/users/create/CreateUser";
+import {Signup} from "@/pages/auth/Signup.tsx";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -15,6 +18,10 @@ export const router = createBrowserRouter([
       {
         path: "login",
         element: <Login/>
+      },
+      {
+        path: "signup",
+        element: <Signup/>
       },
       {
         path: "forgot-password",
@@ -30,6 +37,10 @@ export const router = createBrowserRouter([
       {
         path: "users",
         element: <UsersTable/>
+      },
+      {
+        path: "users/create",
+        element: <CreateUser/>
       },
     ],
   },

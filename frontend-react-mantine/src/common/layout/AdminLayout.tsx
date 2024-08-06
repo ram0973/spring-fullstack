@@ -2,6 +2,8 @@ import {Outlet} from "react-router-dom";
 
 import { AppShell, Burger } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import {NavbarColored} from '@/components/navbar/NavbarColored.tsx'
+import {Header} from "@/components/header/Header.tsx";
 
 export const AdminLayout = () => {
   const [opened, { toggle }] = useDisclosure();
@@ -10,23 +12,17 @@ export const AdminLayout = () => {
     <AppShell
       header={{ height: 60 }}
       navbar={{
-        width: 300,
+        width: 330,
         breakpoint: 'sm',
         collapsed: { mobile: !opened },
       }}
       padding="md"
     >
       <AppShell.Header>
-        <Burger
-          opened={opened}
-          onClick={toggle}
-          hiddenFrom="sm"
-          size="sm"
-        />
-        <div>Logo</div>
+        <Header/>
       </AppShell.Header>
 
-      <AppShell.Navbar p="md">Navbar</AppShell.Navbar>
+      <AppShell.Navbar p="md"><NavbarColored/></AppShell.Navbar>
 
       <AppShell.Main><Outlet/></AppShell.Main>
     </AppShell>

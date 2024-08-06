@@ -1,42 +1,34 @@
-import {
-  Anchor,
-  Button,
-  Checkbox,
-  Container,
-  Group,
-  Paper,
-  PasswordInput,
-  Switch,
-  Text,
-  TextInput,
-  Title,
-} from '@mantine/core';
+import {Anchor, Button, Checkbox, Container, Group, Paper, PasswordInput, Text, TextInput, Title,} from '@mantine/core';
 import classes from './Login.module.css';
 import {Link} from 'react-router-dom';
 
-export function Login() {
+export const Signup = () => {
   return (
     <Container size={420} my={40}>
       <Title ta="center" className={classes.title}>
-        Welcome back!
+        Sign up!
       </Title>
       <Text c="dimmed" size="sm" ta="center" mt={5}>
-        Do not have an account yet?{' '}
-        <Link to={"/signup"}>
+        Do you have an account?{' '}
+        <Link to={"/login"}>
           <Anchor size="sm" component="button">
-            Create account
+            Log in
           </Anchor>
         </Link>
       </Text>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <TextInput label="Email" placeholder="your@email.com" required/>
+        <TextInput label="Email" placeholder="you@mantine.dev" required/>
         <PasswordInput label="Password" placeholder="Your password" required mt="md"/>
+        <PasswordInput
+          label="Password confirmation"
+          //description="password confirm desc"
+          placeholder="Confirm user password"
+          error=""
+          mt="md"
+        />
         <Group justify="space-between" mt="lg">
-          <Switch
-          defaultChecked
-          label="Remember me"
-          />
+          <Checkbox label="Remember me"/>
           <Link to={"/forgot-password"}>
             <Anchor component="button" size="sm">
               Forgot password?
