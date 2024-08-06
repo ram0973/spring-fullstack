@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import dev.pages.users.User;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Configuration
@@ -34,34 +35,42 @@ public class DataInitializer {
                 .createdDate(LocalDateTime.now())
                 .lastModifiedDate(LocalDateTime.now())
                 .isEnabled(true)
+                .roles(new HashSet<>())
                 .build();
             userRepository.save(admin);
 
             log.info("Preloading userRoles");
-            var adminRole = new UserRole(User.Role.ROLE_ADMIN, Set.of(admin));
-            adminRole.setCreatedBy(1);
-            adminRole.setLastModifiedBy(1);
-            adminRole.setCreatedDate(LocalDateTime.now());
+
+            var adminRole = UserRole.builder()
+                .role(User.Role.ADMIN)
+                .createdBy(1)
+                .lastModifiedBy(1)
+                .createdDate(LocalDateTime.now())
+                .build();
             userRoleRepository.save(adminRole);
 
-            var moderatorRole = new UserRole(User.Role.ROLE_MODERATOR, Set.of(admin));
-            moderatorRole.setCreatedBy(1);
-            moderatorRole.setLastModifiedBy(1);
-            moderatorRole.setCreatedDate(LocalDateTime.now());
+            var moderatorRole = UserRole.builder()
+                .role(User.Role.MODERATOR)
+                .createdBy(1)
+                .lastModifiedBy(1)
+                .createdDate(LocalDateTime.now())
+                .build();
             userRoleRepository.save(moderatorRole);
 
-            var userRole = new UserRole(User.Role.ROLE_USER, Set.of(admin));
-            userRole.setCreatedBy(1);
-            userRole.setLastModifiedBy(1);
-            userRole.setCreatedDate(LocalDateTime.now());
+            var userRole = UserRole.builder()
+                .role(User.Role.USER)
+                .createdBy(1)
+                .lastModifiedBy(1)
+                .createdDate(LocalDateTime.now())
+                .build();
             userRoleRepository.save(userRole);
 
             log.info("Set admin roles");
 
             admin = userRepository.findById(1).orElseThrow();
-            admin.addRole(adminRole);
-            admin.addRole(moderatorRole);
-            admin.addRole(userRole);
+            admin.getRoles().add(adminRole);
+            admin.getRoles().add(moderatorRole);
+            admin.getRoles().add(userRole);
             userRepository.save(admin);
 
             log.info("Roles and admin complete");

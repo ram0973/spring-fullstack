@@ -7,7 +7,7 @@
 
 - Java 21+ - Graal VM JDK (not supports Shenandoah GC) or others
 (not OpenJDK, it's slowest. BellSoft JDK Full have JavaFX support from the box)
-- Spring 3.3+
+- Spring Boot 3.3+
 - Docker
 - Liquibase
 - Hibernate ORM
@@ -16,6 +16,8 @@
 - OpenApi
 - React
 - TypeScript
+- Mantine
+- PostCSS (with Mantine)
 
 ## Ставим нужный софт
 

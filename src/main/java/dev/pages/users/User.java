@@ -6,31 +6,33 @@ import dev.pages.roles.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.NaturalId;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.security.Principal;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
-@NoArgsConstructor
 @Getter
 @Setter
-@Table(name="user_")
+@Table(name = "user_")
 @SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User extends BaseEntity implements UserDetails {
     @Column(nullable = false, unique = true)
     @NotBlank
     @Email
+    @NaturalId
     private String email;
 
     @Column(nullable = false)
@@ -38,47 +40,52 @@ public class User extends BaseEntity implements UserDetails {
     @JsonIgnore
     private String password;
 
+
     private boolean isEnabled = true;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<UserRole> roles = new HashSet<>();
-
-    public void addRole(UserRole role) {
-        if (this.roles == null) {
-            this.roles = new HashSet<>();
-        }
-        this.roles.add(role);
-    }
+    @ManyToMany(
+        fetch = FetchType.EAGER,
+        cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
+    )
+    @JoinTable(
+        name = "users_roles",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<UserRole> roles;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.roles == null) {
-            return null;
-        }
         return this
-            .roles
+            .getRoles()
             .stream()
-            .map(role -> new SimpleGrantedAuthority(role.getRole().toString()))
+            .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRole().toString()))
             .collect(Collectors.toSet());
     }
 
     @Override
+    @JsonIgnore
     public String getUsername() {
         return email;
     }
 
     @Getter
     public enum Role {
-        ROLE_ADMIN(100,"Admin"),
-        ROLE_MODERATOR(2,"Moderator"),
-        ROLE_USER(3,"User"),
-        ROLE_TESTER(4,"Editor");
+        ADMIN("Admin"),
+        MODERATOR("Moderator"),
+        USER("User"),
+        TESTER("Tester");
 
-        private final Integer index;
         private final String label;
 
-        Role(Integer index, String label) {
-            this.index = index;
+        Role(String label) {
             this.label = label;
         }
+    }
+
+    public void addRole(UserRole role) {
+        if (this.roles == null) {
+            this.roles = new HashSet<>();
+        }
+        this.roles.add(role);
     }
 }

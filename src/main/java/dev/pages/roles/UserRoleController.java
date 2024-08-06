@@ -1,6 +1,6 @@
 package dev.pages.roles;
 
-import dev.common.exception.Exceptions;
+import dev.common.exceptions.EntityAlreadyExistsException;
 import dev.pages.roles.dto.UserRoleCreateRequest;
 import dev.pages.roles.dto.UserRoleUpdateRequest;
 import dev.pages.users.User;
@@ -32,7 +32,7 @@ public class UserRoleController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserRole> getUserRoleByRole(@PathVariable("role") User.Role role) {
         UserRole userRole = userRoleService.findUserRole(role).orElseThrow(
-            () -> new Exceptions.EntityAlreadyExistsException("No such user role with name: " + role));
+            () -> new EntityAlreadyExistsException("No such user role with name: " + role));
         return ResponseEntity.ok(userRole);
     }
 
@@ -41,7 +41,7 @@ public class UserRoleController {
     public ResponseEntity<UserRole> createUserRole(@Valid @RequestBody UserRoleCreateRequest dto) {
         Optional<UserRole> optionalUserRole = userRoleService.findUserRole(dto.role());
         if (optionalUserRole.isPresent()) {
-            throw new Exceptions.EntityAlreadyExistsException("This user role already exists");
+            throw new EntityAlreadyExistsException("This user role already exists");
         } else {
             // check exceptions?
             UserRole userRole = userRoleService.createUserRole(dto);

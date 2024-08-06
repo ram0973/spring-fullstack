@@ -1,0 +1,113 @@
+{
+  "users": [
+    {
+      "id": 4,
+      "createdDate": "2024-08-05T16:29:18.008327",
+      "lastModifiedDate": null,
+      "createdBy": null,
+      "lastModifiedBy": null,
+      "email": "bilbo@baggins.com",
+      "roles": [
+        {
+          "id": 3,
+          "createdDate": "2024-08-05T16:27:10.177358",
+          "lastModifiedDate": null,
+          "createdBy": 1,
+          "lastModifiedBy": null,
+          "role": "ROLE_USER"
+        }
+      ],
+      "enabled": false,
+      "authorities": [
+        {
+          "authority": "ROLE_USER"
+        }
+      ],
+      "username": "bilbo@baggins.com",
+      "accountNonExpired": true,
+      "credentialsNonExpired": true,
+      "accountNonLocked": true
+    },
+    {
+      "id": 2,
+      "createdDate": "2024-08-05T16:27:28.78779",
+      "lastModifiedDate": null,
+      "createdBy": null,
+      "lastModifiedBy": null,
+      "email": "frodo@baggins.com",
+      "roles": [
+        {
+          "id": 3,
+          "createdDate": "2024-08-05T16:27:10.177358",
+          "lastModifiedDate": null,
+          "createdBy": 1,
+          "lastModifiedBy": null,
+          "role": "ROLE_USER"
+        }
+      ],
+      "enabled": false,
+      "authorities": [
+        {
+          "authority": "ROLE_USER"
+        }
+      ],
+      "username": "frodo@baggins.com",
+      "accountNonExpired": true,
+      "credentialsNonExpired": true,
+      "accountNonLocked": true
+    },
+    {
+      "id": 1,
+      "createdDate": "2024-08-05T16:27:10.005877",
+      "lastModifiedDate": null,
+      "createdBy": 1,
+      "lastModifiedBy": null,
+      "email": "gendalf@white.com",
+      "roles": [
+        {
+          "id": 1,
+          "createdDate": "2024-08-05T16:27:10.162631",
+          "lastModifiedDate": null,
+          "createdBy": 1,
+          "lastModifiedBy": null,
+          "role": "ROLE_ADMIN"
+        },
+        {
+          "id": 2,
+          "createdDate": "2024-08-05T16:27:10.170838",
+          "lastModifiedDate": null,
+          "createdBy": 1,
+          "lastModifiedBy": null,
+          "role": "ROLE_MODERATOR"
+        },
+        {
+          "id": 3,
+          "createdDate": "2024-08-05T16:27:10.177358",
+          "lastModifiedDate": null,
+          "createdBy": 1,
+          "lastModifiedBy": null,
+          "role": "ROLE_USER"
+        }
+      ],
+      "enabled": true,
+      "authorities": [
+        {
+          "authority": "ROLE_USER"
+        },
+        {
+          "authority": "ROLE_ADMIN"
+        },
+        {
+          "authority": "ROLE_MODERATOR"
+        }
+      ],
+      "username": "gendalf@white.com",
+      "accountNonExpired": true,
+      "credentialsNonExpired": true,
+      "accountNonLocked": true
+    }
+  ],
+  "currentPage": 0,
+  "totalItems": 3,
+  "totalPages": 1
+}

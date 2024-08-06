@@ -14,6 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @SuperBuilder
 @MappedSuperclass

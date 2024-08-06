@@ -1,6 +1,7 @@
 package dev.pages.auth;
 
-import dev.common.exception.Exceptions;
+import dev.common.exceptions.EntityAlreadyExistsException;
+import dev.common.exceptions.NoSuchEntityException;
 import dev.pages.auth.dto.LoginRequest;
 import dev.pages.auth.dto.RegisterRequest;
 import dev.pages.roles.UserRole;
@@ -22,9 +23,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Optional;
 
 @Service
@@ -42,23 +42,24 @@ public class AuthService {
     @Value("${app.admin.email}")
     private String adminEmail;
 
+    @Transactional
     public User register(RegisterRequest dto) {
         String email = dto.email().trim();
-        Optional<User> userExists = userRepository.findByEmailIgnoreCase(email);
-        if (userExists.isPresent()) {
-            throw new Exceptions.EntityAlreadyExistsException("User already exist with such email: " + email);
+        Optional<User> userExisted = userRepository.findByEmailIgnoreCase(email);
+        if (userExisted.isPresent()) {
+            throw new EntityAlreadyExistsException("User already exist with such email: " + email);
         }
         User user = AuthMapper.INSTANCE.userFromRegisterRequest(dto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         UserRole userRole;
         if (dto.email().equals(adminEmail)) {
             userRole = userRoleRepository
-                .findByRole(User.Role.ROLE_ADMIN)
-                .orElseThrow(() -> new Exceptions.NoSuchEntityException("Admin role not exists"));
+                .findByRole(User.Role.ADMIN)
+                .orElseThrow(() -> new NoSuchEntityException("Admin role not exists"));
         } else {
             userRole = userRoleRepository
-                .findByRole(User.Role.ROLE_USER)
-                .orElseThrow(() -> new Exceptions.NoSuchEntityException("User role not exists"));
+                .findByRole(User.Role.USER)
+                .orElseThrow(() -> new NoSuchEntityException("User role not exists"));
         }
         user.addRole(userRole);
         userRepository.save(user);

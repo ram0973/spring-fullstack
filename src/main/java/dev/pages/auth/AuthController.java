@@ -40,17 +40,14 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<String> logout(
         Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
-        if (authentication != null && authentication.isAuthenticated()) {
-            authService.logout(authentication, request, response);
-            log.info("Successful logout of user: {}", authentication.getName());
-        } else {
-            log.info("Tried to logout when not logged in");
-        }
-        return new ResponseEntity<>("Tried to logout when not logged in", HttpStatus.OK);
+        authService.logout(authentication, request, response);
+        log.info("Successful logout of user: {}", authentication.getName());
+        return new ResponseEntity<>("Successful logout of user: " + authentication.getName(), HttpStatus.OK);
     }
 
     @GetMapping("/me")
     public ResponseEntity<String> profile(Principal principal) {
+        log.info(principal);
         if (principal != null) {
             return new ResponseEntity<>(principal.getName(), HttpStatus.OK);
         }

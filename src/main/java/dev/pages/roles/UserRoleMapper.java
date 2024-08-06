@@ -17,6 +17,6 @@ public interface UserRoleMapper {
     @Mapping(target = "id", ignore = true)
     UserRole userRoleFromUserRoleRequest(UserRoleCreateRequest dto);
 
-    @Mapping(target = "id", ignore = true)
+    //@Mapping(target = "id", ignore = true)
     void update(@MappingTarget UserRole userRole, UserRoleUpdateRequest dto);
 }

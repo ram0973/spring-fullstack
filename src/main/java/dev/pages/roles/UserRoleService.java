@@ -1,6 +1,6 @@
 package dev.pages.roles;
 
-import dev.common.exception.Exceptions;
+import dev.common.exceptions.NoSuchEntityException;
 import dev.pages.roles.dto.UserRoleCreateRequest;
 import dev.pages.roles.dto.UserRoleUpdateRequest;
 import dev.pages.users.User;
@@ -27,13 +27,13 @@ public class UserRoleService {
     public UserRole createUserRole(@NotNull UserRoleCreateRequest dto) {
         UserRole role = UserRoleMapper.INSTANCE.userRoleFromUserRoleRequest(dto);
         if (userRoleRepository.findByRole(role.getRole()).isPresent())
-            throw new Exceptions.NoSuchEntityException("This role already exists: " + role);
+            throw new NoSuchEntityException("This role already exists: " + role);
         return userRoleRepository.save(role);
     }
 
     public UserRole updateUserRole(User.Role role, @NotNull UserRoleUpdateRequest dto) {
         UserRole userRole = userRoleRepository.findByRole(role).orElseThrow(
-            () -> new Exceptions.NoSuchEntityException("No such user role: " + role));
+            () -> new NoSuchEntityException("No such user role: " + role));
         UserRoleMapper.INSTANCE.update(userRole, dto);
         return userRoleRepository.save(userRole);
     }
@@ -41,7 +41,7 @@ public class UserRoleService {
     public void deleteUserRole(User.Role roleEnum) {
         UserRole role = userRoleRepository
             .findByRole(roleEnum)
-            .orElseThrow(() -> new Exceptions.NoSuchEntityException("No such User Role with role: " + roleEnum));
+            .orElseThrow(() -> new NoSuchEntityException("No such User Role with role: " + roleEnum));
         userRoleRepository.delete(role);
     }
 }

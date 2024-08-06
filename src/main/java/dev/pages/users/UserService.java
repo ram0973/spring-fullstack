@@ -1,13 +1,13 @@
 package dev.pages.users;
 
-import dev.common.exception.Exceptions;
+import dev.common.exceptions.ForbiddenOperationException;
+import dev.common.exceptions.NoSuchEntityException;
+import dev.pages.PagedEntityUtils;
 import dev.pages.roles.UserRole;
 import dev.pages.roles.UserRoleRepository;
-import dev.pages.PagedEntityUtils;
 import dev.pages.users.dto.PagedUsersResponse;
 import dev.pages.users.dto.UserCreateRequest;
 import dev.pages.users.dto.UserUpdateRequest;
-
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +17,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,31 +55,40 @@ public class UserService {
         return userRepository.findByEmailIgnoreCase(email);
     }
 
+    @Transactional
     public User createUser(@NotNull UserCreateRequest dto) {
         User user = UserMapper.INSTANCE.userFromUserRequest(dto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        if (dto.email().equals(adminEmail)) {
-            UserRole adminRole =
-                userRoleRepository
-                    .findByRole(User.Role.ROLE_ADMIN)
-                    .orElseThrow(() -> new Exceptions.NoSuchEntityException("Admin Role not exists"));
-            user.addRole(adminRole);
+        List<UserRole> roles = userRoleRepository.findAll();
+        for (UserRole userRole : roles) {
+            if (dto.roles().contains(userRole.getRole())) {
+                userRole.getUsers().add(user);
+                user.addRole(userRole);
+            }
         }
         return userRepository.save(user);
     }
 
+    @Transactional
     public User updateUser(int id, @NotNull UserUpdateRequest dto) {
         User user = userRepository.findById(id).orElseThrow(
-            () -> new Exceptions.NoSuchEntityException("No such User with id: " + id));
+            () -> new NoSuchEntityException("No such User with id: " + id));
         UserMapper.INSTANCE.update(user, dto);
+        user.setRoles(new HashSet<>());
+        List<UserRole> roles = userRoleRepository.findAll();
+        for (UserRole userRole : roles) {
+            if (dto.roles().contains(userRole.getRole())) {
+                user.addRole(userRole);
+            }
+        }
         return userRepository.save(user);
     }
 
     public void deleteUser(int id) {
         User user = findById(id).orElseThrow(
-            () -> new Exceptions.NoSuchEntityException("No such User with id: " + id));
+            () -> new NoSuchEntityException("No such User with id: " + id));
         if (user.getEmail().equals(adminEmail)) {
-            throw new Exceptions.ForbiddenOperationException("You cannot delete admin account");
+            throw new ForbiddenOperationException("You cannot delete admin account");
         }
         userRepository.deleteById(id);
     }

@@ -1,6 +1,7 @@
 package dev.pages.users;
 
-import dev.common.exception.Exceptions;
+import dev.common.exceptions.EntityAlreadyExistsException;
+import dev.common.exceptions.NoSuchEntityException;
 import dev.pages.users.dto.PagedUsersResponse;
 import dev.pages.users.dto.UserCreateRequest;
 import dev.pages.users.dto.UserUpdateRequest;
@@ -40,7 +41,7 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> getUserById(@PathVariable("id") int id) {
         User user = userService.findById(id).orElseThrow(
-            () -> new Exceptions.NoSuchEntityException("No such user with id: " + id));
+            () -> new NoSuchEntityException("No such user with id: " + id));
         return ResponseEntity.ok(user);
     }
 
@@ -48,9 +49,9 @@ public class UserController {
     @PostMapping("")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> createUser(@Valid @RequestBody UserCreateRequest dto) {
-        Optional<User> optionalUser = userService.findUserByEmailIgnoreCase(dto.email());
+        Optional<User> optionalUser = userService.findUserByEmailIgnoreCase(dto.email().trim());
         if (optionalUser.isPresent()) {
-            throw new Exceptions.EntityAlreadyExistsException("Email already in use");
+            throw new EntityAlreadyExistsException("Email already in use");
         } else {
             // check exceptions?
             User user = userService.createUser(dto);
