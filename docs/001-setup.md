@@ -6,13 +6,14 @@
 Используемые технологии:
 
 - Java 21+ - Graal VM JDK (not supports Shenandoah GC) or others
-(not OpenJDK, it's slowest. BellSoft JDK Full have JavaFX support from the box)
+(not OpenJDK, it's slowest.)
 - Spring Boot 3.3+
 - Docker
 - Liquibase
 - Hibernate ORM
 - Postgresql
 - Gradle Kotlin
+- MapStruct
 - OpenApi
 - React
 - TypeScript
@@ -23,8 +24,8 @@
 ## Ставим нужный софт
 
 - Intellij Idea Pro/Community
-- Docker desktop
-- Graal VM JDK
+- Docker
+- Graal VM JDK/Some other JDK
 - Git
 - Bun
 - Punto switcher :)

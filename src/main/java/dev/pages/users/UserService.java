@@ -34,7 +34,7 @@ public class UserService {
     @Value("${app.admin.email}")
     private String adminEmail;
 
-    public Optional<PagedUsersResponse> findAll(int page, int size, String[] sort) {
+    public Optional<PagedUsersResponse> findAllPaged(int page, int size, String[] sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(PagedEntityUtils.getSortOrders(sort)));
         Page<User> pagedUsers = userRepository.findAll(pageable);
         List<User> Users = pagedUsers.getContent();

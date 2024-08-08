@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 import java.util.Set;
 
 public record UserCreateRequest(
-    boolean enabled,
+    boolean isEnabled,
     @NotBlank @Email String email,
 
     @NotBlank

@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.common.entity.BaseEntity;
 import dev.pages.users.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.HashSet;
@@ -28,6 +25,7 @@ public class UserRole extends BaseEntity {
 
     @ManyToMany(mappedBy = "roles")
     @JsonIgnore
+    @Builder.Default
     private Set<User> users = new HashSet<>();
 }
 

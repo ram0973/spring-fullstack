@@ -23,7 +23,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')") // TODO: check everywhere for opportunity to use User.Role.ADMIN
     public ResponseEntity<PagedUsersResponse> getUsers(
         @RequestParam(required = false) String title,
         @RequestParam(defaultValue = "0") int page,
@@ -31,7 +31,7 @@ public class UserController {
         @RequestParam(defaultValue = "id,desc") String[] sort
     ) {
         // TODO: check if really need Optional here
-        PagedUsersResponse pagedUsersResponse = userService.findAll(page, size, sort).orElse(
+        PagedUsersResponse pagedUsersResponse = userService.findAllPaged(page, size, sort).orElse(
             new PagedUsersResponse(Collections.emptyList(), 0, 0, 0)
         );
         return ResponseEntity.ok(pagedUsersResponse);

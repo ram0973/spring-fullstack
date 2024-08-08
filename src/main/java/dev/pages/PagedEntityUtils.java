@@ -1,13 +1,15 @@
 package dev.pages;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.experimental.UtilityClass;
 import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public interface PagedEntityUtils {
-    static Sort.Direction getSortDirection(@NotNull String direction) {
+@UtilityClass
+public class PagedEntityUtils {
+    private static Sort.Direction getSortDirection(@NotNull String direction) {
         if (direction.equals("asc")) {
             return Sort.Direction.ASC;
         } else if (direction.equals("desc")) {
@@ -16,7 +18,7 @@ public interface PagedEntityUtils {
         return Sort.Direction.DESC;
     }
 
-    static @NotNull List<Sort.Order> getSortOrders(@NotNull String[] sort) {
+    public static @NotNull List<Sort.Order> getSortOrders(@NotNull String[] sort) {
         List<Sort.Order> orders = new ArrayList<>();
         // sorting single column
         // ?sort=column1,asc или ?sort=column1,desc

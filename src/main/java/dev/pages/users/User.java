@@ -2,14 +2,12 @@ package dev.pages.users;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.common.entity.BaseEntity;
+import dev.pages.posts.Post;
 import dev.pages.roles.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.NaturalId;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,12 +33,16 @@ public class User extends BaseEntity implements UserDetails {
     @NaturalId
     private String email;
 
+    private String firstName;
+
+    private String lastName;
+
     @Column(nullable = false)
     @NotBlank
     @JsonIgnore
     private String password;
 
-
+    @Builder.Default
     private boolean isEnabled = true;
 
     @ManyToMany(
@@ -62,10 +64,21 @@ public class User extends BaseEntity implements UserDetails {
             .collect(Collectors.toSet());
     }
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Post> posts;
+
     @Override
     @JsonIgnore
     public String getUsername() {
         return email;
+    }
+
+    public void addRole(UserRole role) {
+        if (this.roles == null) {
+            this.roles = new HashSet<>();
+        }
+        this.roles.add(role);
     }
 
     @Getter
@@ -80,12 +93,5 @@ public class User extends BaseEntity implements UserDetails {
         Role(String label) {
             this.label = label;
         }
-    }
-
-    public void addRole(UserRole role) {
-        if (this.roles == null) {
-            this.roles = new HashSet<>();
-        }
-        this.roles.add(role);
     }
 }
