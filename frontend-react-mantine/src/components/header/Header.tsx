@@ -15,7 +15,7 @@ import {
   Collapse,
   ScrollArea,
   rem,
-  useMantineTheme,
+  useMantineTheme, Avatar,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
@@ -36,6 +36,49 @@ export const Header = () => {
   const theme = useMantineTheme();
 
   return (
+    <>
+    <Drawer
+      position="left"
+      offset={"0"}
+      opened={drawerOpened}
+      onClose={closeDrawer}
+      size="100%"
+      padding="md"
+      title="Navigation"
+      //hiddenFrom="sm"
+      zIndex={1000000}
+    >
+      <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
+        <Divider my="sm" />
+
+        <a href="#" className={classes.link}>
+          Home
+        </a>
+        <UnstyledButton className={classes.link} onClick={toggleLinks}>
+          <Center inline>
+            <Box component="span" mr={5}>
+              Features
+            </Box>
+            <IconChevronDown
+              style={{ width: rem(16), height: rem(16) }}
+              color={theme.colors.blue[6]}
+            />
+          </Center>
+        </UnstyledButton>
+        <Collapse in={linksOpened}></Collapse>
+        <a href="#" className={classes.link}>
+          Learn
+        </a>
+        <a href="#" className={classes.link}>
+          Academy
+        </a>
+        <Divider my="sm" />
+        <Group justify="center" grow pb="xl" px="md">
+          <Link to={"/login"}>Log in</Link>
+          <Link to={"/signup"}>Sign up</Link>
+        </Group>
+      </ScrollArea>
+    </Drawer>
     <Box pb={120}>
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
@@ -52,56 +95,15 @@ export const Header = () => {
           </Group>
 
           <Group visibleFrom="sm">
+            <Avatar src="avatar.png" alt="it's me"/>
             <Link to={"/login"}><Button variant="default">Log in</Button></Link>
             <Link to={"/signup"}><Button>Sign up</Button></Link>
           </Group>
 
-          <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
+          <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="xl" />
         </Group>
       </header>
-
-      <Drawer
-        opened={drawerOpened}
-        onClose={closeDrawer}
-        size="100%"
-        padding="md"
-        title="Navigation"
-        hiddenFrom="sm"
-        zIndex={1000000}
-      >
-        <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
-          <Divider my="sm" />
-
-          <a href="#" className={classes.link}>
-            Home
-          </a>
-          <UnstyledButton className={classes.link} onClick={toggleLinks}>
-            <Center inline>
-              <Box component="span" mr={5}>
-                Features
-              </Box>
-              <IconChevronDown
-                style={{ width: rem(16), height: rem(16) }}
-                color={theme.colors.blue[6]}
-              />
-            </Center>
-          </UnstyledButton>
-          <Collapse in={linksOpened}></Collapse>
-          <a href="#" className={classes.link}>
-            Learn
-          </a>
-          <a href="#" className={classes.link}>
-            Academy
-          </a>
-
-          <Divider my="sm" />
-
-          <Group justify="center" grow pb="xl" px="md">
-            <Link to={"/login"}>Log in</Link>
-            <Link to={"/signup"}>Sign up</Link>
-          </Group>
-        </ScrollArea>
-      </Drawer>
     </Box>
+    </>
   );
 }

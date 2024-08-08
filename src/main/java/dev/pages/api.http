@@ -228,12 +228,11 @@ GET http://localhost:8000/api/v1/posts/comments/1
 
 
 ### Update comment 1
-PUT http://localhost:8000/api/v1/posts/comments/1
+PUT http://localhost:8000/api/v1/posts/comments/2
 Content-Type: application/json
 
 {
-  "title": "Java++",
-  "slug": "java-plus-plus",
+  "content": "Updated comment",
   "enabled": false
 }
 

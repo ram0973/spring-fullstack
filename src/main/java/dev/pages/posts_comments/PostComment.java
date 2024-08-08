@@ -2,6 +2,7 @@ package dev.pages.posts_comments;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import dev.common.entity.BaseEntity;
 import dev.pages.posts.Post;
 import dev.pages.users.User;
@@ -24,9 +25,7 @@ public class PostComment extends BaseEntity {
     private String content;
 
     @ManyToOne(fetch = FetchType.EAGER) //TODO: check this
-    @JsonIgnoreProperties(
-        {"email", "password", "enabled", "createdDate", "lastModifiedDate", "createdBy", "lastModifiedBy", "roles"}
-    )
+    @JsonIncludeProperties({"email"})
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 

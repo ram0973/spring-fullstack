@@ -68,12 +68,12 @@ distributionUrl=https\://services.gradle.org/distributions/gradle-8.8-bin.zip
 
 ## Idea
 
-Указываем GraalVM в настройках File - Project structure.
-Лучше удалить все остальные JDK.
+Указываем GraalVM или другой JDK в настройках File - Project structure.
+
 Указываем Help - Edit Custom VM Options:
 -Xms2048m
 -Xmx2048m
--XX:+UseShenandoahGC
+-XX:+UseShenandoahGC (только не с GraalVM)
 
 В настройках Idea в поиске пишем encod.
 В File Encodings и Console ставим UTF-8.
@@ -89,7 +89,7 @@ distributionUrl=https\://services.gradle.org/distributions/gradle-8.8-bin.zip
 
 ## Вспомогательные файлы
 
-Создаем .editorconfig, api.http, compose.yml, gradle.properties.
+Созданы .editorconfig, api.http, compose.yml, gradle.properties.
 Копируем файл .env из .env.example.
 
 ## Дополнительные Библиотеки
