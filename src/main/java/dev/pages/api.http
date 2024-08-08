@@ -163,3 +163,40 @@ Content-Type: application/json
   "tags": ["java", "react"],
   "title": "Post title"
 }
+
+
+######## CATEGORIES
+
+
+### Create category
+POST http://localhost:8000/api/v1/posts/categories
+Content-Type: application/json
+
+{
+  "title": "Java",
+  "slug": "java",
+  "isEnabled": true
+}
+
+### Read posts
+GET http://localhost:8000/api/v1/posts
+
+
+### Read post 1
+GET http://localhost:8000/api/v1/posts/1
+
+
+### Update post 1
+PUT http://localhost:8000/api/v1/posts/1
+Content-Type: application/json
+
+{
+  "excerpt": "Updated post excerpt",
+  "category": 1,
+  "content": "Updated post content",
+  "image": null,
+  "isEnabled": false,
+  "slug": "java",
+  "tags": ["java", "react"],
+  "title": "Post title"
+}

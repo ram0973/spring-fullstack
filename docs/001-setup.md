@@ -1,4 +1,4 @@
-# FullStack веб - приложение на Spring и React/Angular?/NextJS?
+# FullStack веб - приложение на Spring и React
 
 Процесс разработки веб приложения вкратце.
 Пишем под Виндой, под линукс аналогично.
@@ -28,7 +28,6 @@
 - Graal VM JDK/Some other JDK
 - Git
 - Bun
-- Punto switcher :)
 
 ## Graal VM JDK
 Заходим на start.spring.io.

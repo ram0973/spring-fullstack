@@ -24,7 +24,6 @@ import java.util.Set;
 @NoArgsConstructor
 public class Post extends BaseEntity {
     @ManyToOne(fetch = FetchType.EAGER) // TODO: check
-    @NonNull
     private PostCategory category;
 
     @NotBlank
