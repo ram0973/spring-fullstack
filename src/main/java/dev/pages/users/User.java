@@ -43,7 +43,7 @@ public class User extends BaseEntity implements UserDetails {
     private String password;
 
     @Builder.Default
-    private boolean isEnabled = true;
+    private boolean enabled = true;
 
     @ManyToMany(
         fetch = FetchType.EAGER,

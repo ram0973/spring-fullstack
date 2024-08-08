@@ -34,7 +34,7 @@ public class DataInitializer {
                 .lastModifiedBy(1)
                 .createdDate(LocalDateTime.now())
                 .lastModifiedDate(LocalDateTime.now())
-                .isEnabled(true)
+                .enabled(true)
                 .roles(new HashSet<>())
                 .build();
             userRepository.save(admin);

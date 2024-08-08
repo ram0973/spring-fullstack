@@ -14,6 +14,6 @@ public record PostCreateRequest(
     @NotBlank String content,
     MultipartFile image,
     Set<String> tags,
-    boolean isEnabled
+    boolean enabled
 ) {
 }

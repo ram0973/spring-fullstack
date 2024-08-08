@@ -5,6 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 public record PostCategoryCreateRequest(
     @NotBlank String title,
     @NotBlank String slug,
-    boolean isEnabled
+    boolean enabled
 ) {
 }

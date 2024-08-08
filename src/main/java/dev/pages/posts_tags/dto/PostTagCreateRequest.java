@@ -10,6 +10,6 @@ public record PostTagCreateRequest(
 
     Integer postId,
 
-    boolean isEnabled
+    boolean enabled
 ) {
 }

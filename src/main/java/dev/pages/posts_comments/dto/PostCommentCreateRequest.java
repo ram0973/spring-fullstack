@@ -4,6 +4,6 @@ import jakarta.validation.constraints.NotBlank;
 
 public record PostCommentCreateRequest(
     @NotBlank String content,
-    boolean isEnabled
+    boolean enabled
 ) {
 }

@@ -25,7 +25,7 @@ public class PostComment extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.EAGER) //TODO: check this
     @JsonIgnoreProperties(
-        {"email", "password", "isEnabled", "createdDate", "lastModifiedDate", "createdBy", "lastModifiedBy", "roles"}
+        {"email", "password", "enabled", "createdDate", "lastModifiedDate", "createdBy", "lastModifiedBy", "roles"}
     )
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
@@ -36,5 +36,5 @@ public class PostComment extends BaseEntity {
     private Post post;
 
     @Builder.Default
-    private boolean isEnabled = true;
+    private boolean enabled = true;
 }

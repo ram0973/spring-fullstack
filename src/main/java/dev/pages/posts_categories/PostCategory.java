@@ -35,7 +35,7 @@ public class PostCategory extends BaseEntity {
     private Set<Post> posts;
 
     @Builder.Default
-    private boolean isEnabled = true;
+    private boolean enabled = true;
 
     //TODO: check this
     public void addPost(Post post) {

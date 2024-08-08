@@ -2,6 +2,7 @@ package dev.pages.posts_comments;
 
 import dev.common.exceptions.NoSuchEntityException;
 import dev.pages.posts.Post;
+import dev.pages.posts.PostService;
 import dev.pages.posts.dto.PostUpdateRequest;
 import dev.pages.posts_comments.dto.PagedPostsCommentsResponse;
 import dev.pages.posts_comments.dto.PostCommentCreateRequest;
@@ -23,6 +24,7 @@ import java.util.List;
 @Log4j2
 public class PostCommentController {
     private final PostCommentService postCommentService;
+    private final PostService postService;
 
     @GetMapping("")
     @PreAuthorize("hasRole('ADMIN')")
@@ -55,16 +57,17 @@ public class PostCommentController {
     }
 
     // this is for admin or not ?
-    @PostMapping("")
+    @PostMapping("{postId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PostComment> createPostComment(
-        @Valid @RequestBody PostCommentCreateRequest dto, Principal principal
+        @Valid @RequestBody PostCommentCreateRequest dto, @PathVariable("postId") int postId, Principal principal
     ) {
-        // TODO : post?
-        PostComment postComment = postCommentService.createPostComment(dto, principal, new Post());
+        Post post = postService.findById(postId).orElseThrow(
+            () -> new NoSuchEntityException("There is no such post with id: " + postId)
+        );
+        PostComment postComment = postCommentService.createPostComment(dto, principal, post);
         return ResponseEntity.ok(postComment);
     }
-
 
     @PutMapping("{id}")
     @PreAuthorize("hasRole('ADMIN')")

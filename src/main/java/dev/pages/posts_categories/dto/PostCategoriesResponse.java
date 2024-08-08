@@ -5,5 +5,5 @@ import dev.pages.posts_categories.PostCategory;
 import java.util.List;
 
 public record PostCategoriesResponse(
-    List<PostCategory> categories) {
+    List<PostCategory> postCategories) {
 }

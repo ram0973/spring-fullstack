@@ -2,6 +2,7 @@ package dev.pages.posts;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import dev.common.entity.BaseEntity;
 import dev.pages.posts_categories.PostCategory;
 import dev.pages.posts_tags.PostTag;
@@ -43,9 +44,7 @@ public class Post extends BaseEntity {
     private String image;
 
     @ManyToOne(fetch = FetchType.EAGER) //TODO: check this
-    @JsonIgnoreProperties(
-        {"email", "password", "isEnabled", "createdDate", "lastModifiedDate", "createdBy", "lastModifiedBy", "roles"}
-    ) // TODO: add all props
+    @JsonIncludeProperties({"email"})
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private User user;
 
@@ -62,7 +61,7 @@ public class Post extends BaseEntity {
     private Set<PostTag> tags;
 
     @Builder.Default
-    private boolean isEnabled = true;
+    private boolean enabled = true;
 
     //TODO: check this
     public void addTag(PostTag tag) {

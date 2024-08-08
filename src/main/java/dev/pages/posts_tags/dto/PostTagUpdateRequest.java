@@ -8,6 +8,6 @@ public record PostTagUpdateRequest(
     @Size(max = 255)
     String title,
 
-    boolean isEnabled
+    boolean enabled
 ) {
 }

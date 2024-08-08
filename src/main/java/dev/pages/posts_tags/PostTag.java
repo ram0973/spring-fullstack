@@ -29,7 +29,7 @@ public class PostTag extends BaseEntity {
     private Set<Post> posts;
 
     @Builder.Default
-    private boolean isEnabled = true;
+    private boolean enabled = true;
 
     public void addPost(Post post) {
         if (this.posts == null) {
