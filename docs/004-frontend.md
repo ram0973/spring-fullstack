@@ -1,5 +1,5 @@
 Запуск React приложения:
 
 cd frontend-react-mantine
-bun run serve
+bun run dev
 
