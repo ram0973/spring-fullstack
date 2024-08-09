@@ -11,9 +11,7 @@ export const Signup = () => {
       <Text c="dimmed" size="sm" ta="center" mt={5}>
         Do you have an account?{' '}
         <Link to={"/login"}>
-          <Anchor size="sm" component="button">
-            Log in
-          </Anchor>
+          Log in
         </Link>
       </Text>
 
@@ -22,7 +20,7 @@ export const Signup = () => {
         <PasswordInput label="Password" placeholder="Your password" required mt="md"/>
         <PasswordInput
           label="Password confirmation"
-          //description="password confirm desc"
+          description="password confirm desc"
           placeholder="Confirm user password"
           error=""
           mt="md"

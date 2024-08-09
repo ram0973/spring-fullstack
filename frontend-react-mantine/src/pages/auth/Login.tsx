@@ -1,7 +1,6 @@
 import {
   Anchor,
   Button,
-  Checkbox,
   Container,
   Group,
   Paper,
@@ -9,12 +8,14 @@ import {
   Switch,
   Text,
   TextInput,
-  Title,
+  Title
 } from '@mantine/core';
 import classes from './Login.module.css';
 import {Link} from 'react-router-dom';
 
+
 export function Login() {
+
   return (
     <Container size={420} my={40}>
       <Title ta="center" className={classes.title}>
@@ -23,9 +24,7 @@ export function Login() {
       <Text c="dimmed" size="sm" ta="center" mt={5}>
         Do not have an account yet?{' '}
         <Link to={"/signup"}>
-          <Anchor size="sm" component="button">
             Create account
-          </Anchor>
         </Link>
       </Text>
 
@@ -36,6 +35,7 @@ export function Login() {
           <Switch
           defaultChecked
           label="Remember me"
+          onLabel="ON" offLabel="OFF"
           />
           <Link to={"/forgot-password"}>
             <Anchor component="button" size="sm">

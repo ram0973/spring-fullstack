@@ -1,4 +1,4 @@
-package dev.common.security.filter;
+package dev.common.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

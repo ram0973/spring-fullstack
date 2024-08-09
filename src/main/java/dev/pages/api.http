@@ -60,7 +60,7 @@ GET http://localhost:8000/api/v1/roles/USER
 
 
 ### Update role - add deserialization error - last modifiedby not working
-PUT http://localhost:8000/api/v1/roles/MODERATOR
+PATCH http://localhost:8000/api/v1/roles/MODERATOR
 Content-Type: application/json
 
 {
@@ -108,7 +108,7 @@ GET http://localhost:8000/api/v1/users/1
 
 
 ### Update user 1
-PUT http://localhost:8000/api/v1/users/1
+PATCH http://localhost:8000/api/v1/users/1
 Content-Type: application/json
 
 {
@@ -150,7 +150,7 @@ GET http://localhost:8000/api/v1/posts/1
 
 
 ### Update post 1
-PUT http://localhost:8000/api/v1/posts/1
+PATCH http://localhost:8000/api/v1/posts/1
 Content-Type: application/json
 
 {
@@ -192,7 +192,7 @@ GET http://localhost:8000/api/v1/posts/categories/1
 
 
 ### Update category 1
-PUT http://localhost:8000/api/v1/posts/categories/1
+PATCH http://localhost:8000/api/v1/posts/categories/1
 Content-Type: application/json
 
 {
@@ -228,7 +228,7 @@ GET http://localhost:8000/api/v1/posts/comments/1
 
 
 ### Update comment 1
-PUT http://localhost:8000/api/v1/posts/comments/2
+PATCH http://localhost:8000/api/v1/posts/comments/2
 Content-Type: application/json
 
 {

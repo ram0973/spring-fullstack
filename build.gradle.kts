@@ -40,7 +40,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.shell:spring-shell-starter")
-	//implementation("org.liquibase:liquibase-core")
+    implementation("net.datafaker:datafaker:2.3.1")
+    //implementation("org.liquibase:liquibase-core")
 
 	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
     // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui

@@ -62,7 +62,7 @@ public class PostController {
         }
     }
 
-    @PutMapping("{id}")
+    @PatchMapping("{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Post> updatePost(
         @PathVariable("id") int id, @Valid @RequestBody PostUpdateRequest dto) throws IOException {

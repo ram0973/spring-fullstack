@@ -57,6 +57,9 @@ public class User extends BaseEntity implements UserDetails {
     private Set<UserRole> roles;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (roles == null) {
+            return new HashSet<>();
+        }
         return this
             .getRoles()
             .stream()

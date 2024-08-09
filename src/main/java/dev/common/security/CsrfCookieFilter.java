@@ -1,4 +1,4 @@
-package dev.common.security.filter;
+package dev.common.security;
 
 import jakarta.servlet.*;
 import lombok.extern.log4j.Log4j2;

@@ -1,4 +1,4 @@
-package dev.common.security.config;
+package dev.common.security;
 
 import dev.pages.users.User;
 import dev.pages.users.UserDetailsImpl;

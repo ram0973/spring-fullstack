@@ -19,12 +19,6 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
-  IconNotification,
-  IconCode,
-  IconBook,
-  IconChartPie3,
-  IconFingerprint,
-  IconCoin,
   IconChevronDown,
 } from '@tabler/icons-react';
 import classes from './Header.module.css';
@@ -45,7 +39,7 @@ export const Header = () => {
       size="100%"
       padding="md"
       title="Navigation"
-      //hiddenFrom="sm"
+      hiddenFrom="sm"
       zIndex={1000000}
     >
       <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
@@ -100,7 +94,7 @@ export const Header = () => {
             <Link to={"/signup"}><Button>Sign up</Button></Link>
           </Group>
 
-          <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="xl" />
+          <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
         </Group>
       </header>
     </Box>

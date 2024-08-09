@@ -50,7 +50,7 @@ public class PostCategoryController {
         }
     }
 
-    @PutMapping("{id}")
+    @PatchMapping("{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PostCategory> updatePostCategory(
         @PathVariable("id") int id, @Valid @RequestBody PostCategoryUpdateRequest dto) {

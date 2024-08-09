@@ -23,7 +23,7 @@ public class DataInitializer {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
 
-    @Bean
+    //@Bean
     CommandLineRunner initDatabase() {
         return args -> {
             log.info("Preloading Admin User");

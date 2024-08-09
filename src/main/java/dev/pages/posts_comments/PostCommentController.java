@@ -69,7 +69,7 @@ public class PostCommentController {
         return ResponseEntity.ok(postComment);
     }
 
-    @PutMapping("{id}")
+    @PatchMapping("{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PostComment> updatePost(
         @Valid @RequestBody PostCommentUpdateRequest dto,

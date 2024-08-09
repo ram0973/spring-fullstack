@@ -49,7 +49,7 @@ public class UserRoleController {
         }
     }
 
-    @PutMapping("/{role}")
+    @PatchMapping("/{role}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserRole> updateUserRole(
         @PathVariable("role") User.Role role, @Valid @RequestBody UserRoleUpdateRequest dto) {

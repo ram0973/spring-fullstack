@@ -25,7 +25,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements IUserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -34,6 +34,7 @@ public class UserService {
     @Value("${app.admin.email}")
     private String adminEmail;
 
+    @Override
     public Optional<PagedUsersResponse> findAllPaged(int page, int size, String[] sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(PagedEntityUtils.getSortOrders(sort)));
         Page<User> pagedUsers = userRepository.findAll(pageable);
@@ -47,14 +48,17 @@ public class UserService {
         }
     }
 
+    @Override
     public Optional<User> findById(int id) {
         return userRepository.findById(id);
     }
 
+    @Override
     public Optional<User> findUserByEmailIgnoreCase(String email) {
         return userRepository.findByEmailIgnoreCase(email);
     }
 
+    @Override
     @Transactional
     public User createUser(@NotNull UserCreateRequest dto) {
         User user = UserMapper.INSTANCE.userFromUserRequest(dto);
@@ -69,6 +73,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @Override
     @Transactional
     public User updateUser(int id, @NotNull UserUpdateRequest dto) {
         User user = userRepository.findById(id).orElseThrow(
@@ -84,6 +89,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @Override
     public void deleteUser(int id) {
         User user = findById(id).orElseThrow(
             () -> new NoSuchEntityException("No such User with id: " + id));

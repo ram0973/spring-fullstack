@@ -20,7 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Log4j2
 public class UserController {
-    private final UserService userService;
+    private final IUserService userService;
 
     @GetMapping("")
     @PreAuthorize("hasRole('ADMIN')") // TODO: check everywhere for opportunity to use User.Role.ADMIN
@@ -59,7 +59,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("{id}")
+    @PatchMapping("{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> updateUser(
         @PathVariable("id") int id, @Valid @RequestBody UserUpdateRequest dto) {

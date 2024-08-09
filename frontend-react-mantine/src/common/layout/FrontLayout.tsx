@@ -1,6 +1,6 @@
 import {Outlet} from "react-router-dom";
 
-import { AppShell, Burger } from '@mantine/core';
+import {AppShell, Burger, Center} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {Header} from '@/components/header/Header.tsx';
 export const FrontLayout = () => {
@@ -15,7 +15,7 @@ export const FrontLayout = () => {
         <Header />
       </AppShell.Header>
 
-      <AppShell.Main><Outlet/></AppShell.Main>
+      <AppShell.Main><Center><Outlet/></Center></AppShell.Main>
     </AppShell>
   );
 }

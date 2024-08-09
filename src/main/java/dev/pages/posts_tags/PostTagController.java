@@ -59,7 +59,7 @@ public class PostTagController {
         }
     }
 
-    @PutMapping("{id}")
+    @PatchMapping("{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PostTag> updatePostTag(
         @PathVariable("id") int id, @Valid @RequestBody PostTagUpdateRequest dto) {

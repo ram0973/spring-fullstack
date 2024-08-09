@@ -7,22 +7,14 @@ import dev.pages.posts.dto.PagedPostsResponse;
 import dev.pages.posts.dto.PostCreateRequest;
 import dev.pages.posts.dto.PostUpdateRequest;
 import dev.pages.posts_categories.PostCategory;
-import dev.pages.posts_categories.PostCategoryRepository;
 import dev.pages.posts_categories.PostCategoryService;
-import dev.pages.posts_tags.PostTag;
-import dev.pages.posts_tags.PostTagRepository;
-import dev.pages.users.User;
-import dev.pages.users.UserDetailsImpl;
-import dev.pages.users.UserRepository;
-import dev.pages.users.UserService;
+import dev.pages.users.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +28,7 @@ import java.util.Optional;
 public class PostService {
 
     private final PostRepository postRepository;
-    private final UserService userService;
+    private final IUserService IUserService;
     private final PostCategoryService postCategoryService;
 
 
@@ -73,7 +65,7 @@ public class PostService {
             post.setImage(newImagePath);
         }
         // TODO: check this for anonymous, log error, etc
-        Optional<User> optionalUser = userService.findUserByEmailIgnoreCase(principal.getName());
+        Optional<User> optionalUser = IUserService.findUserByEmailIgnoreCase(principal.getName());
         User user = optionalUser.orElseThrow(
             () -> new NoSuchEntityException("No such principal: " + principal.getName())
         );
