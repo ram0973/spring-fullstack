@@ -29,7 +29,7 @@ export function Login() {
       </Text>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <TextInput label="Email" placeholder="your@email.com" required/>
+        <TextInput label="Email" placeholder="me@email.com" required/>
         <PasswordInput label="Password" placeholder="Your password" required mt="md"/>
         <Group justify="space-between" mt="lg">
           <Switch

@@ -16,11 +16,11 @@ export const Signup = () => {
       </Text>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <TextInput label="Email" placeholder="you@mantine.dev" required/>
+        <TextInput label="Email" placeholder="me@email.com" required/>
         <PasswordInput label="Password" placeholder="Your password" required mt="md"/>
         <PasswordInput
           label="Password confirmation"
-          description="password confirm desc"
+          //description="password confirm desc"
           placeholder="Confirm user password"
           error=""
           mt="md"

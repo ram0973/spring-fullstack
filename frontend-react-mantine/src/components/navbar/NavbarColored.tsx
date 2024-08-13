@@ -9,62 +9,62 @@ import {
   IconDatabaseImport,
   IconReceipt2,
   IconSwitchHorizontal,
-  IconLogout,
+  IconLogout, IconCursorText, IconCategory, IconNotes, IconTag, IconEdit,
 } from '@tabler/icons-react';
 import classes from './NavbarColored.module.css';
+import {Link} from "react-router-dom";
 
 const data = [
-  { link: '', label: 'Notifications', icon: IconBellRinging },
-  { link: '', label: 'Billing', icon: IconReceipt2 },
-  { link: '', label: 'Security', icon: IconFingerprint },
-  { link: '', label: 'SSH Keys', icon: IconKey },
-  { link: '', label: 'Databases', icon: IconDatabaseImport },
-  { link: '', label: 'Authentication', icon: Icon2fa },
-  { link: '', label: 'Other Settings', icon: IconSettings },
+  { link: '/admin/users', label: 'Users', icon: IconFingerprint },
+  { link: '/admin/users/roles/', label: 'Roles', icon: IconKey },
+  { link: '/admin/posts', label: 'Posts', icon: IconEdit },
+  { link: '/admin/posts/categories', label: 'Categories', icon: IconCategory },
+  { link: '/admin/posts/comments', label: 'Comments', icon: IconNotes },
+  { link: '/admin/posts/tags', label: 'Tags', icon: IconTag },
+  { link: '/admin/settings', label: 'Settings', icon: IconSettings },
 ];
 
 export const NavbarColored = () => {
   const [active, setActive] = useState('Billing');
 
   const links = data.map((item) => (
-    <a
+    <Link
       className={classes.link}
       data-active={item.label === active || undefined}
-      href={item.link}
+      to={item.link}
       key={item.label}
       onClick={(event) => {
-        event.preventDefault();
+        //event.preventDefault();
         setActive(item.label);
       }}
     >
       <item.icon className={classes.linkIcon} stroke={1.5} />
       <span>{item.label}</span>
-    </a>
+    </Link>
   ));
 
   return (
     <nav className={classes.navbar}>
       <div className={classes.navbarMain}>
         <Group className={classes.header} justify="space-between">
-          Logo here
+          <Code fw={700} className={classes.version}>Blog</Code>
           <Code fw={700} className={classes.version}>
-            v3.1.2
+            v1.0.0
           </Code>
         </Group>
         {links}
       </div>
 
-      <div className={classes.footer}>
-        <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
-          <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
-          <span>Change account</span>
-        </a>
 
-        <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
+      <div className={classes.footer}>
+        <Link to={"/logout"}
+              className={classes.link}
+        >
           <IconLogout className={classes.linkIcon} stroke={1.5} />
           <span>Logout</span>
-        </a>
+        </Link>
       </div>
+
     </nav>
   );
 }

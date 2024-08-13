@@ -25,6 +25,7 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -43,8 +44,8 @@ public class AuthService {
     private String adminEmail;
 
     @Transactional
-    public User register(RegisterRequest dto) {
-        String email = dto.email().trim();
+    public User signup(RegisterRequest dto) {
+        String email = dto.email().trim().toLowerCase(Locale.ROOT);
         Optional<User> userExisted = userRepository.findByEmailIgnoreCase(email);
         if (userExisted.isPresent()) {
             throw new EntityAlreadyExistsException("User already exist with such email: " + email);

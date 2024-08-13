@@ -45,7 +45,7 @@ public class Post extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.EAGER) //TODO: check this
     @JsonIncludeProperties({"email"})
-    @JoinColumn(name = "post_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @ManyToMany(

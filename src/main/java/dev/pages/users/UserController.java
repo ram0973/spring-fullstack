@@ -25,7 +25,7 @@ public class UserController {
     @GetMapping("")
     @PreAuthorize("hasRole('ADMIN')") // TODO: check everywhere for opportunity to use User.Role.ADMIN
     public ResponseEntity<PagedUsersResponse> getUsers(
-        @RequestParam(required = false) String title,
+        @RequestParam(required = false) String email,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size,
         @RequestParam(defaultValue = "id,desc") String[] sort

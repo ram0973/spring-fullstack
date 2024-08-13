@@ -24,7 +24,7 @@ public class AuthController {
 
     @PostMapping(path = "/register")
     public ResponseEntity<User> register(@Valid @RequestBody RegisterRequest dto) {
-        User user = this.authService.register(dto);
+        User user = this.authService.signup(dto);
         log.info("User with email: {} has successfully created", dto.email());
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
@@ -47,7 +47,7 @@ public class AuthController {
 
     @GetMapping("/me")
     public ResponseEntity<String> profile(Principal principal) {
-        log.info(principal);
+        log.info("Url: /me Principal {}", principal);
         if (principal != null) {
             return new ResponseEntity<>(principal.getName(), HttpStatus.OK);
         }

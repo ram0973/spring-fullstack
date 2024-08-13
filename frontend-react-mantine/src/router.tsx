@@ -7,6 +7,7 @@ import {Login} from "@/pages/auth/Login.tsx";
 import {ForgotPassword} from "@/pages/auth/ForgotPassword.tsx";
 import {UsersTable} from "@/pages/users/table/UsersTable.tsx";
 import {CreateUser} from "@/pages/users/create/CreateUser";
+import {UpdateUser} from "@/pages/users/update/UpdateUser";
 import {Signup} from "@/pages/auth/Signup.tsx";
 
 export const router = createBrowserRouter([
@@ -41,6 +42,10 @@ export const router = createBrowserRouter([
       {
         path: "users/create",
         element: <CreateUser/>
+      },
+      {
+        path: "users/update/:id",
+        element: <UpdateUser/>
       },
     ],
   },

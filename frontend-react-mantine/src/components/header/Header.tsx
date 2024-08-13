@@ -73,23 +73,18 @@ export const Header = () => {
         </Group>
       </ScrollArea>
     </Drawer>
-    <Box pb={120}>
+    <Box>
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
           <Group h="100%" gap={0} visibleFrom="sm">
             <Link to="/" className={classes.link}>
               Home
             </Link>
-            <Link to="/admin/users" className={classes.link}>
-              Users
-            </Link>
-            <Link to="/admin/posts" className={classes.link}>
-              Posts
-            </Link>
           </Group>
 
           <Group visibleFrom="sm">
             <Avatar src="avatar.png" alt="it's me"/>
+            <Link to={"/admin/users"}><Button variant="default">Admin</Button></Link>
             <Link to={"/login"}><Button variant="default">Log in</Button></Link>
             <Link to={"/signup"}><Button>Sign up</Button></Link>
           </Group>

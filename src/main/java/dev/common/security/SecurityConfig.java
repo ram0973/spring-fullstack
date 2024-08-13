@@ -96,19 +96,24 @@ public class SecurityConfig {
     public CorsFilter corsFilter() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
+
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of("http://locallhost:5173"));
+        config.setAllowedOrigins(List.of("http://localhost:5173"));
         config.setAllowedHeaders(Arrays.asList(
             HttpHeaders.ORIGIN,
             HttpHeaders.CONTENT_TYPE,
             HttpHeaders.ACCEPT,
-            HttpHeaders.AUTHORIZATION
+            HttpHeaders.AUTHORIZATION,
+            HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,
+            HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS,
+            "X-Xsrf-Token"
         ));
         config.setAllowedMethods(Arrays.asList(
             "GET",
             "POST",
             "DELETE",
-            "PUT"
+            "PATCH",
+            "OPTIONS"
         ));
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);

@@ -8,15 +8,15 @@ import {useAuthContext} from "@/common/context/useAuthContext.tsx";
 export const useAxiosInterceptor = function () {
   const authContext = useAuthContext();
   const location = useLocation();
-  // TODO: do it in router on page change
+  //TODO: do it in router on page change
   React.useEffect(() => {
     axiosInstance.get('/api/v1/auth/me')
       .then(res => {
-        console.log(res);
+        //console.log(res);
         if (!res.data) {
           authContext.user = null;
           //setItemToLocalStorage("webapp.auth", {});
-          router.navigate("/login").then();
+          //router.navigate("/login").then();
         }
       });
     // const authInterceptor = axiosInstance.interceptors.response.use(
