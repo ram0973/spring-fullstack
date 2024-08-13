@@ -8,7 +8,7 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {notifications} from "@mantine/notifications";
 import {AxiosError} from "axios";
 
-const RowActions = (item) => {
+const RowActions = ({item}) => {
   const deleteUserApi = async (id: number) => {
     return await axiosInstance.delete(`/api/v1/users/${id}`)
   }
@@ -44,12 +44,12 @@ const RowActions = (item) => {
     title: 'Please confirm your action',
     children: (
       <Text size="sm">
-        Are you sure to delete user with email: {item.item.email} ?<br/>
+        Are you sure to delete user with email: {item.email} ?<br/>
         All posts of this user will also deleted.
       </Text>
     ),
     labels: {confirm: 'Confirm', cancel: 'Cancel'},
-    onConfirm: () => deleteUserMutation.mutate(item.item.id),
+    onConfirm: () => deleteUserMutation.mutate(item.id),
   });
   return (
     <>
@@ -57,7 +57,7 @@ const RowActions = (item) => {
         <ActionIcon size="sm" variant="subtle" color="blue">
           <IconEye size={16}/>
         </ActionIcon>
-        <Link to={`/admin/users/update/${item.item.id}`}>
+        <Link to={`/admin/users/update/${item.id}`}>
           <ActionIcon size="sm" variant="subtle" color="blue">
             <IconEdit size={16}/>
           </ActionIcon>
