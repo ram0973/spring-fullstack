@@ -21,7 +21,7 @@ export const UsersTable = () => {
       direction: 'asc',
     });
   const getUsersApi = async () => {
-    await new Promise(resolve => setTimeout(resolve, 100)); // for loader testing
+    //await new Promise(resolve => setTimeout(resolve, 100)); // for loader testing
     return await axiosInstance.get(
       `/api/v1/users?page=${page - 1}&size=${pageSize}&sort=${sortStatus.columnAccessor},${sortStatus.direction}`
     );
@@ -37,9 +37,8 @@ export const UsersTable = () => {
   }
   let {data, error, isFetching} = useGetUsers();
   if (error) {
-    return "Error: " + error;
+    return "Error: " + error.message;
   }
-  //if (isLoading) {
   if (isFetching) {
     return "Loading...";
   }
