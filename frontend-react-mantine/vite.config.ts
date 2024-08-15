@@ -12,12 +12,12 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8000/api',
+        target: 'http://localhost:8008/api',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
       '/upload': {
-        target: 'http://localhost:8000/upload',
+        target: 'http://localhost:8008/upload',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/upload/, ''),
       },
