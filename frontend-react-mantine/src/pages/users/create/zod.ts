@@ -1,24 +1,27 @@
 import z from "zod";
 
-const MAX_IMAGE_SIZE = 1024 * 1024 * 3; // 3MB
-const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/avif"];
+const MAX_FILE_SIZE = 1024 * 1024 * 3; // 3MB
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 
-export const articleCreateFormSchema = z
+export const userCreateSchema = z
   .object({
-    title: z.string().max(255, "Title must not exceed 255 symbols"),
-    slug: z.string(),
-    image: typeof window === 'undefined' ? z.null() : z.instanceof(FileList)
-      .refine(
-        image => (image?.length === 0) || (image[0]?.size < MAX_IMAGE_SIZE),
-        "Max file size is 3MB",
-      )
-      .refine(
-        image => image?.length === 0 || ACCEPTED_IMAGE_TYPES.includes(image?.[0]?.type),
-        ".jpg, .jpeg, .png, .webp, .avif files are accepted only",
+    email: z.string().email({message: "Invalid email"}).max(255, "Title must not exceed 255 symbols"),
+    firstName: z.string(),
+    lastName: z.string(),
+    avatar: typeof window === 'undefined' ? z.null() : z.instanceof(File)
+      .refine(file => file?.size <= MAX_FILE_SIZE, {message: "Max image size is 5MB."})
+      .refine(file => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+        ".jpg, .jpeg, .png, .webp, files are accepted only",
       ),
-    excerpt: z.string(),
-    content: z.string(),
     enabled: z.boolean(),
+    roles: z.string().optional().array(),
+    password: z.string().min(6, {message: "Password must contain at least 6 symbols"}),
+    confirm: z.string().min(6, {message: "Password confirmation must contain at least 6 symbols"}),
+  })
+  // IMPORTANT .partial()
+  // https://github.com/colinhacks/zod/issues/479
+  .partial().refine((data) => data.password === data.confirm, {
+    message: "Password not match",
+    path: ["confirm"],
   });
 
-export type ArticleCreateFormData = z.infer<typeof articleCreateFormSchema>;

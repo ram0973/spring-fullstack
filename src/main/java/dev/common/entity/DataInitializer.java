@@ -83,7 +83,7 @@ public class DataInitializer {
             log.info("Roles and admin complete");
 
             Faker faker = new Faker();
-
+            List<User> users = new ArrayList<>();
             for (int i = 0; i < 50; i++) {
                 User user = User.builder()
                     .firstName(faker.name().firstName())
@@ -91,12 +91,11 @@ public class DataInitializer {
                     .email(faker.internet().emailAddress())
                     .enabled(true)
                     .password(passwordEncoder.encode("password"))
-                    .roles(new HashSet<>())
+                    .roles(Set.of(userRole))
                     .build();
-                //userRole = userRoleRepository.findByRole(User.Role.USER).orElseThrow();
-                //user.addRole(userRole);
-                userRepository.save(user);
+                users.add(user);
             }
+            userRepository.saveAll(users);
         };
     }
 }

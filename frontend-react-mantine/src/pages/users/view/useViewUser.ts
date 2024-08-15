@@ -1,13 +1,13 @@
 import {useQuery} from "@tanstack/react-query";
 import {axiosInstance} from "@/common/axios/axiosInstance.ts";
 
-const getArticleApi = async (id: string | undefined) => {
-  return (await axiosInstance.get(`/api/v1/articles/${id}`)).data;
+const getUserApi = async (id: string | undefined) => {
+  return (await axiosInstance.get(`/api/v1/users/${id}`)).data;
 }
 
-export function useGetArticle(id: string | undefined) {
+export function useGetUser(id: string | undefined) {
   return useQuery({
-    queryKey: ["article", id],
-    queryFn: () => getArticleApi(id),
+    queryKey: ["user", id],
+    queryFn: () => getUserApi(id),
   });
 }

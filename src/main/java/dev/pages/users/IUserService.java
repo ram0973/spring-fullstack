@@ -6,6 +6,7 @@ import dev.pages.users.dto.UserUpdateRequest;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public interface IUserService {
@@ -16,7 +17,7 @@ public interface IUserService {
     Optional<User> findUserByEmailIgnoreCase(String email);
 
     @Transactional
-    User createUser(@NotNull UserCreateRequest dto);
+    User createUser(@NotNull UserCreateRequest dto) throws IOException;
 
     @Transactional
     User updateUser(int id, @NotNull UserUpdateRequest dto);

@@ -1,6 +1,5 @@
 package dev.pages.users;
 
-import dev.common.exceptions.EntityAlreadyExistsException;
 import dev.common.exceptions.NoSuchEntityException;
 import dev.pages.users.dto.PagedUsersResponse;
 import dev.pages.users.dto.UserCreateRequest;
@@ -8,12 +7,13 @@ import dev.pages.users.dto.UserUpdateRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Collections;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -46,17 +46,13 @@ public class UserController {
     }
 
     // this is for admin
-    @PostMapping("")
+    @PostMapping(path = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<User> createUser(@Valid @RequestBody UserCreateRequest dto) {
-        Optional<User> optionalUser = userService.findUserByEmailIgnoreCase(dto.email().trim());
-        if (optionalUser.isPresent()) {
-            throw new EntityAlreadyExistsException("Email already in use");
-        } else {
-            // check exceptions?
-            User user = userService.createUser(dto);
-            return ResponseEntity.ok(user);
-        }
+    // with @RequestParam instead of @ModelAttribute we get Content type not supported!
+    public ResponseEntity<User> createUser(@Valid @ModelAttribute UserCreateRequest dto) throws IOException {
+        // check exceptions?
+        User user = userService.createUser(dto);
+        return ResponseEntity.ok(user);
     }
 
     @PatchMapping("{id}")

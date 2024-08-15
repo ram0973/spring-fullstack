@@ -1,8 +1,17 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {axiosInstance} from "@/common/axios/axiosInstance.ts";
+import z from "zod";
+import {userCreateSchema} from "@/pages/users/create/zod.ts";
 
-const createUserApi = async (user) => {
-  return (await axiosInstance.post("/api/v1/users", user)).data;
+const createUserApi = async (user: z.infer<typeof userCreateSchema>) => {
+  const avatar = user.avatar
+  const userWithFile = {...user, avatar}
+  return axiosInstance.post("/api/v1/users", userWithFile,
+    {
+      headers: {
+        "Content-type": "multipart/form-data",
+      },
+    });
 }
 
 export const useCreateUser = () => {

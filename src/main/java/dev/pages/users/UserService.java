@@ -1,7 +1,9 @@
 package dev.pages.users;
 
+import dev.common.exceptions.EntityAlreadyExistsException;
 import dev.common.exceptions.ForbiddenOperationException;
 import dev.common.exceptions.NoSuchEntityException;
+import dev.pages.MultiPartFileUtils;
 import dev.pages.PagedEntityUtils;
 import dev.pages.roles.UserRole;
 import dev.pages.roles.UserRoleRepository;
@@ -10,6 +12,7 @@ import dev.pages.users.dto.UserCreateRequest;
 import dev.pages.users.dto.UserUpdateRequest;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,12 +22,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class UserService implements IUserService {
 
     private final UserRepository userRepository;
@@ -60,15 +65,27 @@ public class UserService implements IUserService {
 
     @Override
     @Transactional
-    public User createUser(@NotNull UserCreateRequest dto) {
+    public User createUser(@NotNull UserCreateRequest dto) throws IOException {
+        Optional<User> optionalUser = findUserByEmailIgnoreCase(dto.email().trim());
+        if (optionalUser.isPresent()) {
+            throw new EntityAlreadyExistsException("Email already in use");
+        }
         User user = UserMapper.INSTANCE.userFromUserRequest(dto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         List<UserRole> roles = userRoleRepository.findAll();
+        log.error(dto);
         for (UserRole userRole : roles) {
-            if (dto.roles().contains(userRole.getRole())) {
+            if (dto.roles() == null) {
+                break;
+            }
+             if (dto.roles().contains(userRole.toString())) {
                 userRole.getUsers().add(user);
                 user.addRole(userRole);
             }
+        }
+        if (dto.avatar() != null && dto.avatar().getOriginalFilename() != null) {
+            String newImagePath = MultiPartFileUtils.saveMultiPartImage(dto.avatar());
+            user.setAvatar(newImagePath);
         }
         return userRepository.save(user);
     }

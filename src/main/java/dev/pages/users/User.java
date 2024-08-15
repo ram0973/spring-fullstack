@@ -45,9 +45,11 @@ public class User extends BaseEntity implements UserDetails {
     @Builder.Default
     private boolean enabled = true;
 
+    String avatar;
+
     @ManyToMany(
         fetch = FetchType.EAGER,
-        cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
+        cascade = CascadeType.MERGE
     )
     @JoinTable(
         name = "users_roles",
@@ -88,8 +90,7 @@ public class User extends BaseEntity implements UserDetails {
     public enum Role {
         ADMIN("Admin"),
         MODERATOR("Moderator"),
-        USER("User"),
-        TESTER("Tester");
+        USER("User");
 
         private final String label;
 

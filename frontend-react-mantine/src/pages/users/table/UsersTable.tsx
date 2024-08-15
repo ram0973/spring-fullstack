@@ -1,5 +1,5 @@
 import {DataTable, DataTableSortStatus} from 'mantine-datatable';
-import {ActionIcon, Button, Checkbox, Group, TextInput} from "@mantine/core";
+import {ActionIcon, Avatar, Badge, Button, Group, Stack, TextInput} from "@mantine/core";
 import {useState} from "react";
 import {User} from "@/pages/users";
 import RowActions from "@/pages/users/table/RowActions.tsx";
@@ -13,7 +13,7 @@ const PAGE_SIZES = [10, 15, 20];
 
 export const UsersTable = () => {
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(15);
+  const [pageSize, setPageSize] = useState(10);
   const [query, setQuery] = useState('');
   const [sortStatus, setSortStatus] =
     useState<DataTableSortStatus<User>>({
@@ -87,9 +87,24 @@ export const UsersTable = () => {
             ),
             filtering: query !== '',
           },
+          {accessor: 'avatar', render: (item) => (<Avatar src={item.avatar} alt="avatar" />)},
           {accessor: 'firstName', sortable: true},
+
           {accessor: 'lastName', sortable: true},
-          {accessor: 'enabled', sortable: true, render: (item) => (<Checkbox disabled checked={item.enabled}/>)},
+          {
+            accessor: 'roles', render: item => {
+              const roles = item.roles.map(item => item.role);
+              return (<Stack gap={"3"}>{roles.map(item => (
+                  <Badge variant={item === "ADMIN" || item === "MODERATOR" ? "danger" : "default"}
+                         mr={4}>{item}</Badge>))}</Stack>
+              );
+            }
+          },
+          {
+            accessor: 'enabled', sortable: true, render: (item) => (
+              <Badge variant={!item.enabled ? "danger" : "default"}>{item.enabled ? "Yes" : "No"}</Badge>
+            )
+          },
           {accessor: 'actions', render: (item) => (<RowActions item={item}/>)},
         ]}
       />
