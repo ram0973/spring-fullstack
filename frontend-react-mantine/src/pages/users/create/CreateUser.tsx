@@ -24,24 +24,25 @@ import z from "zod";
 
 export const CreateUser = () => {
   const createUserMutation = useCreateUser()
-  const errorData = (createUserMutation.error as AxiosError)?.response?.data as AxiosErrorResponseDto
+  const errorData = (createUserMutation.error as AxiosError)?.response?.data as AxiosErrorResponseDto // TODO: Use or remove
   const navigate = useNavigate();
 
-  const onSubmitHandler = async (formData) => {
-    console.log(formData);
+  const onSubmitHandler = async () => {
+    const formData = form.getValues();
+    // @ts-expect-error we change data and data type when submitting
+    formData['roles'] = ([].concat(selectedRoles)).toString();
     const response = await createUserMutation.mutateAsync(formData);
     //navigate(`/admin/users/view/${response.data?.id}`);
+    // TODO: server validation
+    navigate('/admin/users');
   }
 
   const form = useForm<z.infer<typeof userCreateSchema>>({
     mode: 'uncontrolled',
     validate: zodResolver(userCreateSchema),
     validateInputOnChange: true,
-    initialValues: {"enabled": true, "roles": []}
+    initialValues: {"enabled": false}
   });
-
-  const [submittedValues, setSubmittedValues] =
-    useState<typeof form.values | null>(null);
 
   const items = [
     {title: 'Users', href: '/admin/users'},
@@ -49,15 +50,8 @@ export const CreateUser = () => {
   ].map((item, index) => (
     (item.href !== '#') ? <Link to={item.href} key={index}>{item.title}</Link> : <Text key={index}>{item.title}</Text>
   ));
-  const [checked, setChecked] = useState(false);
-  const roles =
-    [{value: 'ADMIN', label: 'Admin'}, {value: 'MODERATOR', label: 'Moderator'}, {value: 'USER', label: 'User'}]
-  const [selectedRoles, setSelectedRoles] = useState([]);
-  const rolesChanged = (val: any) => {
-    setSelectedRoles(val);
-    form.setFieldValue('roles', selectedRoles);
-  }
-  const [value, setValue] = useState<string[]>([]);
+  const roles = ['ADMIN', 'MODERATOR', 'USER']
+  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
   return (
     <>
       <Breadcrumbs>{items}</Breadcrumbs>
@@ -86,33 +80,15 @@ export const CreateUser = () => {
                            key={form.key('confirm')}
                            label="Password confirmation" placeholder="Confirm user password" required
             />
-            <MultiSelect  {...form.getInputProps('roles')} key={form.key('roles')}
+            <MultiSelect  {...form.getInputProps('rolesSwitch')} key={form.key('rolesSwitch')}
                           label="Roles"
-                          data={["ADMIN", "MODERATOR", "USER"]} value={value}
-                          defaultValue={['USER']} clearable searchable placeholder="Pick value"
-                          onChange={(query) => {
-                            setValue(query);
-                            form.setFieldValue('roles', value)
-                          }}
-
+                          data={roles}
+                          clearable searchable placeholder="Pick value"
+                          value={selectedRoles}
+                          onChange={event => setSelectedRoles(event)}
             />
-
-            {/*<MultiSelect {...form.getInputProps('roles')} key={form.key('roles')}*/}
-            {/*             label="Roles" placeholder="Pick value" data={roles} clearable //value={selectedRoles}*/}
-            {/*             // onChange={(event) => {*/}
-            {/*             //*/}
-            {/*             //   form.setFieldValue('roles', selectedRoles);*/}
-            {/*             // }}*/}
-            {/*/>*/}
-            <Switch {...form.getInputProps('enabled')} key={form.key('enabled')}
+            <Switch {...form.getInputProps('enabled', {type: 'checkbox'})} key={form.key('enabled')}
                     label="Enabled" onLabel="ON" offLabel="OFF" mt={"md"}
-                    defaultChecked
-              //value={checked ? 'true' : 'false'}
-              //onChange={(event) => setChecked(event.currentTarget.checked)}
-              // onChange={(event) => {
-              //   setChecked(event.currentTarget.checked);
-              // //    form.setFieldValue('enabled', event.currentTarget.checked);
-              // }}
             />
             <Button type={"submit"} fullWidth mt="xl" key={"button"}>Create</Button>
           </form>

@@ -19,8 +19,7 @@ public interface UserMapper {
     @Mapping(target = "avatar", ignore = true)
     User userFromUserRequest(UserCreateRequest dto);
 
-    //@Mapping(target = "id", ignore = true)
-    @Mapping(target = "roles", ignore = true)
     @Mapping(target = "avatar", ignore = true)
+    @Mapping(target = "password", ignore = true)
     void update(@MappingTarget User user, UserUpdateRequest dto);
 }

@@ -11,9 +11,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -45,20 +47,24 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    public record JsonRole(String role) {
+
+    }
+
     // this is for admin
     @PostMapping(path = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     // with @RequestParam instead of @ModelAttribute we get Content type not supported!
-    public ResponseEntity<User> createUser(@Valid @ModelAttribute UserCreateRequest dto) throws IOException {
+    public ResponseEntity<User> createUser(@Valid @ModelAttribute UserCreateRequest dto) throws IOException  {
         // check exceptions?
         User user = userService.createUser(dto);
         return ResponseEntity.ok(user);
     }
 
-    @PatchMapping("{id}")
+    @PatchMapping(path ="{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> updateUser(
-        @PathVariable("id") int id, @Valid @RequestBody UserUpdateRequest dto) {
+        @PathVariable("id") int id, @Valid @ModelAttribute UserUpdateRequest dto) throws IOException {
         User user = userService.updateUser(id, dto);
         return ResponseEntity.ok(user);
     }

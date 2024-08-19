@@ -1,5 +1,6 @@
 package dev.pages.users.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.pages.users.User;
 import jakarta.validation.constraints.Email;
@@ -20,6 +21,7 @@ public record UserCreateRequest(
     @Size(min = 6, message = "Password must have 6 symbols or more")
     @Size(max = 64, message = "Password length more than 64 symbols")
     String password,
-    List<String> roles
+    //@JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+    List<User.Role> roles
     ) {
 }

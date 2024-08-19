@@ -1,6 +1,8 @@
 package dev.pages.users;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import dev.common.entity.BaseEntity;
 import dev.pages.posts.Post;
 import dev.pages.roles.UserRole;
@@ -30,7 +32,6 @@ public class User extends BaseEntity implements UserDetails {
     @Column(nullable = false, unique = true)
     @NotBlank
     @Email
-    @NaturalId
     private String email;
 
     private String firstName;
@@ -47,10 +48,8 @@ public class User extends BaseEntity implements UserDetails {
 
     String avatar;
 
-    @ManyToMany(
-        fetch = FetchType.EAGER,
-        cascade = CascadeType.MERGE
-    )
+    @JsonSerialize(using = RolesArraySerializer.class)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
         name = "users_roles",
         joinColumns = @JoinColumn(name = "user_id"),
@@ -58,6 +57,7 @@ public class User extends BaseEntity implements UserDetails {
     )
     private Set<UserRole> roles;
 
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (roles == null) {
             return new HashSet<>();

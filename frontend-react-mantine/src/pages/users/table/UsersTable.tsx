@@ -20,6 +20,7 @@ export const UsersTable = () => {
       columnAccessor: 'id',
       direction: 'asc',
     });
+  const [selectedRecords, setSelectedRecords] = useState<User[]>([]);
   const getUsersApi = async () => {
     //await new Promise(resolve => setTimeout(resolve, 100)); // for loader testing
     return await axiosInstance.get(
@@ -42,7 +43,7 @@ export const UsersTable = () => {
   if (isFetching) {
     return "Loading...";
   }
-  const users = data?.data.users
+  const users: User[] = data?.data.users
   const totalItems = data?.data.totalItems
   return (
     <>
@@ -52,6 +53,8 @@ export const UsersTable = () => {
       </Group>
       <DataTable
         records={users}
+        selectedRecords={selectedRecords}
+        onSelectedRecordsChange={setSelectedRecords}
         withTableBorder
         //withColumnBorders
         highlightOnHover
@@ -93,8 +96,7 @@ export const UsersTable = () => {
           {accessor: 'lastName', sortable: true},
           {
             accessor: 'roles', render: item => {
-              const roles = item.roles.map(item => item.role);
-              return (<Stack gap={"3"}>{roles.map(item => (
+              return (<Stack gap={"3"}>{item.roles.map(item => (
                   <Badge variant={item === "ADMIN" || item === "MODERATOR" ? "danger" : "default"}
                          mr={4}>{item}</Badge>))}</Stack>
               );

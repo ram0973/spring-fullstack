@@ -3,12 +3,17 @@ package dev.pages.users.dto;
 import dev.pages.users.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Set;
+import java.util.List;
 
 public record UserUpdateRequest(
-    boolean enabled,
+    MultipartFile avatar,
     @NotBlank @Email String email,
-    Set<User.Role> roles
+    boolean enabled,
+    String firstName,
+    String lastName,
+    String password,
+    List<User.Role> roles
 ) {
 }

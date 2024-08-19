@@ -20,7 +20,7 @@ public interface IUserService {
     User createUser(@NotNull UserCreateRequest dto) throws IOException;
 
     @Transactional
-    User updateUser(int id, @NotNull UserUpdateRequest dto);
+    User updateUser(int id, @NotNull UserUpdateRequest dto) throws IOException;
 
     void deleteUser(int id);
 }

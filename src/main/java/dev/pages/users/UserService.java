@@ -72,13 +72,13 @@ public class UserService implements IUserService {
         }
         User user = UserMapper.INSTANCE.userFromUserRequest(dto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        List<UserRole> roles = userRoleRepository.findAll();
-        log.error(dto);
-        for (UserRole userRole : roles) {
-            if (dto.roles() == null) {
-                break;
-            }
-             if (dto.roles().contains(userRole.toString())) {
+        List<UserRole> allRoles = userRoleRepository.findAll();
+        if (dto.roles() != null && !dto.roles().isEmpty()) {
+            for (User.Role dtoRole : dto.roles()) {
+                UserRole userRole = userRoleRepository.findByRole(dtoRole).orElse(null);
+                if (userRole == null || !allRoles.contains(userRole)) {
+                    continue;
+                }
                 userRole.getUsers().add(user);
                 user.addRole(userRole);
             }
@@ -92,16 +92,27 @@ public class UserService implements IUserService {
 
     @Override
     @Transactional
-    public User updateUser(int id, @NotNull UserUpdateRequest dto) {
+    public User updateUser(int id, @NotNull UserUpdateRequest dto) throws IOException {
         User user = userRepository.findById(id).orElseThrow(
             () -> new NoSuchEntityException("No such User with id: " + id));
         UserMapper.INSTANCE.update(user, dto);
-        user.setRoles(new HashSet<>());
-        List<UserRole> roles = userRoleRepository.findAll();
-        for (UserRole userRole : roles) {
-            if (dto.roles().contains(userRole.getRole())) {
+        if (dto.password() != null && !dto.password().isBlank()) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        List<UserRole> allRoles = userRoleRepository.findAll();
+        if (dto.roles() != null && !dto.roles().isEmpty()) {
+            user.setRoles(new HashSet<>());
+            for (User.Role dtoRole : dto.roles()) {
+                UserRole userRole = userRoleRepository.findByRole(dtoRole).orElse(null);
+                if (userRole == null || !allRoles.contains(userRole)) {
+                    continue;
+                }
                 user.addRole(userRole);
             }
+        }
+        if (dto.avatar() != null && dto.avatar().getOriginalFilename() != null) {
+            String newImagePath = MultiPartFileUtils.saveMultiPartImage(dto.avatar());
+            user.setAvatar(newImagePath);
         }
         return userRepository.save(user);
     }
