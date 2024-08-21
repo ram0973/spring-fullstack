@@ -27,17 +27,17 @@ import {useGetUser} from "@/pages/users/view/useGetUser.ts";
 import {User} from "@/pages/users";
 
 export const UpdateUser = () => {
-  const createUserMutation = useUpdateUser()
-  const errorData = (createUserMutation.error as AxiosError)?.response?.data as AxiosErrorResponseDto // TODO: Use or remove
+  const updateUserMutation = useUpdateUser()
+  const errorData = (updateUserMutation.error as AxiosError)?.response?.data as AxiosErrorResponseDto // TODO: Use or remove
   const navigate = useNavigate();
 
   const onSubmitHandler = async () => {
     const formData = form.getValues();
     // @ts-ignore
     formData['roles'] = ([].concat(selectedRoles)).toString();
-    const response = await createUserMutation.mutateAsync(formData);
+    const response = await updateUserMutation.mutateAsync(formData);
     //navigate(`/admin/users/view/${response.data?.id}`);
-    // TODO: server validation
+    // TODO: server validation, handle errors
     console.log(formData);
     navigate('/admin/users');
   }
@@ -71,7 +71,7 @@ export const UpdateUser = () => {
   return (
     <>
       <Breadcrumbs>{items}</Breadcrumbs>
-      <Container size={420} my={40}>
+      <Container size={420}>
         <Title ta="center" className={classes.title}>
           Update user
         </Title>

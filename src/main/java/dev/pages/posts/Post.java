@@ -39,6 +39,7 @@ public class Post extends BaseEntity {
     private String excerpt;
 
     @NotBlank
+    @Column(name="content", columnDefinition="TEXT")
     private String content;
 
     private String image;

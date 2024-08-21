@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/posts/comments")
+@RequestMapping("/api/v1/posts-comments")
 @RequiredArgsConstructor
 @Log4j2
 public class PostCommentController {

@@ -9,6 +9,12 @@ import {UsersTable} from "@/pages/users/table/UsersTable.tsx";
 import {CreateUser} from "@/pages/users/create/CreateUser";
 import {UpdateUser} from "@/pages/users/update/UpdateUser";
 import {Signup} from "@/pages/auth/Signup.tsx";
+import {UsersRolesTable} from "@/pages/users-roles/table/UsersRolesTable.tsx";
+import {CreateUserRole} from "@/pages/users-roles/create/CreateUserRole.tsx";
+import {UpdateUserRole} from "@/pages/users-roles/update/UpdateUserRole.tsx";
+import {PostsTable} from "@/pages/posts/table/PostsTable.tsx";
+import {CreatePost} from "@/pages/posts/create/CreatePost.tsx";
+import {UpdatePost} from "@/pages/posts/update/UpdatePost.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +52,30 @@ export const router = createBrowserRouter([
       {
         path: "users/update/:id",
         element: <UpdateUser/>
+      },
+      {
+        path: "roles",
+        element: <UsersRolesTable/>
+      },
+      {
+        path: "roles/create",
+        element: <CreateUserRole/>
+      },
+      {
+        path: "roles/update/:id",
+        element: <UpdateUserRole/>
+      },
+      {
+        path: "posts",
+        element: <PostsTable/>
+      },
+      {
+        path: "posts/create",
+        element: <CreatePost/>
+      },
+      {
+        path: "posts/update/:id",
+        element: <UpdatePost/>
       },
     ],
   },

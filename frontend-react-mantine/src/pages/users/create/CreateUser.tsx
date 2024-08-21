@@ -55,7 +55,7 @@ export const CreateUser = () => {
   return (
     <>
       <Breadcrumbs>{items}</Breadcrumbs>
-      <Container size={420} my={40}>
+      <Container size={420}>
         <Title ta="center" className={classes.title}>
           Create user
         </Title>

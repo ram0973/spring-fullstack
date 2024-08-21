@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/posts/categories")
+@RequestMapping("/api/v1/posts-categories")
 @RequiredArgsConstructor
 @Log4j2
 public class PostCategoryController {

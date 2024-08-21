@@ -1,10 +1,10 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {axiosInstance} from "@/common/axios/axiosInstance.ts";
 import z from "zod";
-import {userUpdateSchema} from "@/pages/users/update/zod.ts";
+import {postUpdateSchema} from "@/pages/posts/update/zod.ts";
 
-const updateUserApi = async (user: z.infer<typeof userUpdateSchema>) => {
-  return await axiosInstance.patch(`/api/v1/users/${user.id}`, user,
+const updatePostApi = async (post: z.infer<typeof postUpdateSchema>) => {
+  return await axiosInstance.patch(`/api/v1/posts/${post.id}`, post,
     {
       headers: {
         "Content-type": "multipart/form-data",
@@ -13,13 +13,13 @@ const updateUserApi = async (user: z.infer<typeof userUpdateSchema>) => {
   );
 }
 
-export const useUpdateUser = () => {
+export const useUpdatePost = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: ['updateUser'],
-    mutationFn: updateUserApi,
+    mutationKey: ['updatePost'],
+    mutationFn: updatePostApi,
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["users"]}).catch((error) => console.log(error))
+      queryClient.invalidateQueries({queryKey: ["posts"]}).catch((error) => console.log(error))
     },
     onError: (error) => {
       console.log(error)

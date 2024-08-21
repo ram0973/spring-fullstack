@@ -28,7 +28,15 @@ public class UserRoleController {
         return ResponseEntity.ok(userRoles);
     }
 
-    @GetMapping("/{role}")
+    @GetMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UserRole> getUserRoleById(@PathVariable("id") Integer id) {
+        UserRole userRole = userRoleService.findUserRoleById(id).orElseThrow(
+            () -> new EntityAlreadyExistsException("No such user role with id: " + id));
+        return ResponseEntity.ok(userRole);
+    }
+
+    @GetMapping("role/{role}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserRole> getUserRoleByRole(@PathVariable("role") User.Role role) {
         UserRole userRole = userRoleService.findUserRole(role).orElseThrow(
@@ -49,7 +57,15 @@ public class UserRoleController {
         }
     }
 
-    @PatchMapping("/{role}")
+    @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UserRole> updateUserRole(
+        @PathVariable("id") Integer id, @Valid @RequestBody UserRoleUpdateRequest dto) {
+        UserRole userRole = userRoleService.updateUserRoleById(id, dto);
+        return ResponseEntity.ok(userRole);
+    }
+
+    @PatchMapping("role/{role}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserRole> updateUserRole(
         @PathVariable("role") User.Role role, @Valid @RequestBody UserRoleUpdateRequest dto) {
@@ -57,10 +73,17 @@ public class UserRoleController {
         return ResponseEntity.ok(userRole);
     }
 
-    @DeleteMapping("/{role}")
+    @DeleteMapping("role/{role}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteUserRole(@PathVariable("role") User.Role roleEnum) {
         userRoleService.deleteUserRole(roleEnum);
         return ResponseEntity.ok("Successfully deleted user role with id: " + roleEnum);
+    }
+
+    @DeleteMapping("{role}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> deleteUserRoleById(@PathVariable("role") Integer id) {
+        userRoleService.deleteUserRoleById(id);
+        return ResponseEntity.ok("Successfully deleted user role with id: " + id);
     }
 }

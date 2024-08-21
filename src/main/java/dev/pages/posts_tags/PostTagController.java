@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/posts/tags")
+@RequestMapping("/api/v1/posts-tags")
 @RequiredArgsConstructor
 @Log4j2
 public class PostTagController {

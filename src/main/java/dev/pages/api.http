@@ -2,7 +2,7 @@
 
 
 ### Register user
-POST http://localhost:8000/api/v1/auth/register
+POST http://localhost:8008/api/v1/auth/register
 Content-Type: application/json
 
 {
@@ -12,7 +12,7 @@ Content-Type: application/json
 
 
 ### Register user
-POST http://localhost:8000/api/v1/auth/register
+POST http://localhost:8008/api/v1/auth/register
 Content-Type: application/json
 
 {
@@ -22,7 +22,7 @@ Content-Type: application/json
 
 
 ### Login Admin
-POST http://localhost:8000/api/v1/auth/login
+POST http://localhost:8008/api/v1/auth/login
 Content-Type: application/json
 
 {
@@ -32,18 +32,18 @@ Content-Type: application/json
 
 
 ### Logout
-POST http://localhost:8000/api/v1/auth/logout
+POST http://localhost:8008/api/v1/auth/logout
 
 
 ### Me
-GET http://localhost:8000/api/v1/auth/me
+GET http://localhost:8008/api/v1/auth/me
 
 
 # ROLE ###################
 
 
 ### Create role
-POST http://localhost:8000/api/v1/roles
+POST http://localhost:8008/api/v1/roles
 Content-Type: application/json
 
 {
@@ -52,15 +52,15 @@ Content-Type: application/json
 
 
 ### Read roles
-GET http://localhost:8000/api/v1/roles
+GET http://localhost:8008/api/v1/roles
 
 
 ### Read role
-GET http://localhost:8000/api/v1/roles/USER
+GET http://localhost:8008/api/v1/roles/USER
 
 
 ### Update role - add deserialization error - last modifiedby not working
-PATCH http://localhost:8000/api/v1/roles/MODERATOR
+PATCH http://localhost:8008/api/v1/roles/MODERATOR
 Content-Type: application/json
 
 {
@@ -70,14 +70,14 @@ Content-Type: application/json
 
 
 ### Delete role by id
-DELETE http://localhost:8000/api/v1/roles/TESTER
+DELETE http://localhost:8008/api/v1/roles/TESTER
 
 
 # USER ###################
 
 
 ### Create user frodo
-POST http://localhost:8000/api/v1/users
+POST http://localhost:8008/api/v1/users
 Content-Type: application/json
 
 {
@@ -89,7 +89,7 @@ Content-Type: application/json
 
 
 ### Create user bilbo
-POST http://localhost:8000/api/v1/users
+POST http://localhost:8008/api/v1/users
 Content-Type: application/json
 
 {
@@ -100,15 +100,15 @@ Content-Type: application/json
 }
 
 ### Read users
-GET http://localhost:8000/api/v1/users?page=0&size=10
+GET http://localhost:8008/api/v1/users?page=0&size=10
 
 
 ### Read user 1
-GET http://localhost:8000/api/v1/users/1
+GET http://localhost:8008/api/v1/users/1
 
 
 ### Update user 1
-PATCH http://localhost:8000/api/v1/users/1
+PATCH http://localhost:8008/api/v1/users/1
 Content-Type: application/json
 
 {
@@ -120,14 +120,14 @@ Content-Type: application/json
 
 
 ### DELETE User by id
-DELETE http://localhost:8000/api/v1/users/2
+DELETE http://localhost:8008/api/v1/users/2
 
 
 # POSTS ###################
 
 
 ### Create post
-POST http://localhost:8000/api/v1/posts
+POST http://localhost:8008/api/v1/posts
 Content-Type: application/json
 
 {
@@ -142,15 +142,15 @@ Content-Type: application/json
 }
 
 ### Read posts
-GET http://localhost:8000/api/v1/posts
+GET http://localhost:8008/api/v1/posts
 
 
 ### Read post 1
-GET http://localhost:8000/api/v1/posts/1
+GET http://localhost:8008/api/v1/posts/1
 
 
 ### Update post 1
-PATCH http://localhost:8000/api/v1/posts/1
+PATCH http://localhost:8008/api/v1/posts/1
 Content-Type: application/json
 
 {
@@ -166,14 +166,14 @@ Content-Type: application/json
 
 
 ### DELETE Post by id
-DELETE http://localhost:8000/api/v1/posts/1
+DELETE http://localhost:8008/api/v1/posts/1
 
 
 # CATEGORIES ###################
 
 
 ### Create category
-POST http://localhost:8000/api/v1/posts/categories
+POST http://localhost:8008/api/v1/posts-categories
 Content-Type: application/json
 
 {
@@ -184,15 +184,15 @@ Content-Type: application/json
 
 
 ### Read categories
-GET http://localhost:8000/api/v1/posts/categories
+GET http://localhost:8008/api/v1/posts-categories
 
 
 ### Read category 1
-GET http://localhost:8000/api/v1/posts/categories/1
+GET http://localhost:8008/api/v1/posts-categories/1
 
 
 ### Update category 1
-PATCH http://localhost:8000/api/v1/posts/categories/1
+PATCH http://localhost:8008/api/v1/posts-categories/1
 Content-Type: application/json
 
 {
@@ -203,14 +203,14 @@ Content-Type: application/json
 
 
 ### DELETE category by id
-DELETE http://localhost:8000/api/v1/posts/categories/1
+DELETE http://localhost:8008/api/v1/posts-categories/1
 
 
 # COMMENTS ###################
 
 
 ### Create comment
-POST http://localhost:8000/api/v1/posts/comments/1
+POST http://localhost:8008/api/v1/posts-comments/1
 Content-Type: application/json
 
 {
@@ -220,15 +220,15 @@ Content-Type: application/json
 
 
 ### Read comments
-GET http://localhost:8000/api/v1/posts/comments
+GET http://localhost:8008/api/v1/posts-comments
 
 
 ### Read comment 1
-GET http://localhost:8000/api/v1/posts/comments/1
+GET http://localhost:8008/api/v1/posts-comments/1
 
 
 ### Update comment 1
-PATCH http://localhost:8000/api/v1/posts/comments/2
+PATCH http://localhost:8008/api/v1/posts-comments/2
 Content-Type: application/json
 
 {
@@ -238,4 +238,4 @@ Content-Type: application/json
 
 
 ### DELETE comment by id
-DELETE http://localhost:8000/api/v1/posts/comments/1
+DELETE http://localhost:8008/api/v1/posts-comments/1

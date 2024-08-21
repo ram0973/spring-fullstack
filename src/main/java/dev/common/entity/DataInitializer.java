@@ -1,5 +1,7 @@
 package dev.common.entity;
 
+import dev.pages.posts.Post;
+import dev.pages.posts.PostRepository;
 import dev.pages.roles.UserRole;
 import dev.pages.roles.UserRoleRepository;
 import dev.pages.users.User;
@@ -14,10 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Configuration
 @Log4j2
@@ -29,7 +28,7 @@ public class DataInitializer {
 
     @Bean
     @Transactional
-    CommandLineRunner initDatabase() {
+    CommandLineRunner initDatabase(PostRepository postRepository) {
         return args -> {
             log.info("Preloading Admin User");
             User admin = User.builder()
@@ -96,6 +95,25 @@ public class DataInitializer {
                 users.add(user);
             }
             userRepository.saveAll(users);
+
+            log.info("Preloading posts");
+
+            List<Post> posts = new ArrayList<>();
+            for (int i = 0; i < 50; i++) {
+                String title = (faker.lorem().sentence(20));
+                System.out.println(title);
+                String slug = title.toLowerCase(Locale.ROOT).replace(" ", "-");
+                System.out.println(slug);
+                Post post = Post.builder()
+                    .title(title)
+                    .slug(slug)
+                    //.excerpt(faker.text(20, 10))
+                    .content(faker.lorem().paragraphs(5).toString())//twitter().text(new String[]{}, 50, 12))
+                    .enabled(true)
+                    .build();
+                posts.add(post);
+            }
+            postRepository.saveAll(posts);
         };
     }
 }
