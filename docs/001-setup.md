@@ -1,9 +1,6 @@
 # FullStack веб - приложение на Spring и React
 
-Процесс разработки веб приложения вкратце.
-Пишем под Виндой, под линукс аналогично.
-
-Используемые технологии:
+Used tech stack:
 
 - Java 21+ - Graal VM JDK (not supports Shenandoah GC) or others
 (not OpenJDK, it's slowest.)
@@ -21,7 +18,7 @@
 - Mantine
 - PostCSS (with Mantine)
 
-## Ставим нужный софт
+## Software
 
 - Intellij Idea Pro/Community
 - Docker
@@ -30,27 +27,27 @@
 - Bun
 
 ## Graal VM JDK
-Заходим на start.spring.io.
-Качаем заготовку проекта:
-[здесь](https://start.spring.io/#!type=gradle-project-kotlin&language=java&platformVersion=3.3.2&packaging=jar&jvmVersion=21&groupId=dev&artifactId=web&name=web&description=Web%20project%20with%20Spring%20Boot&packageName=dev.web&dependencies=native,devtools,lombok,configuration-processor,docker-compose,web,thymeleaf,security,oauth2-client,oauth2-resource-server,data-jpa,liquibase,postgresql,validation,mail,actuator,testcontainers,spring-shell)
+Open start.spring.io
+Downloaded project template
+[here](https://start.spring.io/#!type=gradle-project-kotlin&language=java&platformVersion=3.3.2&packaging=jar&jvmVersion=21&groupId=dev&artifactId=web&name=web&description=Web%20project%20with%20Spring%20Boot&packageName=dev.web&dependencies=native,devtools,lombok,configuration-processor,docker-compose,web,thymeleaf,security,oauth2-client,oauth2-resource-server,data-jpa,liquibase,postgresql,validation,mail,actuator,testcontainers,spring-shell)
 
-Качаем Graal VM [отсюда](https://github.com/graalvm/graalvm-ce-builds/releases)
+Download Graal VM [here](https://github.com/graalvm/graalvm-ce-builds/releases) or other
 
-И делаем [настройки](https://www.graalvm.org/latest/docs/getting-started/windows/) :
+[settings](https://www.graalvm.org/latest/docs/getting-started/windows/) :
 
-Распаковываем в C:\lib\graavm21-0-2
+Unpack to C:\lib\graavm21-0-2
 
-Добавляем путь к исполняемым файлам:
+Added path to executables:
 
 setx /M PATH "C:\lib\graavm21-0-2\bin\;%PATH%"
 
-Добавляем JAVA_HOME:
+Set JAVA_HOME:
 
 setx /M JAVA_HOME "C:\lib\graavm21-0-2\"
 
-Скачиваем установщик Visual Studio. Настраиваем по инструкции выше.
+Install Visual Studio. Setup as written above.
 
-Проверяем, Открываем консоль:
+Check:
 ```bash
 java --version
 native-image.cmd --version
@@ -58,49 +55,48 @@ native-image.cmd --version
 
 ## Kotlin Gradle
 
-В файле gradle/wrapper/gradle-wrapper.properties меняем версию на нужную:
+In gradle/wrapper/gradle-wrapper.properties change version to yours:
 
-[Версии смотрим тут](https://gradle.org/releases/)
+[Versions list here](https://gradle.org/releases/)
 
 distributionUrl=https\://services.gradle.org/distributions/gradle-8.8-bin.zip
 
-Например вместо 8.8 ставим 8.9
+For example, instead 8.9 - 8.10
 
 ## Idea
 
-Указываем GraalVM или другой JDK в настройках File - Project structure.
+Set GraalVM or other JDK here : File - Project structure.
 
-Указываем Help - Edit Custom VM Options:
+Help - Edit Custom VM Options:
 -Xms2048m
 -Xmx2048m
--XX:+UseShenandoahGC (только не с GraalVM)
+-XX:+UseShenandoahGC (not working with GraalVM)
 
-В настройках Idea в поиске пишем encod.
-В File Encodings и Console ставим UTF-8.
+Idea settings: search "encod"
+File Encodings and Console: set UTF-8.
 
-Также Auto Imports - unambiguous imports on the fly.
+Set: Auto Imports - unambiguous imports on the fly.
 
-Ставим плагины по вкусу:
-- Обязательно - EnvFile, в настройках запуска проекта включаем .env файла
-- [Amplicode](https://amplicode.ru/download/) (пока бесплатный)
-- либо JPA Buddy (но не вместе с Amplicode)
+Install plugins, as you wish:
+- Mandatory - EnvFile, and in the run settings choose .env file
+- JPA Buddy
 - Rainbow Brackets
 
 
-## Вспомогательные файлы
+## Secondary
 
-Созданы .editorconfig, api.http, compose.yml, gradle.properties.
-Копируем файл .env из .env.example.
+Created .editorconfig, api.http, compose.yml, gradle.properties.
+Copy .env from .env.example.
 
-## Дополнительные Библиотеки
+## Libraries
 
-(Берём [отсюда](https://mvnrepository.com/) под нужный сборщик. У нас Kotlin Gradle)
+(Got [here](https://mvnrepository.com/) with Kotlin Gradle
 - OpenApi
 - MapStruct
 
-Веб-страница OpenApi (Swagger) открывается так: /swagger-ui/index.html
+OpenApi (Swagger) opens here: /swagger-ui/index.html
 
-## Настраиваем Git
+## Setup Git
 
 ```bash
 git config --global user.name "Your name"
@@ -108,7 +104,11 @@ git config --global user.email your_email
 git config --global init.defaultBranch main
 ```
 
-## Прочее
-Папки .gradle и build можно безболезненно удалять в случае глюков.
+## Others
+.gradle and build folders - you can delete them in case of troubles
 
-Если тупит Идея, делаем File - Repair Ide либо File - Invalidate Caches
+Idea repair:  File - Repair Ide or: File - Invalidate Caches
+
+## Docker & WSL
+Install wsl: wsl --install Ubuntu # Docker like standard WSL
+Only after wsl up and running install Docker!

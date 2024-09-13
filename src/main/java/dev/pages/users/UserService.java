@@ -66,7 +66,7 @@ public class UserService implements IUserService {
     @Override
     @Transactional
     public User createUser(@NotNull UserCreateRequest dto) throws IOException {
-        Optional<User> optionalUser = findUserByEmailIgnoreCase(dto.email().trim());
+        Optional<User> optionalUser = findUserByEmailIgnoreCase(dto.email().strip());
         if (optionalUser.isPresent()) {
             throw new EntityAlreadyExistsException("Email already in use");
         }

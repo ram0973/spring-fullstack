@@ -33,6 +33,7 @@ export const UpdateUser = () => {
 
   const onSubmitHandler = async () => {
     const formData = form.getValues();
+    // TODO: convert to DTO
     // @ts-ignore
     formData['roles'] = ([].concat(selectedRoles)).toString();
     const response = await updateUserMutation.mutateAsync(formData);
@@ -43,22 +44,24 @@ export const UpdateUser = () => {
   }
 
   const {id} = useParams();
-  const initialData: User = useGetUser(id).data;
+  const user: User = useGetUser(id).data;
 
   const form = useForm<z.infer<typeof userUpdateSchema>>({
     mode: 'uncontrolled',
     validate: zodResolver(userUpdateSchema),
     validateInputOnChange: true,
-    initialValues: {"enabled": false, "rolesSwitch": []}
+    //initialValues: {"enabled": false, "rolesSwitch": []}
   });
 
   useEffect(() => {
-    form.setValues(initialData);
+    form.setValues(user);
+    form.setFieldValue('avatar', null);
     //if (user?.roles) {
-    setSelectedRoles(initialData?.roles);
+    setSelectedRoles(user?.roles);
+
     //}
-    form.resetDirty(initialData);
-  }, [initialData]);
+    form.resetDirty(user);
+  }, [user]);
 
   const items = [
     {title: 'Users', href: '/admin/users'},
@@ -84,28 +87,24 @@ export const UpdateUser = () => {
             <TextInput {...form.getInputProps('email')} key={form.key('email')}
                        label="Email" placeholder="me@email.com" required type={"email"}/>
             <Group grow>
-              {initialData?.avatar && (<Image src={initialData?.avatar} h={75} w="auto" fit="contain" mt={10} />)}
+              {user?.avatar && (<Image src={user?.avatar} h={75} w="auto" fit="contain" mt={10} />)}
               <FileInput {...form.getInputProps('avatar')} key={form.key('avatar')}
                          accept="image/png,image/jpeg"
-                         clearable label="Avatar" placeholder="Upload avatar file"
-              />
+                         clearable label="Avatar" placeholder="Upload avatar file"/>
             </Group>
             <PasswordInput {...form.getInputProps('password')} key={form.key('password')}
                            label="Password" placeholder="Your password"/>
             <PasswordInput {...form.getInputProps('confirm')}
                            key={form.key('confirm')}
-                           label="Password confirmation" placeholder="Confirm user password"
-            />
+                           label="Password confirmation" placeholder="Confirm user password"            />
             <MultiSelect  {...form.getInputProps('rolesSwitch')} key={form.key('rolesSwitch')}
                           label="Roles"
                           data={roles}
                           clearable searchable placeholder="Pick value"
                           value={selectedRoles}
-                          onChange={event => setSelectedRoles(event)}
-            />
+                          onChange={event => setSelectedRoles(event)}/>
             <Switch {...form.getInputProps('enabled', {type: 'checkbox'})} key={form.key('enabled')}
-                    label="Enabled" onLabel="ON" offLabel="OFF" mt={"md"}
-            />
+                    label="Enabled" onLabel="ON" offLabel="OFF" mt={"md"}/>
             <Button type={"submit"} fullWidth mt="xl" key={"button"}>Update</Button>
           </form>
         </Paper>

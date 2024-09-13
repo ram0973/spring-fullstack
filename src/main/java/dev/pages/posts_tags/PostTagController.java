@@ -9,6 +9,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.NonNullApi;
+import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Log4j2
 public class PostTagController {
+    @NonNull
     private final PostTagService postTagService;
 
     @GetMapping("")
@@ -49,7 +53,7 @@ public class PostTagController {
     @PostMapping("")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PostTag> createPostTag(@Valid @RequestBody PostTagCreateRequest dto) {
-        Optional<PostTag> optionalPostTag = postTagService.findPostTagByTitle(dto.title().trim());
+        Optional<PostTag> optionalPostTag = postTagService.findPostTagByTitle(dto.title().strip());
         if (optionalPostTag.isPresent()) {
             throw new EntityAlreadyExistsException("Tag slug already exists");
         } else {

@@ -2,6 +2,12 @@ package dev.common.entity;
 
 import dev.pages.posts.Post;
 import dev.pages.posts.PostRepository;
+import dev.pages.posts_categories.PostCategory;
+import dev.pages.posts_categories.PostCategoryRepository;
+import dev.pages.posts_comments.PostComment;
+import dev.pages.posts_comments.PostCommentRepository;
+import dev.pages.posts_tags.PostTag;
+import dev.pages.posts_tags.PostTagRepository;
 import dev.pages.roles.UserRole;
 import dev.pages.roles.UserRoleRepository;
 import dev.pages.users.User;
@@ -12,6 +18,7 @@ import net.datafaker.Faker;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,13 +29,24 @@ import java.util.*;
 @Log4j2
 @RequiredArgsConstructor
 public class DataInitializer {
+    @NonNull
     private final PasswordEncoder passwordEncoder;
+    @NonNull
     private final UserRepository userRepository;
+    @NonNull
     private final UserRoleRepository userRoleRepository;
+    @NonNull
+    private final PostRepository postRepository;
+    @NonNull
+    private final PostCategoryRepository postCategoryRepository;
+    @NonNull
+    private final PostTagRepository postTagRepository;
+    @NonNull
+    private final PostCommentRepository postCommentRepository;
 
     @Bean
     @Transactional
-    CommandLineRunner initDatabase(PostRepository postRepository) {
+    CommandLineRunner initDatabase() {
         return args -> {
             log.info("Preloading Admin User");
             User admin = User.builder()
@@ -101,12 +119,10 @@ public class DataInitializer {
             List<Post> posts = new ArrayList<>();
             for (int i = 0; i < 50; i++) {
                 String title = (faker.lorem().sentence(20));
-                System.out.println(title);
                 String slug = title.toLowerCase(Locale.ROOT).replace(" ", "-");
-                System.out.println(slug);
                 Post post = Post.builder()
                     .title(title)
-                    .slug(slug)
+                    .slug(title)
                     //.excerpt(faker.text(20, 10))
                     .content(faker.lorem().paragraphs(5).toString())//twitter().text(new String[]{}, 50, 12))
                     .enabled(true)
@@ -114,6 +130,57 @@ public class DataInitializer {
                 posts.add(post);
             }
             postRepository.saveAll(posts);
+
+            log.info("Preloading post categories");
+
+            List<PostCategory> categories = new ArrayList<>();
+            Set<String> categoriesTitles = new HashSet<>();
+            for (int i = 0; i < 7; i++) {
+                String title = faker.lorem().word();
+                while (categoriesTitles.contains(title)) {
+                    title = faker.lorem().word();
+                }
+                categoriesTitles.add(title);
+                PostCategory postCategory = PostCategory.builder()
+                    .title(title)
+                    .slug(title)
+                    .enabled(true)
+                    .build();
+                categories.add(postCategory);
+            }
+            postCategoryRepository.saveAll(categories);
+
+            log.info("Preloading post tags");
+
+            List<PostTag> tags = new ArrayList<>();
+            Set<String> tagTitles = new HashSet<>();
+            for (int i = 0; i < 7; i++) {
+                String title = faker.lorem().word();
+                while (tagTitles.contains(title)) {
+                    title = faker.lorem().word();
+                }
+                tagTitles.add(title);
+                PostTag postTag = PostTag.builder()
+                    .title(title)
+                    .enabled(true)
+                    .build();
+                tags.add(postTag);
+            }
+            postTagRepository.saveAll(tags);
+
+            log.info("Preloading posts comments");
+
+            List<PostComment> comments = new ArrayList<>();
+            for (int i = 0; i < 50; i++) {
+                PostComment comment = PostComment.builder()
+                    .content(faker.lorem().paragraphs(5).toString())
+                    .post(posts.get(1))
+                    .user(users.get(1))
+                    .enabled(true)
+                    .build();
+                comments.add(comment);
+            }
+            postCommentRepository.saveAll(comments);
         };
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Set;
 
 public record PostUpdateRequest(
-    @NonNull Integer category,
+    String category,
     @NotBlank String title,
     @NotBlank String slug,
     String excerpt,

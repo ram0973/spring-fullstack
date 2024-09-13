@@ -1,27 +1,26 @@
-import { useState } from 'react';
-import { Group, Code } from '@mantine/core';
+import {useState} from 'react';
+import {Code, Group} from '@mantine/core';
 import {
-  IconBellRinging,
+  IconCategory,
+  IconEdit,
   IconFingerprint,
   IconKey,
+  IconLogout,
+  IconNotes,
   IconSettings,
-  Icon2fa,
-  IconDatabaseImport,
-  IconReceipt2,
-  IconSwitchHorizontal,
-  IconLogout, IconCursorText, IconCategory, IconNotes, IconTag, IconEdit,
+  IconTag,
 } from '@tabler/icons-react';
 import classes from './NavbarColored.module.css';
 import {Link} from "react-router-dom";
 
 const data = [
-  { link: '/admin/users', label: 'Users', icon: IconFingerprint },
-  { link: '/admin/roles/', label: 'Roles', icon: IconKey },
-  { link: '/admin/posts', label: 'Posts', icon: IconEdit },
-  { link: '/admin/posts/categories', label: 'Categories', icon: IconCategory },
-  { link: '/admin/posts/comments', label: 'Comments', icon: IconNotes },
-  { link: '/admin/posts/tags', label: 'Tags', icon: IconTag },
-  { link: '/admin/settings', label: 'Settings', icon: IconSettings },
+  {link: '/admin/users', label: 'Users', icon: IconFingerprint},
+  {link: '/admin/roles/', label: 'Roles', icon: IconKey},
+  {link: '/admin/posts', label: 'Posts', icon: IconEdit},
+  {link: '/admin/posts-categories', label: 'Categories', icon: IconCategory},
+  {link: '/admin/posts-tags', label: 'Tags', icon: IconTag},
+  {link: '/admin/posts-comments', label: 'Comments', icon: IconNotes}
+  /*{link: '/admin/settings', label: 'Settings', icon: IconSettings},*/
 ];
 
 export const NavbarColored = () => {
@@ -38,7 +37,7 @@ export const NavbarColored = () => {
         setActive(item.label);
       }}
     >
-      <item.icon className={classes.linkIcon} stroke={1.5} />
+      <item.icon className={classes.linkIcon} stroke={1.5}/>
       <span>{item.label}</span>
     </Link>
   ));
@@ -60,7 +59,7 @@ export const NavbarColored = () => {
         <Link to={"/logout"}
               className={classes.link}
         >
-          <IconLogout className={classes.linkIcon} stroke={1.5} />
+          <IconLogout className={classes.linkIcon} stroke={1.5}/>
           <span>Logout</span>
         </Link>
       </div>

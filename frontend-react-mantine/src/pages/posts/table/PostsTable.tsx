@@ -74,7 +74,7 @@ export const PostsTable = () => {
           {accessor: 'id', sortable: true},
           {
             accessor: 'title', sortable: true,
-            render: (item) => (item.title.slice(0, 150) + "..."),
+            render: (item) => (item.title.slice(0, 150) + (item.title.length > 150 ? "..." : " ")),
             filter: (
               <TextInput
                 label="Title"
@@ -92,8 +92,8 @@ export const PostsTable = () => {
             ),
             filtering: query !== '',
           },
-          {accessor: 'category', sortable: true},
-          {accessor: 'image', render: (item) => (<Image src={item.image}/>)},
+          {accessor: 'category', render: (item) => item.category?.title, sortable: true},
+          {accessor: 'image', render: (item) => (<Image src={item.image} h={50} w="auto" fit="contain" />)},
           {
             accessor: 'enabled', sortable: true, render: (item) => (
               <Badge variant={!item.enabled ? "danger" : "default"}>{item.enabled ? "Yes" : "No"}</Badge>
@@ -101,7 +101,7 @@ export const PostsTable = () => {
           },
           {accessor: 'actions', render: (item) => (<RowActions item={item}/>)},
         ]}
-      />
+       />
     </>
   );
 }

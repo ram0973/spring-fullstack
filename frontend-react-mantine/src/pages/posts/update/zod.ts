@@ -7,13 +7,13 @@ export const postUpdateSchema = z
   .object({
     title: z.string(),
     slug: z.string(),
-    category: z.string(),
+    category: z.string().nullable().optional(),
     image: z.custom<File | undefined>()
       .refine(file => !file || file?.size <= MAX_FILE_SIZE, {message: "Max image size is 5MB."})
       .refine(file => !file || ACCEPTED_IMAGE_TYPES.includes(file?.type),
         ".jpg, .jpeg, .png, .webp files are accepted only",
       ),
-    excerpt: z.string(),
+    excerpt: z.string().nullable(),
     content: z.string(),
     tagsInput: z.string().optional().array(),
     enabled: z.boolean(),

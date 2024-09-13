@@ -8,6 +8,7 @@ import dev.pages.posts.dto.PostUpdateRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -48,11 +49,11 @@ public class PostController {
     }
 
     // this is for admin
-    @PostMapping("")
+    @PostMapping(path = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Post> createPost(@Valid @RequestBody PostCreateRequest dto, Principal principal
+    public ResponseEntity<Post> createPost(@Valid @ModelAttribute PostCreateRequest dto, Principal principal
     ) throws IOException {
-        Optional<Post> optionalPost = postService.findPostBySlug(dto.slug().trim());
+        Optional<Post> optionalPost = postService.findPostBySlug(dto.slug().strip());
         if (optionalPost.isPresent()) {
             throw new EntityAlreadyExistsException("Post with such slug already exists");
         } else {
@@ -62,10 +63,10 @@ public class PostController {
         }
     }
 
-    @PatchMapping("{id}")
+    @PatchMapping(path = "{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Post> updatePost(
-        @PathVariable("id") int id, @Valid @RequestBody PostUpdateRequest dto) throws IOException {
+        @PathVariable("id") int id, @Valid @ModelAttribute PostUpdateRequest dto) throws IOException {
         Post post = postService.updatePost(id, dto);
         return ResponseEntity.ok(post);
     }

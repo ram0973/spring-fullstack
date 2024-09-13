@@ -12,6 +12,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.NonNullApi;
+import org.springframework.lang.NonNullFields;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,21 +34,22 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-    private final SecurityContextRepository securityContextRepository;
-    private final AuthenticationManager authManager;
-    private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
-    private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
-    private final UserRoleRepository userRoleRepository;
-    private final SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
+    @NonNull private final SecurityContextRepository securityContextRepository;
+    @NonNull private final AuthenticationManager authManager;
+    @NonNull private final SecurityContextHolderStrategy securityContextHolderStrategy =
+        SecurityContextHolder.getContextHolderStrategy();
+    @NonNull private final PasswordEncoder passwordEncoder;
+    @NonNull private final UserRepository userRepository;
+    @NonNull private final UserRoleRepository userRoleRepository;
+    @NonNull private final SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
 
 
     @Value("${app.admin.email}")
     private String adminEmail;
 
     @Transactional
-    public User signup(RegisterRequest dto) {
-        String email = dto.email().trim().toLowerCase(Locale.ROOT);
+    public User signup(@NonNull RegisterRequest dto) {
+        String email = dto.email().strip().toLowerCase(Locale.ROOT);
         Optional<User> userExisted = userRepository.findByEmailIgnoreCase(email);
         if (userExisted.isPresent()) {
             throw new EntityAlreadyExistsException("User already exist with such email: " + email);
@@ -69,7 +73,7 @@ public class AuthService {
 
     public Authentication login(LoginRequest dto, HttpServletRequest request, HttpServletResponse response) {
         UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.unauthenticated(
-            dto.email().trim(), dto.password());
+            dto.email().strip(), dto.password());
         Authentication authentication = this.authManager.authenticate(token);
         if (!authentication.isAuthenticated()) {
             throw new BadCredentialsException("Invalid username or password");

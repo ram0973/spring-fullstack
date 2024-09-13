@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Log4j2
 public class PostCategoryController {
+    @NonNull
     private final PostCategoryService postCategoryService;
 
     @GetMapping("")
@@ -40,14 +42,13 @@ public class PostCategoryController {
     @PostMapping("")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PostCategory> createPostCategory(@Valid @RequestBody PostCategoryCreateRequest dto) {
-        Optional<PostCategory> optionalPostCategory = postCategoryService.findBySlug(dto.slug().trim());
+        Optional<PostCategory> optionalPostCategory = postCategoryService.findBySlug(dto.slug().strip());
         if (optionalPostCategory.isPresent()) {
             throw new EntityAlreadyExistsException("This category slug already in use");
-        } else {
-            // check exceptions?
-            PostCategory postCategory = postCategoryService.createPostCategory(dto);
-            return ResponseEntity.ok(postCategory);
         }
+        // check exceptions?
+        PostCategory postCategory = postCategoryService.createPostCategory(dto);
+        return ResponseEntity.ok(postCategory);
     }
 
     @PatchMapping("{id}")

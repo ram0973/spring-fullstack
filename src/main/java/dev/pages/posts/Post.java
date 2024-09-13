@@ -1,8 +1,7 @@
 package dev.pages.posts;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import dev.common.entity.BaseEntity;
 import dev.pages.posts_categories.PostCategory;
 import dev.pages.posts_tags.PostTag;
@@ -12,7 +11,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,6 +23,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Post extends BaseEntity {
+    @Nullable
     @ManyToOne(fetch = FetchType.EAGER) // TODO: check
     private PostCategory category;
 
@@ -39,7 +39,7 @@ public class Post extends BaseEntity {
     private String excerpt;
 
     @NotBlank
-    @Column(name="content", columnDefinition="TEXT")
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
     private String image;
@@ -49,11 +49,11 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    @JsonSerialize(using = TagsArraySerializer.class)
     @ManyToMany(
         cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH},
         fetch = FetchType.EAGER
     )
-    @JsonIgnore
     @JoinTable( //TODO: check this
         name = "posts_tags",
         joinColumns = @JoinColumn(name = "post_id"),

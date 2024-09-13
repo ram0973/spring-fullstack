@@ -7,6 +7,7 @@ import dev.pages.posts_categories.dto.PostCategoryCreateRequest;
 import dev.pages.posts_categories.dto.PostCategoryUpdateRequest;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PostCategoryService {
 
+    @NonNull
     private final PostCategoryRepository postCategoryRepository;
 
     public PostCategoriesResponse findAll() {

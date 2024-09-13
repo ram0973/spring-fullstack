@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +25,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PostTagService {
 
+    @NonNull
     private final PostTagRepository postTagRepository;
+    @NonNull
     private final PostRepository postRepository;
 
     public Optional<PagedPostsTagsResponse> findAllPaged(int page, int size, String[] sort) {
@@ -52,8 +55,8 @@ public class PostTagService {
     @Transactional
     public PostTag createPostTag(@NotNull PostTagCreateRequest dto) {
         PostTag tag = PostTagMapper.INSTANCE.postTagFromPostTagCreateRequest(dto);
-        postTagRepository.findByTitle(dto.title().trim()).orElseThrow(
-            () -> new EntityAlreadyExistsException("There is post tag exists already with slug: " + dto.title().trim()));
+        postTagRepository.findByTitle(dto.title().strip()).orElseThrow(
+            () -> new EntityAlreadyExistsException("There is post tag exists already with slug: " + dto.title().strip()));
         Post post = postRepository.findById(dto.postId()).orElseThrow(
             () -> new NoSuchEntityException("No such post with id: " + dto.postId())
         );

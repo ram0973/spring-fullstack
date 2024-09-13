@@ -15,6 +15,17 @@ import {UpdateUserRole} from "@/pages/users-roles/update/UpdateUserRole.tsx";
 import {PostsTable} from "@/pages/posts/table/PostsTable.tsx";
 import {CreatePost} from "@/pages/posts/create/CreatePost.tsx";
 import {UpdatePost} from "@/pages/posts/update/UpdatePost.tsx";
+import {PostsCategoriesTable} from "@/pages/posts-categories/table/PostsCategoriesTable.tsx";
+import {CreatePostCategory} from "@/pages/posts-categories/create/CreatePostCategory.tsx";
+import {UpdatePostCategory} from "@/pages/posts-categories/update/UpdatePostCategory.tsx";
+import { PostsTagsTable } from "./pages/posts-tags/table/PostsTagsTable";
+import {CreatePostTag} from "@/pages/posts-tags/create/CreatePostTag.tsx";
+import {UpdatePostTag} from "@/pages/posts-tags/update/UpdatePostTag.tsx";
+import {PostsCommentsTable} from "@/pages/posts-comments/table/PostsCommentsTable.tsx";
+import {CreatePostComment} from "@/pages/posts-comments/create/CreatePostComment.tsx";
+import {UpdatePostComment} from "@/pages/posts-comments/update/UpdatePostComment.tsx";
+import React from "react";
+import {CreatePostWithBlockNote} from "@/pages/posts/create/CreatePostWithBlockNote.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -71,11 +82,47 @@ export const router = createBrowserRouter([
       },
       {
         path: "posts/create",
-        element: <CreatePost/>
+        element: <CreatePostWithBlockNote/>
       },
       {
         path: "posts/update/:id",
         element: <UpdatePost/>
+      },
+      {
+        path: "posts-categories",
+        element: <PostsCategoriesTable/>
+      },
+      {
+        path: "posts-categories/create",
+        element: <CreatePostCategory/>
+      },
+      {
+        path: "posts-categories/update/:id",
+        element: <UpdatePostCategory/>
+      },
+      {
+        path: "posts-tags",
+        element: <PostsTagsTable/>
+      },
+      {
+        path: "posts-tags/create",
+        element: <CreatePostTag/>
+      },
+      {
+        path: "posts-tags/update/:id",
+        element: <UpdatePostTag/>
+      },
+      {
+        path: "posts-comments",
+        element: <PostsCommentsTable/>
+      },
+      {
+        path: "posts-comments/create",
+        element: <CreatePostComment/>
+      },
+      {
+        path: "posts-comments/update/:id",
+        element: <UpdatePostComment/>
       },
     ],
   },

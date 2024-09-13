@@ -3,7 +3,6 @@ package dev.pages.posts_comments;
 import dev.common.exceptions.NoSuchEntityException;
 import dev.pages.posts.Post;
 import dev.pages.posts.PostService;
-import dev.pages.posts.dto.PostUpdateRequest;
 import dev.pages.posts_comments.dto.PagedPostsCommentsResponse;
 import dev.pages.posts_comments.dto.PostCommentCreateRequest;
 import dev.pages.posts_comments.dto.PostCommentUpdateRequest;
@@ -11,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +23,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @Log4j2
 public class PostCommentController {
+    @NonNull
     private final PostCommentService postCommentService;
+    @NonNull
     private final PostService postService;
 
     @GetMapping("")
