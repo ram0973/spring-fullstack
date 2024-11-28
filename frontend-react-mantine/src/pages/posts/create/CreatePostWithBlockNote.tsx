@@ -13,7 +13,7 @@ import {
   TextInput,
   Title
 } from '@mantine/core';
-import {Link, useNavigate, useParams} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import classes from "@/pages/posts/create/CreatePost.module.css";
 import {useEffect, useState} from 'react';
 import {useForm} from '@mantine/form';
@@ -29,10 +29,21 @@ import {useGetCategories} from "@/pages/posts/update/useGetCategories.ts";
 import {notifications} from "@mantine/notifications";
 import {useGetTags} from "@/pages/posts/update/useGetTags.ts";
 import "@blocknote/core/fonts/inter.css";
-import { useCreateBlockNote } from "@blocknote/react";
-import { BlockNoteView } from "@blocknote/mantine";
+import {useCreateBlockNote} from "@blocknote/react";
+import {BlockNoteView} from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
-import "@blocknote/core/fonts/inter.css";
+import {
+  BoldItalicUnderlineToggles,
+  headingsPlugin,
+  InsertCodeBlock,
+  listsPlugin,
+  MDXEditor,
+  quotePlugin,
+  thematicBreakPlugin,
+  toolbarPlugin,
+  UndoRedo
+} from '@mdxeditor/editor'
+import '@mdxeditor/editor/style.css'
 
 async function uploadFile(file: File) {
   const body = new FormData();
@@ -43,20 +54,6 @@ async function uploadFile(file: File) {
   });
   return (await ret.json()).data.url;
 }
-
-import {
-  BasicTextStyleButton,
-  BlockTypeSelect,
-  ColorStyleButton,
-  CreateLinkButton,
-  FileCaptionButton,
-  FileReplaceButton,
-  FormattingToolbar,
-  FormattingToolbarController,
-  NestBlockButton,
-  TextAlignButton,
-  UnnestBlockButton,
-} from "@blocknote/react";
 
 export const CreatePostWithBlockNote = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -74,21 +71,21 @@ export const CreatePostWithBlockNote = () => {
 
   const editor = useCreateBlockNote({
     initialContent: [
-    {
-      type: "paragraph",
-      content: "Welcome to this demo!",
-    },
-    {
-      type: "paragraph",
-      content: "Upload an image using the button below",
-    },
-    {
-      type: "image",
-    },
-    {
-      type: "paragraph",
-    },
-  ],
+      {
+        type: "paragraph",
+        content: "Welcome to this demo!",
+      },
+      {
+        type: "paragraph",
+        content: "Upload an image using the button below",
+      },
+      {
+        type: "image",
+      },
+      {
+        type: "paragraph",
+      },
+    ],
     uploadFile,
   });
 
@@ -152,6 +149,19 @@ export const CreatePostWithBlockNote = () => {
         </Title>
         <Paper withBorder shadow="md" p={30} mt={30} radius="md">
           <form onSubmit={onSubmitHandler}>
+            <MDXEditor markdown="# Hello world" plugins={[
+              toolbarPlugin({
+                toolbarContents: () => (
+                  <>
+                    {' '}
+                    <UndoRedo />
+                    <BoldItalicUnderlineToggles />
+                    <InsertCodeBlock/>
+                  </>
+                )
+              }),
+              headingsPlugin(), listsPlugin(), quotePlugin(), thematicBreakPlugin()]
+            } />
             <TextInput {...form.getInputProps('title')} key={form.key('title')}
                        label="Title" placeholder="Title"/>
             <TextInput {...form.getInputProps('slug')} key={form.key('slug')}
@@ -166,7 +176,8 @@ export const CreatePostWithBlockNote = () => {
             <Textarea {...form.getInputProps('excerpt')} key={form.key('excerpt')}
                       autosize resize="vertical" minRows={2} label="Post excerpt" placeholder="Post excerpt"/>
             <Input.Wrapper withAsterisk label="Post content">
-              <BlockNoteView editor={editor} formattingToolbar={true}>
+
+              <BlockNoteView editor={editor} formattingToolbar={true} filePanel={true}>
                 {/*<FormattingToolbarController*/}
                 {/*  formattingToolbar={() => (*/}
                 {/*    <FormattingToolbar>*/}
