@@ -48,6 +48,6 @@ jobs:
           context: .
           file: ./docker/spring/Dockerfile
           push: true
-          cache-from: ram0973/spring-fullstack:latest
-          cache-to: type=inline
-          tags: ram0973/spring-fullstack:latest
+          #cache-from: ram0973/spring-fullstack:latest
+          #cache-to: type=inline
+          #tags: ram0973/spring-fullstack:latest
