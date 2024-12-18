@@ -1,21 +1,20 @@
+gradle-version = 8.11.1
+
+ifeq ($(OS),Windows_NT)
+	gradle := .\gradlew
+else
+	gradle := ./gradle
+endif
+
+
 setup:
-	./gradlew wrapper --gradle-version 8.11.1
-
-setup-win:
-	.\gradlew wrapper --gradle-version 8.11.1
-
-build-win:
-	.\gradlew clean build
+	$(gradle) wrapper --gradle-version $(gradle-version)
 
 build:
-	./gradlew clean build
+	$(gradle) clean build --no-daemon
 
 test:
-	./gradlew test
-
-test-win:
-	.\gradlew test
-
+	$(gradle) test
 
 frontend:
 	make -C frontend start

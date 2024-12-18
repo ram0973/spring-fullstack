@@ -14,5 +14,6 @@ jobs:
         with:
           distribution: 'liberica'
           java-version: '23'
+          cache: 'gradle'
       - run: make build
       - run: make test
