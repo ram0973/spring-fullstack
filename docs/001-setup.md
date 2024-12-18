@@ -63,6 +63,11 @@ distributionUrl=https\://services.gradle.org/distributions/gradle-8.8-bin.zip
 
 For example, instead 8.9 - 8.10
 
+OR (better)
+
+make setup
+git update-index --chmod=+x gradlew
+
 ## Idea
 
 Set GraalVM or other JDK here : File - Project structure.
