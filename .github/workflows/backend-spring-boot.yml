@@ -15,5 +15,6 @@ jobs:
           distribution: 'liberica'
           java-version: '23'
           cache: 'gradle'
+      - run: make setup
       - run: make build
       - run: make test
