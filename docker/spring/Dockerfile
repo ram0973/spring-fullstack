@@ -1,3 +1,4 @@
+FROM bellsoft/liberica-openjdk-debian:23.0.1
 COPY gradle gradle
 COPY build.gradle.kts .
 COPY settings.gradle.kts .
