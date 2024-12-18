@@ -11,7 +11,7 @@ setup:
 	$(gradle) wrapper --gradle-version $(gradle-version)
 
 build:
-	$(gradle) clean build --no-daemon
+	$(gradle) clean build
 
 test:
 	$(gradle) test
