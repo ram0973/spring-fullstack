@@ -3,7 +3,7 @@ gradle-version = 8.11.1
 ifeq ($(OS),Windows_NT)
 	gradle := .\gradlew
 else
-	gradle := ./gradle
+	gradle := ./gradlew
 endif
 
 
