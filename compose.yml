@@ -5,14 +5,13 @@
 services:
   postgres:
     container_name: postgres-web
-    image: postgres:16.3
+    image: postgres:16.6
     restart: on-failure
     ports:
       - "5432:5432"
     build:
       context: .
       dockerfile: ./docker/postgresql/Dockerfile
-    # not working command: bash -c "echo 'ru_RU.UTF-8 UTF-8' >> /etc/locale.gen && locale-gen && localedef -i ru_RU -c -f UTF-8 -A /usr/share/locale/locale.alias ru_RU.UTF-8 && echo 'UTC' > /etc/timezone && ln -snf /usr/share/zoneinfo/UTC /etc/localtime"
 #    volumes:
 #      - /var/lib/postgresql/data
     environment:
@@ -23,7 +22,7 @@ services:
 
 
   maildev:
-    container_name: maildev-web
+    container_name: maildev-web:latest
     image: maildev/maildev
     restart: on-failure
     ports:
@@ -32,7 +31,7 @@ services:
 
   # Мощный, но громоздкий интерфейс
   pgadmin:
-    image: dpage/pgadmin4:8.10
+    image: dpage/pgadmin4:latest
     restart: on-failure
     ports:
       - 8030:80
@@ -53,14 +52,6 @@ services:
     depends_on:
       - postgres
 
-  adminer:
-    container_name: adminer-web
-    image: adminer
-    restart: on-failure
-    depends_on:
-      - postgres
-    ports:
-      - 8040:8080
 volumes:
   pgadmin_data:
 

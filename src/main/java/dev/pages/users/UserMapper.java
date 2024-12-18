@@ -14,12 +14,12 @@ public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     //@Mapping(source = "numberOfSeats", target = "seatCount")
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "roles", ignore = true)
-    @Mapping(target = "avatar", ignore = true)
+    //@Mapping(target = "id", ignore = true)
+    //@Mapping(target = "roles", ignore = true)
+    //@Mapping(target = "avatar", ignore = true)
     User userFromUserRequest(UserCreateRequest dto);
 
-    @Mapping(target = "avatar", ignore = true)
-    @Mapping(target = "password", ignore = true)
+    //@Mapping(target = "avatar", ignore = true)
+    //@Mapping(target = "password", ignore = true)
     void update(@MappingTarget User user, UserUpdateRequest dto);
 }

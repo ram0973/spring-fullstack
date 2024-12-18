@@ -14,7 +14,7 @@ public interface PostCategoryMapper {
     PostCategoryMapper INSTANCE = Mappers.getMapper(PostCategoryMapper.class);
 
     //@Mapping(source = "numberOfSeats", target = "seatCount")
-    @Mapping(target = "id", ignore = true)
+    //@Mapping(target = "id", ignore = true)
     PostCategory postCategoryFromPostCategoryRequest(PostCategoryCreateRequest dto);
 
     void update(@MappingTarget PostCategory category, PostCategoryUpdateRequest dto);

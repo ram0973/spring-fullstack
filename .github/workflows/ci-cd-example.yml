@@ -3,7 +3,7 @@ name: CI-CD
 on:
   push:
     branches:
-      - master
+      - master-disabled-branch
 
 jobs:
   build:
@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: '14.x'
+          node-version: '22.x'
 
       - name: Install dependencies
         run: npm install
@@ -29,7 +29,7 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v1
         with:
-          java-version: '21'
+          java-version: '23'
 
       - name: Build backend
         run: |

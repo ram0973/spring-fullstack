@@ -14,7 +14,7 @@ public interface PostCommentMapper {
     PostCommentMapper INSTANCE = Mappers.getMapper(PostCommentMapper.class);
 
     //@Mapping(source = "numberOfSeats", target = "seatCount")
-    @Mapping(target = "id", ignore = true)
+    //@Mapping(target = "id", ignore = true)
     PostComment postCommentFromPostCommentCreateRequest(PostCommentCreateRequest dto);
 
     void update(@MappingTarget PostComment comment, PostCommentUpdateRequest dto);

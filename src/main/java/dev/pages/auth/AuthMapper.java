@@ -14,6 +14,6 @@ public interface AuthMapper {
     AuthMapper INSTANCE = Mappers.getMapper(AuthMapper.class);
 
     //@Mapping(source = "numberOfSeats", target = "seatCount")
-    @Mapping(target = "id", ignore = true)
+    //@Mapping(target = "id", ignore = true)
     User userFromRegisterRequest(RegisterRequest dto);
 }

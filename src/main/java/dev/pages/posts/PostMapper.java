@@ -16,15 +16,15 @@ public interface PostMapper {
     PostMapper INSTANCE = Mappers.getMapper(PostMapper.class);
 
     //@Mapping(source = "numberOfSeats", target = "seatCount")
-    @Mapping(target = "category", ignore = true)
-    @Mapping(target = "tags", ignore = true)
-    @Mapping(target = "image", ignore = true)
-    @Mapping(target = "id", ignore = true)
+    //@Mapping(target = "category", ignore = true)
+    //@Mapping(target = "tags", ignore = true)
+    //@Mapping(target = "image", ignore = true)
+    //@Mapping(target = "id", ignore = true)
     Post postFromPostRequest(PostCreateRequest dto);
 
-    @Mapping(target = "category", ignore = true)
-    @Mapping(target = "tags", ignore = true)
-    @Mapping(target = "image", ignore = true)
-    @Mapping(target = "id", ignore = true)
+    //@Mapping(target = "category", ignore = true)
+    //@Mapping(target = "tags", ignore = true)
+    //@Mapping(target = "image", ignore = true)
+    //@Mapping(target = "id", ignore = true)
     void update(@MappingTarget Post post, PostUpdateRequest dto);
 }

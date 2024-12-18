@@ -14,7 +14,7 @@ public interface UserRoleMapper {
     UserRoleMapper INSTANCE = Mappers.getMapper(UserRoleMapper.class);
 
     //@Mapping(source = "numberOfSeats", target = "seatCount")
-    @Mapping(target = "id", ignore = true)
+    //@Mapping(target = "id", ignore = true)
     UserRole userRoleFromUserRoleRequest(UserRoleCreateRequest dto);
 
     //@Mapping(target = "id", ignore = true)

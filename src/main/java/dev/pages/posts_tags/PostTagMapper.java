@@ -14,7 +14,7 @@ public interface PostTagMapper {
     PostTagMapper INSTANCE = Mappers.getMapper(PostTagMapper.class);
 
     //@Mapping(source = "numberOfSeats", target = "seatCount")
-    @Mapping(target = "id", ignore = true)
+    //@Mapping(target = "id", ignore = true)
     PostTag postTagFromPostTagCreateRequest(PostTagCreateRequest dto);
 
     void update(@MappingTarget PostTag tag, PostTagUpdateRequest dto);
