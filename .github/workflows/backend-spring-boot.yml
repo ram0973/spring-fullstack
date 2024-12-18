@@ -28,11 +28,11 @@ jobs:
     needs: build
     runs-on: ubuntu-22.04
 
-    permissions:
-      contents: read
-      packages: write
-      attestations: write
-      id-token: write
+#    permissions:
+#      contents: read
+#      packages: write
+#      attestations: write
+#      id-token: write
 
     if: ${{ github.event_name == 'push' }}
     steps:
