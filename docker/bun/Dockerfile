@@ -1,7 +1,16 @@
-FROM oven/bun:1.1.40-debian
+FROM oven/bun:1.1.40-debian as build
 
+WORKDIR /app
 COPY package.json ./
 COPY bun.lockb ./
 COPY src ./
 
-RUN bun install
+#RUN bun run build
+RUN bun run dev
+
+#FROM ubuntu
+#RUN apt-get update
+#RUN apt-get install nginx -y
+#COPY --from=build /app/dist /var/www/html/
+#EXPOSE 80
+#CMD ["nginx","-g","daemon off;"]

@@ -5,7 +5,7 @@ plugins {
 	java
 	id("org.springframework.boot") version "3.4.0"
 	id("io.spring.dependency-management") version "1.1.6"
-	id("org.hibernate.orm") version "6.6.3.Final"
+	//id("org.hibernate.orm") version "6.6.3.Final"
 	//id("org.graalvm.buildtools.native") version "0.10.2"
     //id("gg.jte.gradle") version "3.1.12"
 }
@@ -88,11 +88,11 @@ dependencyManagement {
 	}
 }
 
-hibernate {
-	enhancement {
-		enableAssociationManagement = true
-	}
-}
+//hibernate {
+//	enhancement {
+//		enableAssociationManagement = true
+//	}
+//}
 
 tasks.withType<Test> {
 	useJUnitPlatform()

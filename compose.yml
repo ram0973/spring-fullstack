@@ -22,8 +22,8 @@ services:
 
 
   maildev:
-    container_name: maildev-web:latest
-    image: maildev/maildev
+    container_name: maildev-web
+    image: maildev/maildev:latest
     restart: on-failure
     ports:
       - 8020:1080

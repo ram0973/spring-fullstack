@@ -19,6 +19,7 @@ jobs:
           java-version: '23'
           cache: 'gradle'
       - run: chmod +x ./gradlew
+        working-directory: .
       - run: make setup
       - run: make build
       - run: make test
@@ -68,4 +69,4 @@ jobs:
 #      LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
 #    steps:
 #      - name: docker-compose
-#        run: docker compose up -d -f production.yml
+#        run: docker compose -f production.yml up -d
