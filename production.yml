@@ -1,0 +1,15 @@
+---
+# This docker-compose file for production
+# Run with: $ docker compose up -d -f production.yml
+
+services:
+  spring-boot:
+    image: ghcr.io/ram0973/spring-fullstack:main
+    restart: on-failure
+    ports:
+      - "8080:8080"
+  react:
+    image: ghcr.io/ram0973/frontend-react:main
+    restart: on-failure
+    ports:
+      - "5176:80"

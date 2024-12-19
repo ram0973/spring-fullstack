@@ -11,7 +11,6 @@ env:
 jobs:
   build:
     runs-on: self-hosted #ubuntu-22.04
-
     steps:
       - uses: actions/checkout@v4.2.2
       - uses: actions/setup-java@v4.6.0
@@ -30,12 +29,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-#    permissions:
-#      contents: read
-#      packages: write
-#      attestations: write
-#      id-token: write
-
     if: ${{ github.event_name == 'push' }}
     steps:
       - uses: actions/checkout@v4.2.2
@@ -47,10 +40,10 @@ jobs:
           password: ${{ github.token }}
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        uses: docker/metadata-action@v5.6.1
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-      - uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+      - uses: docker/build-push-action@v6.10.0
         with:
           context: .
           file: ./docker/spring/Dockerfile
@@ -60,3 +53,19 @@ jobs:
           #cache-from: ram0973/spring-fullstack:latest
           #cache-to: type=inline
           #tags: ram0973/spring-fullstack:latest
+#  prepare-environment:
+#    runs-on: self-hosted
+#    needs: deploy
+#    steps:
+#      - name: Stop and remove containers, networks
+#        run: docker-compose down
+#      - name: Remove unused data
+#        run: docker system prune -a -f
+#  run:
+#    runs-on: self-hosted
+#    needs: prepare-environment
+#    env:
+#      LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
+#    steps:
+#      - name: docker-compose
+#        run: docker compose up -d -f production.yml
