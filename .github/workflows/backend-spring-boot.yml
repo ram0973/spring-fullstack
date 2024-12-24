@@ -22,8 +22,8 @@ jobs:
         working-directory: .
       #- run: ./gradlew make setup
       - run: ./gradlew wrapper --gradle-version 8.11.1
-      - run: ./gradlew build
-      - run: ./gradlew test
+      - run: APP_PROFILE=dev ./gradlew build
+      - run: APP_PROFILE=test ./gradlew test
   deploy-app:
     needs: build-app
     runs-on: self-hosted #ubuntu-22.04
