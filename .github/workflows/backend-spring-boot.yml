@@ -22,7 +22,7 @@ jobs:
         working-directory: .
       #- run: ./gradlew make setup
       - run: ./gradlew wrapper --gradle-version 8.11.1
-      - run: ./gradlew clean build
+      - run: ./gradlew -i clean build
       #- run: APP_PROFILE=test ./gradlew test
   deploy-app:
     needs: build-app
@@ -65,4 +65,4 @@ jobs:
       LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
     steps:
       - name: docker-compose
-        run: docker compose -f production.yml up -d
+        run: docker compose -f ./production.yml up -d
