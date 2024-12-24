@@ -52,7 +52,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
   stop-compose:
     runs-on: self-hosted
-    needs: deploy
+    needs: deploy-app
     steps:
       - name: Stop and remove containers, networks
         run: docker-compose down
