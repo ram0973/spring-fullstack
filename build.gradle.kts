@@ -1,16 +1,10 @@
-//import org.gradle.kotlin.dsl.resolver.DefaultKotlinBuildScriptModelRepository.processor
-
 plugins {
-    // https://plugins.gradle.org/
 	java
-	id("org.springframework.boot") version "3.4.0"
-	id("io.spring.dependency-management") version "1.1.6"
-	//id("org.hibernate.orm") version "6.6.3.Final"
-	//id("org.graalvm.buildtools.native") version "0.10.2"
-    //id("gg.jte.gradle") version "3.1.12"
+	id("org.springframework.boot") version "3.4.1"
+	id("io.spring.dependency-management") version "1.1.7"
 }
 
-group = "dev"
+group = "ra"
 version = "0.0.1-SNAPSHOT"
 
 java {
@@ -29,70 +23,33 @@ repositories {
 	mavenCentral()
 }
 
-//extra["springShellVersion"] = "3.3.1"
-
 dependencies {
-    // https://central.sonatype.com/
-	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.springframework.boot:spring-boot-starter-mail")
-	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
-	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 	implementation("org.springframework.boot:spring-boot-starter-security")
-	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
-    //implementation("org.springframework.shell:spring-shell-starter")
-    implementation("net.datafaker:datafaker:2.4.2")
-    //implementation("org.liquibase:liquibase-core")
+	developmentOnly("org.springframework.boot:spring-boot-devtools")
+    testAndDevelopmentOnly("org.springframework.boot:spring-boot-docker-compose")
+	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.security:spring-security-test")
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
-    // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
+    runtimeOnly("org.postgresql:postgresql")
 
-    // mapstruct
+    annotationProcessor("org.projectlombok:lombok")
+    implementation("org.projectlombok:lombok:1.18.30")
+    compileOnly("org.projectlombok:lombok")
+
     implementation("org.mapstruct:mapstruct:1.6.3")
     annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 
-    // lombok
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
+    implementation("net.datafaker:datafaker:2.4.2")
 
-    // jte
-    //implementation("gg.jte:jte:3.1.12")
-    //implementation("gg.jte:jte-spring-boot-starter-3:3.1.12")
+    implementation("org.openapitools:jackson-databind-nullable:0.2.6")
 
-	developmentOnly("org.springframework.boot:spring-boot-devtools")
-	//developmentOnly("org.springframework.boot:spring-boot-docker-compose")
-	runtimeOnly("org.postgresql:postgresql")
-	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-
-
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.springframework.boot:spring-boot-testcontainers")
-	testImplementation("org.springframework.security:spring-security-test")
-
-	testImplementation("org.testcontainers:junit-jupiter")
-	testImplementation("org.testcontainers:postgresql")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.instancio:instancio-junit:5.2.1")
 }
-
-//jte {
-//    generate()
-//    binaryStaticContent = true
-//}
-
-dependencyManagement {
-	imports {
-        //mavenBom("org.springframework.shell:spring-shell-dependencies:${property("springShellVersion")}")
-	}
-}
-
-//hibernate {
-//	enhancement {
-//		enableAssociationManagement = true
-//	}
-//}
 
 tasks.withType<Test> {
 	useJUnitPlatform()

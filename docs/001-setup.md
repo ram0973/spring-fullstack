@@ -2,9 +2,8 @@
 
 Used tech stack:
 
-- Java 21+ - Graal VM JDK (not supports Shenandoah GC) or others
-(not OpenJDK, it's slowest.)
-- Spring Boot 3.3+
+- Java 23
+- Spring Boot 3.4+
 - Docker
 - Liquibase
 - Hibernate ORM
@@ -22,11 +21,11 @@ Used tech stack:
 
 - Intellij Idea Pro/Community
 - Docker
-- Graal VM JDK/Some other JDK
+- Java 23 JDK/JRE
 - Git
 - Bun
 
-## Graal VM JDK
+## Graal VM JDK (optional)
 Open start.spring.io
 Downloaded project template
 [here](https://start.spring.io/#!type=gradle-project-kotlin&language=java&platformVersion=3.3.2&packaging=jar&jvmVersion=21&groupId=dev&artifactId=web&name=web&description=Web%20project%20with%20Spring%20Boot&packageName=dev.web&dependencies=native,devtools,lombok,configuration-processor,docker-compose,web,thymeleaf,security,oauth2-client,oauth2-resource-server,data-jpa,liquibase,postgresql,validation,mail,actuator,testcontainers,spring-shell)
@@ -45,7 +44,7 @@ Set JAVA_HOME:
 
 setx /M JAVA_HOME "C:\lib\graavm21-0-2\"
 
-Install Visual Studio. Setup as written above.
+Install Visual Studio Tools. Setup as written above.
 
 Check:
 ```bash
@@ -54,16 +53,6 @@ native-image.cmd --version
 ```
 
 ## Kotlin Gradle
-
-In gradle/wrapper/gradle-wrapper.properties change version to yours:
-
-[Versions list here](https://gradle.org/releases/)
-
-distributionUrl=https\://services.gradle.org/distributions/gradle-8.8-bin.zip
-
-For example, instead 8.9 - 8.10
-
-OR (better)
 
 make setup
 git update-index --chmod=+x gradlew
@@ -75,9 +64,9 @@ Set GraalVM or other JDK here : File - Project structure.
 Help - Edit Custom VM Options:
 -Xms2048m
 -Xmx2048m
--XX:+UseShenandoahGC (not working with GraalVM)
+Optional: -XX:+UseShenandoahGC (not working with GraalVM)
 
-Idea settings: search "encod"
+Idea settings: search "encoding"
 File Encodings and Console: set UTF-8.
 
 Set: Auto Imports - unambiguous imports on the fly.
@@ -117,3 +106,6 @@ Idea repair:  File - Repair Ide or: File - Invalidate Caches
 ## Docker & WSL
 Install wsl: wsl --install Ubuntu # Docker like standard WSL
 Only after wsl up and running install Docker!
+
+## Run
+$env:APP_PROFILE="prod"; $env:APP_ADMIN_EMAIL="gendalf@white.com"; $env:DB_HOST="localhost"; $env:DB_PORT="5432" ;$env:DB_NAME="web"; $env:DB_USER="web"; $env:DB_PASSWORD="web"; docker compose -f .\compose.prod.yml up
