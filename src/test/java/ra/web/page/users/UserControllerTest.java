@@ -62,6 +62,10 @@ public class UserControllerTest {
     }
 
     @Test
+    void contextLoads() {
+    }
+
+    @Test
     public void testGetUsers() throws Exception {
         MockHttpServletResponse response = mockMvc.perform(get("/api/v1/users"))
             .andExpect(status().isOk())
