@@ -85,8 +85,8 @@ public class UserControllerTest {
         var body = result.getResponse().getContentAsString();
     }
 
-    @Test
-    public void testCreate() throws Exception {
+    //@Test
+    //public void testCreate() throws Exception {
         //User user = modelGenerator.getUserModel();
 //        MockHttpServletRequestBuilder request = post("/api/users")
 //            .contentType(MediaType.APPLICATION_JSON)
@@ -97,5 +97,5 @@ public class UserControllerTest {
 //        User savedUser = userRepository.findByEmailIgnoreCase(user.getEmail()).orElseThrow();
 //        assertThat(savedUser.getFirstName()).isEqualTo(user.getFirstName());
 //        assertThat(savedUser.getLastName()).isEqualTo(user.getLastName());
-    }
+    //}
 }
