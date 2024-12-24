@@ -53,6 +53,7 @@ jobs:
   stop-compose:
     runs-on: self-hosted
     #needs: deploy-app
+    needs: build-app
     steps:
       - name: Stop and remove containers, networks
         run: docker compose down
@@ -65,4 +66,4 @@ jobs:
       #LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
     steps:
       - name: docker-compose
-        run: docker compose -f ./production.yml up -d
+        run: docker compose -f ./compose.prod.yaml up -d
