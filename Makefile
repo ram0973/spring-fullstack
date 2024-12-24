@@ -9,10 +9,10 @@ setup:
 	$(gradle) wrapper --gradle-version $(gradle-version)
 
 build:
-	$(gradle) clean build
+	APP_PROFILE=test; $(gradle) clean build
 
 test:
-	$(gradle) test
+	APP_PROFILE=test; $(gradle) test
 
 frontend:
 	make -C frontend start

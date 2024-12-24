@@ -48,8 +48,8 @@ public class UserControllerTest {
     @Autowired
     private UserMapper userMapper;
 
-    @Autowired
-    private ModelGenerator modelGenerator;
+    //@Autowired
+    //private ModelGenerator modelGenerator;
 
     @BeforeEach
     public void setUp(WebApplicationContext wac) {
@@ -57,7 +57,7 @@ public class UserControllerTest {
             .defaultResponseCharacterEncoding(StandardCharsets.UTF_8)
             .apply(springSecurity())
             .build();
-        User user = Instancio.create(User.class);
+        //User user = Instancio.create(User.class);
         //userRepository.save(user);
     }
 
@@ -72,7 +72,7 @@ public class UserControllerTest {
         Assertions.assertEquals(1, actual.size());
         Assertions.assertEquals(1, userDTOS.totalItems(), 1);
         Assertions.assertEquals(1, userDTOS.totalPages(), 1);
-        //var expected = userRepository.findAll();
+        var expected = userRepository.findAll();
         //Assertions.assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
     }
 
