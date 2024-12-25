@@ -12,7 +12,7 @@ jobs:
   get-server-name:
     runs-on: self-hosted #ubuntu-22.04
     steps:
-      run: hostname -f
+      - run: hostname -f
   build-app:
     needs: get-server-name
     runs-on: self-hosted #ubuntu-22.04
