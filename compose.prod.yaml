@@ -17,7 +17,7 @@ services:
     container_name: spring-boot
     image: ghcr.io/ram0973/spring-fullstack:main
     environment:
-      - APP_PROFILE=$APP_PROFILE}
+      - APP_PROFILE=${APP_PROFILE}
       - APP_ADMIN_EMAIL=${APP_ADMIN_EMAIL}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
@@ -25,7 +25,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-service:${DB_PORT}/${DB_NAME}
     restart: no
     ports:
-      - "8080:8080"
+      - "0.0.0.0:8080:8080"
     #build:
     #  context: .
     #  dockerfile: ./Dockerfile
