@@ -6,8 +6,8 @@ services:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
-    ports:
-      - ${DB_PORT}:5432
+    expose:
+      - ${DB_PORT}
     networks:
       - spring-postgres
     volumes:
@@ -24,8 +24,8 @@ services:
       - DB_PORT=${DB_PORT}
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-service:${DB_PORT}/${DB_NAME}
     restart: no
-    #ports:
-    #  - '8080:8080'
+    ports:
+      - "0.0.0.0:8080:8080"
     #build:
     #  context: .
     #  dockerfile: ./Dockerfile
@@ -33,8 +33,7 @@ services:
       - postgres-service
     networks:
       - spring-postgres
-    expose:
-      - 5432
+
 
 volumes:
   postgresql-data:
