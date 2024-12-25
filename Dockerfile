@@ -8,7 +8,7 @@ COPY ./gradlew .
 RUN chmod +x ./gradlew
 # Запуск ./gradlew инициирует загрузку дистрибутива,
 # который кэшируется на своем уровне
-RUN ./gradlew --no-daemon  \
+RUN ./gradlew --no-daemon
 COPY ./src /src
 # Тесты не здесь, а в CI/CD пайплайне
 RUN ./gradlew --no-daemon -i build -x test
