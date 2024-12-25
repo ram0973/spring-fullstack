@@ -1,3 +1,5 @@
+# https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables
+
 name: Build and run spring Boot with React web app
 
 on:
@@ -77,13 +79,12 @@ jobs:
   run-compose:
     runs-on: self-hosted
     needs: stop-compose
+    environment: prod
     steps:
       - name: docker-compose
         env:
           APP_PROFILE: ${{ secrets.APP_PROFILE }}
           APP_ADMIN_EMAIL: ${{ secrets.APP_ADMIN_EMAIL }}
-          APP_COOKIE_DOMAIN: ${{ secrets.APP_COOKIE_DOMAIN }}
-          DB_HOST: ${{ secrets.DB_HOST }}
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
