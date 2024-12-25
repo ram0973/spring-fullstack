@@ -71,8 +71,6 @@ jobs:
   run-compose:
     runs-on: self-hosted
     needs: stop-compose
-    #env:
-      #LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
     steps:
       - name: docker-compose
         env:
@@ -84,4 +82,4 @@ jobs:
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_PORT: ${{ secrets.DB_PORT }}
-        run: docker compose -f ./compose.prod.yaml up -d
+        run: docker compose -f ./compose.prod.yaml up --remove-orphans -d

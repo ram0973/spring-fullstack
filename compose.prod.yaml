@@ -1,5 +1,6 @@
 services:
   postgres-service:
+    container_name: spring-docker
     image: 'postgres:16.6'
     environment:
       - POSTGRES_DB=${DB_NAME}
@@ -7,11 +8,14 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     ports:
       - ${DB_PORT}:5432
+    networks:
+      - spring-postgres
     volumes:
       - postgresql-data:/var/lib/postgresql/data
 
   spring-boot-react-service:
     container_name: spring-boot
+    image: ghcr.io/ram0973/spring-fullstack:main
     environment:
       - APP_PROFILE=$APP_PROFILE}
       - APP_ADMIN_EMAIL=${APP_ADMIN_EMAIL}
@@ -20,13 +24,19 @@ services:
       - DB_PORT=${DB_PORT}
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-service:${DB_PORT}/${DB_NAME}
     restart: no
-    ports:
-      - '8080:8080'
-    build:
-      context: .
-      dockerfile: ./Dockerfile
+    #ports:
+    #  - '8080:8080'
+    #build:
+    #  context: .
+    #  dockerfile: ./Dockerfile
     depends_on:
       - postgres-service
+    networks:
+      - spring-postgres
+    expose:
+      - 5432
 
 volumes:
   postgresql-data:
+networks:
+  spring-postgres:
