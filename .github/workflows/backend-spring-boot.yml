@@ -46,14 +46,14 @@ jobs:
       - uses: docker/build-push-action@v6.10.0
         with:
           context: .
-          file: ./docker/spring/Dockerfile
+          file: ./Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
   stop-compose:
     runs-on: self-hosted
     #needs: deploy-app
-    needs: build-app
+    needs: deploy-app
     steps:
       - name: Stop and remove containers, networks
         run: docker compose down
