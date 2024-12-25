@@ -39,3 +39,4 @@ volumes:
   postgresql-data:
 networks:
   spring-postgres:
+    driver: bridge
