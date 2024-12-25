@@ -18,7 +18,7 @@ RUN ./gradlew --no-daemon -i build -x test
 FROM bellsoft/liberica-runtime-container:jre-23-stream-musl AS runner
 #FROM bellsoft/liberica-openjre-debian:23.0.1 as runner
 WORKDIR /
-#COPY --from=builder /build/libs/web-0.0.1-SNAPSHOT.jar .
+COPY --from=builder /build/libs/web-0.0.1-SNAPSHOT.jar .
 COPY ./build/libs/web-0.0.1-SNAPSHOT.jar .
 ENV JAVA_OPTS="-Xmx512M -Xms512M"
 EXPOSE 8080
