@@ -9,8 +9,12 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-
+  get-server-name:
+    runs-on: self-hosted #ubuntu-22.04
+    steps:
+      run: hostname -f
   build-app:
+    needs: get-server-name
     runs-on: self-hosted #ubuntu-22.04
     steps:
       - uses: actions/checkout@v4.2.2
@@ -67,8 +71,8 @@ jobs:
     steps:
       - name: Stop and remove containers, networks
         run: docker compose down
-      #- name: Remove unused data
-      #  run: docker system prune -a -f
+      - name: Remove unused data
+        run: docker system prune -a -f
 
   run-compose:
     runs-on: self-hosted
