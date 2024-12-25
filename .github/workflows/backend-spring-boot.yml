@@ -9,6 +9,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
+
   build-app:
     runs-on: self-hosted #ubuntu-22.04
     steps:
@@ -23,7 +24,10 @@ jobs:
       #- run: ./gradlew make setup
       - run: ./gradlew wrapper --gradle-version 8.11.1
       - run: APP_PROFILE=test ./gradlew -i clean build
+        env:
+          APP_PROFILE: test
       #- run: APP_PROFILE=test ./gradlew test
+
   deploy-app:
     needs: build-app
     runs-on: self-hosted #ubuntu-22.04
@@ -53,6 +57,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
   stop-compose:
     runs-on: self-hosted
     #needs: deploy-app
@@ -62,6 +67,7 @@ jobs:
         run: docker compose down
       #- name: Remove unused data
       #  run: docker system prune -a -f
+
   run-compose:
     runs-on: self-hosted
     needs: stop-compose
