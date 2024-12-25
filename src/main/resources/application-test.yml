@@ -4,10 +4,6 @@ app:
 spring:
   application:
     name: web-test
-  datasource:
-    password: ${TEST_DB_PASSWORD:test}
-    url: jdbc:postgresql://${TEST_DB_HOST:localhost}:${TEST_DB_PORT:5433}/${TEST_B_NAME:test}
-    username: ${TEST_DB_USER:test}
   docker:
     compose:
       skip:

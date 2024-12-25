@@ -34,6 +34,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     runtimeOnly("org.postgresql:postgresql")
 
@@ -49,6 +50,15 @@ dependencies {
     implementation("org.openapitools:jackson-databind-nullable:0.2.6")
 
     testImplementation("org.instancio:instancio-junit:5.2.1")
+
+
+    testImplementation("org.springframework.boot:spring-boot-testcontainers")
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:postgresql")
+
+    testImplementation("io.rest-assured:rest-assured:5.5.0")
+
+    testImplementation("io.rest-assured:rest-assured")
 }
 
 tasks.withType<Test> {
