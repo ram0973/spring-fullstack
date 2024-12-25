@@ -66,28 +66,22 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-  stop-compose:
-    runs-on: self-hosted
-    #needs: deploy-app
-    needs: deploy-app
-    steps:
-      - name: Stop and remove containers, networks
-        run:  docker compose -f ./compose.prod.yaml down --remove-orphans
-      - name: Remove unused data
-        run: docker system prune -a -f
-
   run-compose:
     runs-on: self-hosted
-    needs: stop-compose
+    needs: deploy-app
     environment: prod
+    env:
+      APP_PROFILE: ${{ secrets.APP_PROFILE }}
+      APP_ADMIN_EMAIL: ${{ secrets.APP_ADMIN_EMAIL }}
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_PORT: ${{ secrets.DB_PORT }}
     steps:
+      - name: Stop and remove containers, networks
+        run: docker compose -f ./compose.prod.yaml down --remove-orphans
+      - name: Remove unused data
+        run: docker system prune -a -f
       - name: docker-compose
-        env:
-          APP_PROFILE: ${{ secrets.APP_PROFILE }}
-          APP_ADMIN_EMAIL: ${{ secrets.APP_ADMIN_EMAIL }}
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_PORT: ${{ secrets.DB_PORT }}
         run:  docker compose -f ./compose.prod.yaml up --detach
