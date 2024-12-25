@@ -13,7 +13,7 @@ services:
   spring-boot-react-service:
     container_name: spring-boot
     environment:
-      - APP_PROFILE=${APP_PROFILE}
+      - APP_PROFILE=$APP_PROFILE}
       - APP_ADMIN_EMAIL=${APP_ADMIN_EMAIL}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}

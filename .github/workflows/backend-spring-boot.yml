@@ -66,4 +66,13 @@ jobs:
       #LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
     steps:
       - name: docker-compose
+        env:
+          APP_PROFILE: ${{ secrets.APP_PROFILE }}
+          APP_ADMIN_EMAIL: ${{ secrets.APP_ADMIN_EMAIL }}
+          APP_COOKIE_DOMAIN: ${{ secrets.APP_COOKIE_DOMAIN }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_PORT: ${{ secrets.DB_PORT }}
         run: docker compose -f ./compose.prod.yaml up -d
