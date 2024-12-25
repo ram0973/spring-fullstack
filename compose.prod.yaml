@@ -6,8 +6,8 @@ services:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
-    expose:
-      - ${DB_PORT}
+    ports:
+      - ${DB_PORT}:5432
     networks:
       - spring-postgres
     volumes:
@@ -19,6 +19,7 @@ services:
     environment:
       - APP_PROFILE=${APP_PROFILE}
       - APP_ADMIN_EMAIL=${APP_ADMIN_EMAIL}
+      - DB_HOST=${DB_HOST}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_PORT=${DB_PORT}
