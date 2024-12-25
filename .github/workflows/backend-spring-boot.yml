@@ -70,7 +70,7 @@ jobs:
     needs: deploy-app
     steps:
       - name: Stop and remove containers, networks
-        run: docker compose down
+        run:  docker compose -f ./compose.prod.yaml down --remove-orphans
       - name: Remove unused data
         run: docker system prune -a -f
 
@@ -88,4 +88,4 @@ jobs:
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_PORT: ${{ secrets.DB_PORT }}
-        run: docker compose -f ./compose.prod.yaml up --remove-orphans -d
+        run:  docker compose -f ./compose.prod.yaml up --detach
