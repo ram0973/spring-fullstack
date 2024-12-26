@@ -1,6 +1,6 @@
 services:
-  db:
-    container_name: db
+  spring-fullstack-db:
+    container_name: spring-fullstack-db
     image: 'postgres:16.6'
     environment:
       - POSTGRES_DB=${DB_NAME}
@@ -27,7 +27,8 @@ services:
     environment:
       - APP_PROFILE=${APP_PROFILE}
       - APP_ADMIN_EMAIL=${APP_ADMIN_EMAIL}
-      - DB_HOST=db
+      - DB_HOST=spring-fullstack-db
+      - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_PORT=5432
