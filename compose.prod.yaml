@@ -6,12 +6,16 @@ services:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - DB_PORT=${DB_PORT}
     #ports:
       #- 127.0.0.1:${DB_PORT}:5432
     #  - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 1s
+      timeout: 5s
+      retries: 10
     expose:
-      - "5432"
+      - 5432
     networks:
       - spring-postgres
     volumes:
@@ -26,8 +30,8 @@ services:
       - DB_HOST=db
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
-      - DB_PORT=5432 #${DB_PORT}
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${DB_NAME}
+      - DB_PORT=5432
+      #- SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${DB_NAME}
     restart: on-failure
     expose:
       - "8080"
