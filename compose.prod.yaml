@@ -9,14 +9,14 @@ services:
       - DB_PORT=${DB_PORT}
     ports:
       #- 127.0.0.1:${DB_PORT}:5432
-      - 172.18.0.2:${DB_PORT}:5432
+      - 127.0.0.1:${DB_PORT}:5432
 #    networks:
 #      - spring-postgres
     volumes:
       - postgresql-data:/var/lib/postgresql/data
 
-  spring-boot-react-service:
-    container_name: web
+  spring-fullstack:
+    container_name: spring-fullstack
     image: ghcr.io/ram0973/spring-fullstack:main
     environment:
       - APP_PROFILE=${APP_PROFILE}
@@ -25,11 +25,10 @@ services:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_PORT=${DB_PORT}
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://172.18.0.2:${DB_PORT}/${DB_NAME}
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:${DB_PORT}/${DB_NAME}
     restart: no
     ports:
-      #- "127.0.0.1:8080:8080"
-      - 8080
+      - "127.0.0.1:8080:8080"
     #build:
     #  context: .
     #  dockerfile: ./Dockerfile
