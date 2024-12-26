@@ -8,9 +8,10 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - DB_PORT=${DB_PORT}
     ports:
-      - 127.0.0.1:${DB_PORT}:5432
-    networks:
-      - spring-postgres
+      #- 127.0.0.1:${DB_PORT}:5432
+      - ${DB_PORT}
+#    networks:
+#      - spring-postgres
     volumes:
       - postgresql-data:/var/lib/postgresql/data
 
@@ -27,19 +28,20 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-service:${DB_PORT}/${DB_NAME}
     restart: no
     ports:
-      - "127.0.0.1:8080:8080"
+      #- "127.0.0.1:8080:8080"
+      - 8080
     #build:
     #  context: .
     #  dockerfile: ./Dockerfile
     depends_on:
       - postgres-service
-    networks:
-      - spring-postgres
+#    networks:
+#      - spring-postgres
 
 
 volumes:
   postgresql-data:
-networks:
-  spring-postgres:
-    enable_ipv6: false
-    internal: true
+#networks:
+#  spring-postgres:
+    #enable_ipv6: false
+    #internal: true
