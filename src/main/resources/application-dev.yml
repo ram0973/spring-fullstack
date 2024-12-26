@@ -1,6 +1,8 @@
 app:
   admin:
     email: "gendalf-dev-admin@white.com"
+server:
+  port: 8008
 spring:
   application:
     name: web-dev

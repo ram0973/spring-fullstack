@@ -44,6 +44,7 @@ export const UsersTable = () => {
     return <Loader />;
   }
   const users: User[] = data?.data.users
+  console.log(users);
   const totalItems = data?.data.totalItems
   return (
     <>

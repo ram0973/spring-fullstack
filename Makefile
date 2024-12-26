@@ -14,7 +14,4 @@ build:
 test:
 	APP_PROFILE=test; $(gradle) test
 
-frontend:
-	make -C frontend start
-
-.PHONY: build frontend
+.PHONY: test
