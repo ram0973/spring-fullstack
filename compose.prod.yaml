@@ -7,7 +7,7 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     ports:
-      - "postgres-service:${DB_PORT}:5432"
+      - "127.0.0.1:${DB_PORT}:5432"
     networks:
       - spring-postgres
     volumes:
@@ -23,7 +23,7 @@ services:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_PORT=${DB_PORT}
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-service:${DB_PORT}/${DB_NAME}
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://127.0.0.1:${DB_PORT}/${DB_NAME}
     restart: no
     ports:
       - "8080:8080"
