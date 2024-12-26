@@ -39,7 +39,7 @@ services:
     #  context: .
     #  dockerfile: ./Dockerfile
     depends_on:
-      - db
+      - spring-fullstack-db
     networks:
       - spring-postgres
 
