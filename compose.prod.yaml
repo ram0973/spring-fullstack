@@ -26,7 +26,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://127.0.0.1:${DB_PORT}/${DB_NAME}
     restart: no
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     #build:
     #  context: .
     #  dockerfile: ./Dockerfile
@@ -40,6 +40,5 @@ volumes:
   postgresql-data:
 networks:
   spring-postgres:
-    driver: bridge
     enable_ipv6: false
     internal: true
