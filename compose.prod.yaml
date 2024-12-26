@@ -14,7 +14,7 @@ services:
       - postgresql-data:/var/lib/postgresql/data
 
   spring-boot-react-service:
-    container_name: spring-react
+    container_name: web
     image: ghcr.io/ram0973/spring-fullstack:main
     environment:
       - APP_PROFILE=${APP_PROFILE}
@@ -41,3 +41,5 @@ volumes:
 networks:
   spring-postgres:
     driver: bridge
+    enable_ipv6: false
+    internal: true
