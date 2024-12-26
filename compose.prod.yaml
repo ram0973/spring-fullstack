@@ -24,7 +24,7 @@ services:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_PORT=${DB_PORT}
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://127.0.0.1:${DB_PORT}/${DB_NAME}
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-service:${DB_PORT}/${DB_NAME}
     restart: no
     ports:
       - "127.0.0.1:8080:8080"
