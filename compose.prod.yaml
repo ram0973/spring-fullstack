@@ -16,7 +16,7 @@ services:
     networks:
       - spring-postgres
     volumes:
-      - postgresql-data:/var/lib/postgresql/data
+      - spring-fullstack-db-data:/var/lib/postgresql/data
 
   spring-fullstack:
     container_name: spring-fullstack
@@ -45,7 +45,7 @@ services:
 
 
 volumes:
-  postgresql-data:
+  spring-fullstack-db-data:
 networks:
   spring-postgres:
     driver: bridge
