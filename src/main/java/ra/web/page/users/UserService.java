@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
+@SuppressWarnings("UnnecessaryLocalVariable")
 @Service
 @RequiredArgsConstructor
 @Log4j2
@@ -60,7 +61,7 @@ public class UserService {
     }
 
     @Transactional
-    public User createUser(@NotNull UserCreateRequest dto) throws IOException {
+    public User createUser(@NotNull UserCreateRequest dto) {
         Optional<User> optionalUser = findUserByEmailIgnoreCase(dto.email().strip());
         if (optionalUser.isPresent()) {
             throw new EntityAlreadyExistsException("Email already in use");
@@ -78,10 +79,11 @@ public class UserService {
                 user.addRole(userRole);
             }
         }
-        if (dto.avatar() != null && dto.avatar().getOriginalFilename() != null) {
-            String newImagePath = MultiPartFileUtils.saveMultiPartImage(dto.avatar());
-            user.setAvatar(newImagePath);
-        }
+        // TODO: make file upload
+        //if (dto.avatar() != null && dto.avatar().getOriginalFilename() != null) {
+            //String newImagePath = MultiPartFileUtils.saveMultiPartImage(dto.avatar());
+            //user.setAvatar(newImagePath);
+        //}
         return userRepository.save(user);
     }
 
@@ -102,10 +104,11 @@ public class UserService {
                 user.addRole(userRole);
             }
         }
-        if (dto.avatar() != null && dto.avatar().getOriginalFilename() != null) {
-            String newImagePath = MultiPartFileUtils.saveMultiPartImage(dto.avatar());
-            user.setAvatar(newImagePath);
-        }
+        // TODO: save avatar
+//        if (dto.avatar() != null && dto.avatar().getOriginalFilename() != null) {
+//            String newImagePath = MultiPartFileUtils.saveMultiPartImage(dto.avatar());
+//            user.setAvatar(newImagePath);
+//        }
         return userRepository.save(user);
     }
 

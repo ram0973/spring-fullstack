@@ -39,11 +39,11 @@ public class User extends BaseEntity implements UserDetails {
 
     @Column(nullable = false)
     @NotBlank
-    @JsonIgnore
+    //@JsonIgnore
     private String password;
 
-    @Builder.Default
-    private boolean enabled = true;
+    //@Builder.Default
+    private boolean enabled;
 
     @JsonSerialize(using = RolesArraySerializer.class)
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)

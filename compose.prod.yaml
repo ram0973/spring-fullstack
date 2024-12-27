@@ -39,7 +39,8 @@ services:
     #  context: .
     #  dockerfile: ./Dockerfile
     depends_on:
-      - spring-fullstack-db
+      spring-fullstack-db:
+        condition: service_healthy
     networks:
       - spring-postgres
 
