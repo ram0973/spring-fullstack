@@ -23,6 +23,7 @@ import java.util.Set;
 public abstract class UserMapper {
     @Mapping(target = "roles", ignore = true)
     @Mapping(target = "avatar", ignore = true)//, qualifiedByName = "mapRolesStringsToEntities")
+    @Mapping(target = "password", ignore = true)//, qualifiedByName = "mapRolesStringsToEntities")
     public abstract User map(UserCreateRequest dto);
 
     public abstract UserResponse map(User user);

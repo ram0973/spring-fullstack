@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 public record UserResponse(
+    Integer id,
     String avatar,
     String email,
     boolean enabled,
