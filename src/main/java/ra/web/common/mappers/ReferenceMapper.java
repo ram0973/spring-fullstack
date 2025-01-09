@@ -16,6 +16,12 @@ import ra.web.common.entity.BaseEntity;
 public abstract class ReferenceMapper {
     @Autowired
     private EntityManager entityManager;
+    //Not working
+    //private final EntityManager entityManager;
+
+    public ReferenceMapper(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     public <T extends BaseEntity> T toEntity(Long id, @TargetType Class<T> entityClass) {
         return id != null ? entityManager.find(entityClass, id) : null;

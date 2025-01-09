@@ -50,6 +50,7 @@ public class SecurityConfig {
                 .requestMatchers("/error").permitAll()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .anyRequest().permitAll()
+                //.anyRequest().authenticated()
             )
             .csrf(AbstractHttpConfigurer::disable)
             .cors(Customizer.withDefaults())

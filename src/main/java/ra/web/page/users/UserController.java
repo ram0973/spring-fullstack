@@ -1,11 +1,13 @@
 package ra.web.page.users;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -32,10 +34,12 @@ public class UserController {
         @RequestParam(required = false) String email,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size,
-        @RequestParam(defaultValue = "id,desc") String[] sort
+        @RequestParam(defaultValue = "id,desc") String[] sort,
+        HttpServletResponse response
     ) {
-        UsersResponse usersResponse = userService.findAllPaged(page, size, sort);
-        return usersResponse;
+        UsersResponse responseBody = userService.findAllPaged(page, size, sort);
+        response.addHeader("X-Total-Count", String.valueOf(responseBody.users().size()));
+        return responseBody;
     }
 
     @GetMapping("/{id}")
@@ -70,8 +74,8 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public String deleteUser(@PathVariable("id") int id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable("id") int id) {
         userService.deleteUser(id);
-        return "Successfully deleted user with id: " + id;
     }
 }

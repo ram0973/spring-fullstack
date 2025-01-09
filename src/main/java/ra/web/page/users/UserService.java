@@ -79,7 +79,6 @@ public class UserService {
                 user.addRole(userRole);
             }
         }
-        // TODO: make file upload
         //if (dto.avatar() != null && dto.avatar().getOriginalFilename() != null) {
             //String newImagePath = MultiPartFileUtils.saveMultiPartImage(dto.avatar());
             //user.setAvatar(newImagePath);
@@ -104,7 +103,6 @@ public class UserService {
                 user.addRole(userRole);
             }
         }
-        // TODO: save avatar
 //        if (dto.avatar() != null && dto.avatar().getOriginalFilename() != null) {
 //            String newImagePath = MultiPartFileUtils.saveMultiPartImage(dto.avatar());
 //            user.setAvatar(newImagePath);

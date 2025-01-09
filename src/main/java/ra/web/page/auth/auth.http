@@ -1,0 +1,24 @@
+### Signup user
+POST http://localhost:8008/api/v1/auth/signup
+Content-Type: application/json
+
+{
+  "email": "gendalf-grandmother@white.com",
+  "password": "password"
+}
+
+### Login user
+POST http://localhost:8008/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "gendalf-grandmother@white.com",
+  "password": "password"
+}
+
+### Logout user
+POST http://localhost:8008/api/v1/auth/logout
+Content-Type: application/json
+
+### Get current logon user
+GET http://localhost:8008/api/v1/auth/me

@@ -14,13 +14,16 @@ import java.util.TimeZone;
 @UtilityClass
 public class MultiPartFileUtils {
 
+    // TODO: move to application properties ?
+    public static final String STATIC_UPLOAD_IMAGES_DIRECTORY = "static/upload/images";
+
     private static Path getResourceAsFile(String relativeFilePath) throws FileNotFoundException {
         return ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + relativeFilePath).toPath();
     }
 
-    // TODO: move to application properties
+
     public static String saveMultiPartImage(MultipartFile image) throws IOException {
-        Path root = getResourceAsFile("static/upload/images");
+        Path root = getResourceAsFile(STATIC_UPLOAD_IMAGES_DIRECTORY);
         String originalFileName = image.getOriginalFilename();
         assert originalFileName != null;
         String originalFileExtension = originalFileName.substring(originalFileName.lastIndexOf('.') + 1);

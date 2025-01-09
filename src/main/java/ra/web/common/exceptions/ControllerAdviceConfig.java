@@ -29,8 +29,11 @@ import java.util.List;
 public class ControllerAdviceConfig extends ResponseEntityExceptionHandler {
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, @NonNull HttpHeaders headers, @NonNull HttpStatusCode status, @NonNull WebRequest request) {
-        List<FieldViolation> fieldViolations = ex.getBindingResult().getFieldErrors().stream().map(o -> new FieldViolation(o.getField(), o.getDefaultMessage())).toList();
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+        @NonNull MethodArgumentNotValidException ex, @NonNull HttpHeaders headers, @NonNull HttpStatusCode status,
+        @NonNull WebRequest request) {
+        List<FieldViolation> fieldViolations = ex.getBindingResult().getFieldErrors().stream().map(
+            o -> new FieldViolation(o.getField(), o.getDefaultMessage())).toList();
         return new ResponseEntity<>(new ValidationExceptionResponseDto(getUrl(request), status, fieldViolations), status);
     }
 
@@ -91,6 +94,8 @@ public class ControllerAdviceConfig extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(new ApiExceptionResponseDto(getUrl(request), ex.getLocalizedMessage(),
             HttpStatus.UNPROCESSABLE_ENTITY), HttpStatus.UNPROCESSABLE_ENTITY);
     }
+
+    // TODO: catch import org.springframework.security.authentication.DisabledException;
 
     private String getUrl(WebRequest request) {
         return request.getDescription(false).replace("uri=", "");

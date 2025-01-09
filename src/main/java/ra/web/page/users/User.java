@@ -39,7 +39,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @Column(nullable = false)
     @NotBlank
-    //@JsonIgnore
+    @JsonIgnore
     private String password;
 
     //@Builder.Default
@@ -54,7 +54,7 @@ public class User extends BaseEntity implements UserDetails {
     )
     private Set<UserRole> roles;
 
-    @JsonIgnore
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (roles == null) {
             return new HashSet<>();

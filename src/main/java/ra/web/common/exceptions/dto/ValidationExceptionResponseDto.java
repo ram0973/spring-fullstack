@@ -23,9 +23,9 @@ public class ValidationExceptionResponseDto {
     List<FieldViolation> fieldViolations;
 
     public ValidationExceptionResponseDto(String path, HttpStatusCode status, List<FieldViolation> fieldViolations) {
-        this.path = path;
         this.status = status.value();
         this.desc = status.toString();
+        this.path = path;
         this.fieldViolations = fieldViolations;
     }
 }
