@@ -12,6 +12,11 @@ build:
 	APP_PROFILE=test; $(gradle) clean build
 
 test:
-	$(gradleTest)
+	$(gradle) test
+	$env:APP_PROFILE="test"; ./gradlew build
+
+checkstyle:
+	$(gradle) checkstyleMain
+	$(gradle) checkstyleTest
 
 .PHONY: test

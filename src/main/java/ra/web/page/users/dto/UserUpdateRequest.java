@@ -1,10 +1,8 @@
 package ra.web.page.users.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
-import org.springframework.web.multipart.MultipartFile;
 import ra.web.page.users.User;
 
 import java.util.List;

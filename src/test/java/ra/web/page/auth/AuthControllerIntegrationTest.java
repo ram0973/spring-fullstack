@@ -1,12 +1,10 @@
 package ra.web.page.auth;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
-import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,13 +18,14 @@ import ra.web.page.roles.UserRole;
 import ra.web.page.roles.UserRoleRepository;
 import ra.web.page.users.User;
 import ra.web.page.users.UserRepository;
-import ra.web.page.users.dto.UserCreateRequest;
-import ra.web.page.users.dto.UserUpdateRequest;
 
 import java.time.LocalDateTime;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.blankOrNullString;
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Log4j2
@@ -45,7 +44,7 @@ class AuthControllerIntegrationTest {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
@@ -141,6 +140,6 @@ class AuthControllerIntegrationTest {
             .then()
             //.contentType(ContentType.JSON)
             .statusCode(401);
-            //.body("email", equalTo("user1@test.com"));
+        //.body("email", equalTo("user1@test.com"));
     }
 }

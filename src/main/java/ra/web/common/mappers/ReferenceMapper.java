@@ -1,7 +1,6 @@
 package ra.web.common.mappers;
 
 import jakarta.persistence.EntityManager;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;

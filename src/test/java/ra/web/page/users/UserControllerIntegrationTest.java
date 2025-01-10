@@ -17,7 +17,10 @@ import ra.web.page.users.dto.UserCreateRequest;
 import ra.web.page.users.dto.UserUpdateRequest;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.blankOrNullString;
+import static org.hamcrest.Matchers.hasSize;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Log4j2
@@ -33,7 +36,7 @@ class UserControllerIntegrationTest {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {

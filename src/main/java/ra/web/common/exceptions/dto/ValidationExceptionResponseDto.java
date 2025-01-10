@@ -20,7 +20,7 @@ public class ValidationExceptionResponseDto {
     private final String path;
 
     @JsonProperty("validationErrors")
-    List<FieldViolation> fieldViolations;
+    private List<FieldViolation> fieldViolations;
 
     public ValidationExceptionResponseDto(String path, HttpStatusCode status, List<FieldViolation> fieldViolations) {
         this.status = status.value();

@@ -1,8 +1,21 @@
 package ra.web.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import lombok.*;
+
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
+import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.proxy.HibernateProxy;
 import org.springframework.data.annotation.CreatedBy;
@@ -44,11 +57,16 @@ public abstract class BaseEntity {
     @Column(insertable = false)
     private Integer lastModifiedBy;
 
-    //  https://jpa-buddy.com/blog/hopefully-the-final-article-about-equals-and-hashcode-for-jpa-entities-with-db-generated-ids/
+    //https://jpa-buddy.com/blog/
+    // hopefully-the-final-article-about-equals-and-hashcode-for-jpa-entities-with-db-generated-ids/
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getEffectiveClass(this) != getEffectiveClass(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getEffectiveClass(this) != getEffectiveClass(o)) {
+            return false;
+        }
         return getId() != null && getId().equals(((BaseEntity) o).getId());
     }
 
@@ -63,8 +81,10 @@ public abstract class BaseEntity {
     }
 
     public static Class<?> getEffectiveClass(Object o) {
-        return o instanceof HibernateProxy ?
-            ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() :
+        return o instanceof HibernateProxy
+            ?
+            ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass()
+            :
             o.getClass();
     }
 

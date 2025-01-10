@@ -69,6 +69,7 @@ Idea settings: search "encoding"
 File Encodings and Console: set UTF-8.
 
 Set: Auto Imports - unambiguous imports on the fly.
+Set: Editor - Code Style - Java - Imports - imports *: 10 items (both usual and static)
 
 Install plugins, as you wish:
 - EnvFile, and in the run settings choose .env file

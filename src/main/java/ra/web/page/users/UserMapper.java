@@ -2,7 +2,13 @@ package ra.web.page.users;
 
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 import ra.web.common.exceptions.NoSuchEntityException;
 import ra.web.common.mappers.JsonNullableMapper;
 import ra.web.common.mappers.ReferenceMapper;

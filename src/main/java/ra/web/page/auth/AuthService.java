@@ -1,14 +1,5 @@
 package ra.web.page.auth;
 
-import ra.web.common.exceptions.EntityAlreadyExistsException;
-import ra.web.common.exceptions.NoSuchEntityException;
-import ra.web.page.auth.dto.LoginRequest;
-import ra.web.page.auth.dto.SignupRequest;
-import ra.web.page.roles.UserRole;
-import ra.web.page.roles.UserRoleRepository;
-import ra.web.page.users.User;
-import ra.web.page.users.UserMapper;
-import ra.web.page.users.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +17,15 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ra.web.common.exceptions.EntityAlreadyExistsException;
+import ra.web.common.exceptions.NoSuchEntityException;
+import ra.web.page.auth.dto.LoginRequest;
+import ra.web.page.auth.dto.SignupRequest;
+import ra.web.page.roles.UserRole;
+import ra.web.page.roles.UserRoleRepository;
+import ra.web.page.users.User;
+import ra.web.page.users.UserMapper;
+import ra.web.page.users.UserRepository;
 
 import java.util.Locale;
 import java.util.Optional;
