@@ -92,7 +92,7 @@ export const PostsTable = () => {
             ),
             filtering: query !== '',
           },
-          {accessor: 'category', render: (item) => item.category?.title, sortable: true},
+          // {accessor: 'category', render: (item) => item.category?.title, sortable: true},
           {accessor: 'image', render: (item) => (<Image src={item.image} h={50} w="auto" fit="contain" />)},
           {
             accessor: 'enabled', sortable: true, render: (item) => (

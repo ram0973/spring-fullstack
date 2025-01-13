@@ -3,39 +3,9 @@ import React from 'react';
 import {IconEdit, IconEye, IconTrash} from "@tabler/icons-react";
 import {Link} from "react-router-dom";
 import {modals} from "@mantine/modals";
-import {axiosInstance} from "@/common/axios/axiosInstance.ts";
-import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {notifications} from "@mantine/notifications";
-import {AxiosError} from "axios";
+import {useDeletePostMutation} from "@/pages/posts/table/useDeletePost.ts";
 
 const RowActions = ({item}) => {
-  const deletePostApi = async (id: number) => {
-    return await axiosInstance.delete(`/api/v1/posts/${id}`)
-  }
-
-  const useDeletePostMutation = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-      mutationKey: ['deletePost'],
-      mutationFn: deletePostApi,
-      onSuccess: () => {
-        queryClient.invalidateQueries({queryKey: ["posts"]}).catch((error) => console.log(error));
-        console.info("Deleted post");
-        notifications.show({
-          title: 'Success',
-          message: 'Post deleted',
-        })
-      },
-      onError: (error: AxiosError) => {
-        console.log(error);
-        notifications.show({
-          color: 'red',
-          title: 'Error',
-          message: error.response?.data?.message,
-        })
-      }
-    });
-  }
 
   const deletePostMutation = useDeletePostMutation();
 
@@ -43,7 +13,7 @@ const RowActions = ({item}) => {
     title: 'Please confirm your action',
     children: (
       <Text size="sm">
-        Are you sure to delete post with title: {item.title} ?<br/>
+        Are you sure to delete post with title:<br/> {item.title} ?<br/>
         All posts of this user will also deleted.
       </Text>
     ),

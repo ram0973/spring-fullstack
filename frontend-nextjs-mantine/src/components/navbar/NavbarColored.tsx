@@ -15,11 +15,11 @@ import {Link} from "react-router-dom";
 
 const data = [
   {link: '/admin/users', label: 'Users', icon: IconFingerprint},
-  {link: '/admin/roles/', label: 'Roles', icon: IconKey},
+  // {link: '/admin/roles/', label: 'Roles', icon: IconKey},
   {link: '/admin/posts', label: 'Posts', icon: IconEdit},
-  {link: '/admin/posts-categories', label: 'Categories', icon: IconCategory},
-  {link: '/admin/posts-tags', label: 'Tags', icon: IconTag},
-  {link: '/admin/posts-comments', label: 'Comments', icon: IconNotes}
+  // {link: '/admin/posts-categories', label: 'Categories', icon: IconCategory},
+  // {link: '/admin/posts-tags', label: 'Tags', icon: IconTag},
+  // {link: '/admin/posts-comments', label: 'Comments', icon: IconNotes}
   /*{link: '/admin/settings', label: 'Settings', icon: IconSettings},*/
 ];
 

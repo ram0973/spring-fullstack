@@ -42,7 +42,7 @@ import {useGetCategories} from "@/pages/posts/update/useGetCategories.ts";
 import {notifications} from "@mantine/notifications";
 
 export const UpdatePost = () => {
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  //const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const updatePostMutation = useUpdatePost()
   const errorData = (updatePostMutation.error as AxiosError)?.response?.data as AxiosErrorResponseDto // TODO: Use or remove
@@ -50,8 +50,8 @@ export const UpdatePost = () => {
 
   const {id} = useParams();
   const post: Post = useGetPost(id).data;
-  const tags = useGetTags().data?.postTags.map(item => item.title);
-  const categories = useGetCategories().data?.postCategories.map(item => item.title);
+  //const tags = useGetTags().data?.postTags.map(item => item.title);
+  //const categories = useGetCategories().data?.postCategories.map(item => item.title);
 
   const lowlight = createLowlight();
   lowlight.register({ts});
@@ -74,7 +74,7 @@ export const UpdatePost = () => {
     const formData = form.getValues();
     // TODO: convert to DTO
     // @ts-ignore
-    formData['tags'] = ([].concat(selectedTags)).toString();
+    //formData['tags'] = ([].concat(selectedTags)).toString();
 
     //formData['content'] = content;
 
@@ -110,9 +110,9 @@ export const UpdatePost = () => {
     form.setValues(post);
     form.setFieldValue('image', null);
     form.setFieldValue('category', post?.category?.title);
-    setSelectedTags(post?.tags);
+    //setSelectedTags(post?.tags);
     form.resetDirty(post);
-  }, [post, tags, categories]);
+  }, [post]);//, tags, categories]);
 
   const items = [
     {title: 'Posts', href: '/admin/posts'},
@@ -200,13 +200,13 @@ export const UpdatePost = () => {
                 <RichTextEditor.Content/>
               </RichTextEditor>
             </Input.Wrapper>
-            <TagsInput
-              label="Post tags"
-              placeholder="Pick value or enter anything"
-              data={tags}
-              comboboxProps={{position: 'top', middlewares: {flip: false, shift: false}}}
-              value={selectedTags}
-              onChange={event => setSelectedTags(event)}/>
+            {/*<TagsInput*/}
+            {/*  label="Post tags"*/}
+            {/*  placeholder="Pick value or enter anything"*/}
+            {/*  data={tags}*/}
+            {/*  comboboxProps={{position: 'top', middlewares: {flip: false, shift: false}}}*/}
+            {/*  value={selectedTags}*/}
+            {/*  onChange={event => setSelectedTags(event)}/>*/}
             <Switch {...form.getInputProps('enabled', {type: 'checkbox'})} key={form.key('enabled')}
                     label="Enabled" onLabel="ON" offLabel="OFF" mt={"md"}/>
             <Button type={"submit"} mt="xl" key={"button"}>Update</Button>

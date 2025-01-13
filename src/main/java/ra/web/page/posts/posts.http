@@ -1,0 +1,35 @@
+### Get Posts
+GET http://localhost:8008/api/v1/posts
+
+### Get 1 Post
+GET http://localhost:8008/api/v1/posts/1
+
+### Create 1 Post
+POST http://localhost:8008/api/v1/posts
+Content-Type: application/json
+
+{
+  "title": "Post 1 Title",
+  "slug": "post-1-slug",
+  "excerpt":  "post excerpt",
+  "content":  "post content",
+  "image":  "",
+  "enabled":  true
+}
+
+### Update 1 Post
+PATCH http://localhost:8008/api/v1/posts/1
+Content-Type: application/json
+
+{
+  "title": "Post 1 Title changed",
+  "slug": "post-1-slug-changed",
+  "excerpt":  "post excerpt changed",
+  "content":  "post content changed",
+  "image":  "",
+  "enabled":  true
+}
+
+### Delete 1 Post
+DELETE http://localhost:8008/api/v1/posts/1
+
