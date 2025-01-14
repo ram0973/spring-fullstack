@@ -6,7 +6,8 @@ import {notifications} from "@mantine/notifications";
 
 const updatePostApi = (post: z.infer<typeof postUpdateSchema>) => {
   return axiosInstance.patch(`/api/v1/posts/${post.id}`, post,
-    {headers: {"Content-type": "multipart/form-data",},}
+    //{headers: {"Content-type": "multipart/form-data",},}
+    {headers: {"Content-type": "application/json",},}
   )
 }
 

@@ -28,18 +28,15 @@ import {useGetPost} from "@/pages/posts/view/useGetPost.ts";
 import {Post} from "@/pages/posts";
 import {useUpdatePost} from "@/pages/posts/update/useUpdatePost.ts";
 import '@mantine/code-highlight/styles.css';
-import '@mantine/tiptap/styles.css';
-import {useEditor} from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import {Underline} from "@tiptap/extension-underline";
-import TextAlign from '@tiptap/extension-text-align';
-import {RichTextEditor} from '@mantine/tiptap';
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
-import {createLowlight} from 'lowlight';
-import ts from 'highlight.js/lib/languages/typescript';
-import {useGetTags} from "@/pages/posts/update/useGetTags.ts";
-import {useGetCategories} from "@/pages/posts/update/useGetCategories.ts";
 import {notifications} from "@mantine/notifications";
+import {
+  headingsPlugin,
+  listsPlugin,
+  MDXEditor,
+  MDXEditorMethods,
+  quotePlugin,
+  thematicBreakPlugin
+} from "@mdxeditor/editor";
 
 export const UpdatePost = () => {
   //const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -50,28 +47,20 @@ export const UpdatePost = () => {
 
   const {id} = useParams();
   const post: Post = useGetPost(id).data;
+
   //const tags = useGetTags().data?.postTags.map(item => item.title);
   //const categories = useGetCategories().data?.postCategories.map(item => item.title);
 
-  const lowlight = createLowlight();
-  lowlight.register({ts});
-
-  const editor = useEditor({
-    extensions: [
-      StarterKit.configure({ codeBlock: false }),
-      Underline,
-      //Link, // TODO: import link with full names
-      TextAlign.configure({types: ['heading', 'paragraph']}),
-      CodeBlockLowlight.configure({lowlight}),
-    ],
-    content: post?.content,
-  });
 
   const onSubmitHandler = async () => {
     //event.preventDefault();
 
-    form.setFieldValue("content", editor.getHTML());
+    //form.setFieldValue("content", editorRef);
     const formData = form.getValues();
+    if (editorRef.current) {
+      //formData['content'] = markdownContent;
+      form.setFieldValue("content", editorRef.current.getMarkdown());
+    }
     // TODO: convert to DTO
     // @ts-ignore
     //formData['tags'] = ([].concat(selectedTags)).toString();
@@ -109,10 +98,10 @@ export const UpdatePost = () => {
   useEffect(() => {
     form.setValues(post);
     form.setFieldValue('image', null);
-    form.setFieldValue('category', post?.category?.title);
+    //form.setFieldValue('category', post?.category?.title);
     //setSelectedTags(post?.tags);
     form.resetDirty(post);
-  }, [post]);//, tags, categories]);
+  }, [post]);//n dev, tags, categories]);
 
   const items = [
     {title: 'Posts', href: '/admin/posts'},
@@ -122,6 +111,7 @@ export const UpdatePost = () => {
   ));
 
   //const [content, setContent] = useState<string>("");
+  const editorRef = React.useRef<MDXEditorMethods>(null)
 
   return (
     <>
@@ -136,10 +126,10 @@ export const UpdatePost = () => {
                        label="Title" placeholder="Title"/>
             <TextInput {...form.getInputProps('slug')} key={form.key('slug')}
                        label="Slug" placeholder="Slug"/>
-            <Select {...form.getInputProps('category')} key={form.key('category')}
-                    label="Category"
-                    placeholder="Pick value"
-                    data={categories}/>
+            {/*<Select {...form.getInputProps('category')} key={form.key('category')}*/}
+            {/*        label="Category"*/}
+            {/*        placeholder="Pick value"*/}
+            {/*        data={categories}/>*/}
             <Group grow>
               {post?.image && (<Image src={post?.image} h={75} w="auto" fit="contain" mt={10}/>)}
               <FileInput {...form.getInputProps('image')} key={form.key('image')}
@@ -149,56 +139,7 @@ export const UpdatePost = () => {
             <Textarea {...form.getInputProps('excerpt')} key={form.key('excerpt')}
                       autosize resize="vertical" minRows={2} label="Post excerpt" placeholder="Post excerpt"/>
             <Input.Wrapper withAsterisk label="Post content">
-              <RichTextEditor editor={editor} mih={200} {...form.getInputProps('content')} key={form.key('content')}>
-                <RichTextEditor.Toolbar sticky stickyOffset={60}>
-                  <RichTextEditor.ControlsGroup>
-                    <RichTextEditor.Bold/>
-                    <RichTextEditor.Italic/>
-                    <RichTextEditor.Underline/>
-                    <RichTextEditor.Strikethrough/>
-                    <RichTextEditor.ClearFormatting/>
-                  </RichTextEditor.ControlsGroup>
-
-                  <RichTextEditor.ControlsGroup>
-                    <RichTextEditor.H1/>
-                    <RichTextEditor.H2/>
-                    <RichTextEditor.H3/>
-                    <RichTextEditor.H4/>
-                  </RichTextEditor.ControlsGroup>
-
-                  <RichTextEditor.ControlsGroup>
-                    <RichTextEditor.Blockquote/>
-                    <RichTextEditor.Hr/>
-                    <RichTextEditor.BulletList/>
-                    <RichTextEditor.OrderedList/>
-                    <RichTextEditor.Subscript/>
-                    <RichTextEditor.Superscript/>
-                  </RichTextEditor.ControlsGroup>
-
-                  <RichTextEditor.ControlsGroup>
-                    <RichTextEditor.Link/>
-                    <RichTextEditor.Unlink/>
-                  </RichTextEditor.ControlsGroup>
-
-                  <RichTextEditor.ControlsGroup>
-                    <RichTextEditor.AlignLeft/>
-                    <RichTextEditor.AlignCenter/>
-                    <RichTextEditor.AlignJustify/>
-                    <RichTextEditor.AlignRight/>
-                  </RichTextEditor.ControlsGroup>
-
-                  <RichTextEditor.ControlsGroup>
-                    <RichTextEditor.Undo/>
-                    <RichTextEditor.Redo/>
-                  </RichTextEditor.ControlsGroup>
-
-                  <RichTextEditor.ControlsGroup>
-                    <RichTextEditor.CodeBlock/>
-                  </RichTextEditor.ControlsGroup>
-                </RichTextEditor.Toolbar>
-
-                <RichTextEditor.Content/>
-              </RichTextEditor>
+              <MDXEditor ref={editorRef} markdown="" plugins={[headingsPlugin(), listsPlugin(), quotePlugin(), thematicBreakPlugin()]} />
             </Input.Wrapper>
             {/*<TagsInput*/}
             {/*  label="Post tags"*/}

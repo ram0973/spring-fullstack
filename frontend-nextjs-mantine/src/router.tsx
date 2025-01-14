@@ -10,10 +10,10 @@ import {CreateUser} from "@/pages/users/create/CreateUser";
 import {UpdateUser} from "@/pages/users/update/UpdateUser";
 import {Signup} from "@/pages/auth/signup/Signup.tsx";
 import {PostsTable} from "@/pages/posts/table/PostsTable.tsx";
-import {UpdatePost} from "@/pages/posts/update/UpdatePost.tsx";
 
 
 import {CreatePostWithBlockNote} from "@/pages/posts/create/CreatePostWithBlockNote.tsx";
+import {UpdatePost} from "@/pages/posts/update/UpdatePost.tsx";
 
 export const router = createBrowserRouter(
   [

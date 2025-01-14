@@ -5,6 +5,7 @@ const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/web
 
 export const postUpdateSchema = z
   .object({
+    id: z.number(),
     title: z.string(),
     slug: z.string(),
     category: z.string().nullable().optional(),
