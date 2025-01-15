@@ -3,6 +3,9 @@ app:
     email: "gendalf-dev-admin@white.com"
 server:
   port: 8008
+  servlet:
+    session:
+      timeout: 1800
 spring:
   application:
     name: web-dev

@@ -48,9 +48,11 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(o -> o
                     .requestMatchers("/error").permitAll()
+                    .requestMatchers("/api/v1/auth/**").permitAll()
                     .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                    .anyRequest().permitAll()
-                //.anyRequest().authenticated()
+
+                    .anyRequest().authenticated()
+                //.anyRequest().permitAll()
             )
             .csrf(AbstractHttpConfigurer::disable)
             .cors(Customizer.withDefaults())

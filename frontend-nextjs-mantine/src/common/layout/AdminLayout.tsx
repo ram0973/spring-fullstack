@@ -6,7 +6,7 @@ import {NavbarColored} from '@/components/navbar/NavbarColored.tsx'
 import {Header} from "@/components/header/Header.tsx";
 
 export const AdminLayout = () => {
-  const [opened, { toggle }] = useDisclosure();
+  const [opened, /*{ toggle }*/] = useDisclosure();
 
   return (
     <AppShell

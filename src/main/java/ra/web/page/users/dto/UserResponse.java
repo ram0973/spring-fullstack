@@ -13,7 +13,6 @@ public record UserResponse(
     boolean enabled,
     String firstName,
     String lastName,
-    String password,
     @JsonSerialize(using = RolesArraySerializer.class)
     List<UserRole> roles) {
 }

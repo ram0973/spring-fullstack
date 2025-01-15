@@ -34,7 +34,7 @@ export const Signup = () => {
           </Link>
         </Group>
         <Button fullWidth mt="xl">
-          Sign in
+          Sign up
         </Button>
       </Paper>
     </Container>

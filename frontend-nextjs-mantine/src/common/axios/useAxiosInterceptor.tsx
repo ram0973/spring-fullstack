@@ -1,8 +1,8 @@
 import React from 'react';
 import {axiosInstance} from "./axiosInstance.ts";
-import {router} from "@/router.tsx";
 import {useLocation} from "react-router-dom";
 import {useAuthContext} from "@/common/context/useAuthContext.tsx";
+import {router} from "@/router.tsx";
 
 // hook for intercepting api requests
 export const useAxiosInterceptor = function () {
@@ -15,23 +15,21 @@ export const useAxiosInterceptor = function () {
         //console.log(res);
         if (!res.data) {
           authContext.user = null;
-          //setItemToLocalStorage("webapp.auth", {});
-          //router.navigate("/login").then();
+          router.navigate("/login").then();
         }
       });
-    // const authInterceptor = axiosInstance.interceptors.response.use(
-    //   function (response) {
-    //     return response;
-    //   }, function (error) {
-    //     // if (authContext.person && error.response.status == 401) {
-    //     //   authContext.person = null;
-    //     //   setItemToLocalStorage("webapp.auth", {});
-    //     //   router.navigate("/login").then();
-    //     // }
-    //     return Promise.reject(error);
-    //   });
-    // return () => {
-    //   axiosInstance.interceptors.response.eject(authInterceptor); // remove interceptor on dismount/auth change
-    // };
+    const authInterceptor = axiosInstance.interceptors.response.use(
+      function (response) {
+        return response;
+      }, function (error) {
+        if (authContext.user.email && error.response.status == 401) {
+          authContext.user = null;
+          router.navigate("/login").then();
+        }
+        return Promise.reject(error);
+      });
+    return () => {
+      axiosInstance.interceptors.response.eject(authInterceptor); // remove interceptor on dismount/auth change
+    };
   }, [authContext, location]); // run if user changes
 };

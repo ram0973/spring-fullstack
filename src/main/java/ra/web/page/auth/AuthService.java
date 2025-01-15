@@ -1,8 +1,11 @@
 package ra.web.page.auth;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,7 +29,9 @@ import ra.web.page.roles.UserRoleRepository;
 import ra.web.page.users.User;
 import ra.web.page.users.UserMapper;
 import ra.web.page.users.UserRepository;
+import ra.web.page.users.dto.UserResponse;
 
+import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -44,8 +49,13 @@ public class AuthService {
     private final AuthMapper authMapper;
     private final UserMapper userMapper;
 
+    private final int COOKIE_PERIOD_PERMANENT = 180 * 24 * 60 * 60; // пол года в секундах
+
     @Value("${app.admin.email}")
     private String adminEmail;
+
+    @Value("${server.servlet.session.timeout}")
+    private int defaultSessionTimeout;
 
     @Transactional
     public User signup(@NonNull SignupRequest dto) {
@@ -73,7 +83,7 @@ public class AuthService {
         return user;
     }
 
-    public Authentication login(LoginRequest dto, HttpServletRequest request, HttpServletResponse response) {
+    public UserResponse login(LoginRequest dto, HttpServletRequest request, HttpServletResponse response) {
         UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.unauthenticated(
             dto.email().strip(), dto.password());
         Authentication authentication = this.authManager.authenticate(token);
@@ -84,7 +94,40 @@ public class AuthService {
         context.setAuthentication(authentication);
         this.securityContextHolderStrategy.setContext(context);
         this.securityContextRepository.saveContext(context, request, response);
-        return authentication;
+
+        // Устанавливаем срок действия сессии
+        HttpSession session = request.getSession(true);
+        if (dto.rememberMe() != null && dto.rememberMe()) {
+            // Если выбрано "Запомнить меня", устанавливаем срок действия на год
+            session.setMaxInactiveInterval(COOKIE_PERIOD_PERMANENT); // 1 год в секундах
+        } else {
+            session.setMaxInactiveInterval(defaultSessionTimeout);
+        }
+
+        session.setAttribute("IPAddress", request.getRemoteAddr());
+        session.setAttribute("UserAgent", request.getHeader("User-Agent"));
+
+        // Настраиваем куку JSESSIONID
+        Cookie cookie = new Cookie("JSESSIONID", session.getId());
+        cookie.setPath("/"); // Путь куки
+        cookie.setHttpOnly(true); // Защита от XSS
+        cookie.setSecure(request.isSecure()); // Только для HTTPS (если используется)
+
+        // Устанавливаем срок действия куки
+        if (dto.rememberMe() != null && dto.rememberMe()) {
+            cookie.setMaxAge(COOKIE_PERIOD_PERMANENT); // 1 год в секундах
+        } else {
+            cookie.setMaxAge(-1); // Кука будет удалена при закрытии браузера
+        }
+
+        // Добавляем куку в ответ
+        response.addCookie(cookie);
+
+        String email = authentication.getName();
+        User user = userRepository.findByEmailIgnoreCase(email)
+            .orElseThrow(() -> new NoSuchEntityException("User does not exist"));
+        UserResponse userResponse = userMapper.map(user);
+        return userResponse;
     }
 
     public void logout(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
@@ -93,5 +136,13 @@ public class AuthService {
         this.logoutHandler.setSecurityContextHolderStrategy(securityContextHolderStrategy);
         this.logoutHandler.setSecurityContextRepository(securityContextRepository);
         this.logoutHandler.logout(request, response, authentication);
+
+        HttpSession session = request.getSession(true);
+        Cookie cookie = new Cookie("JSESSIONID", session.getId());
+        cookie.setPath("/"); // Путь куки
+        cookie.setHttpOnly(true); // Защита от XSS
+        cookie.setSecure(request.isSecure()); // Только для HTTPS (если используется)
+        cookie.setMaxAge(0); // удалить вообще
+        response.addCookie(cookie);
     }
 }

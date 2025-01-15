@@ -7,9 +7,7 @@ import {
   Image,
   Input,
   Paper,
-  Select,
   Switch,
-  TagsInput,
   Text,
   Textarea,
   TextInput,
@@ -17,7 +15,7 @@ import {
 } from '@mantine/core';
 import {Link, useNavigate, useParams} from 'react-router-dom';
 import classes from "@/pages/posts/update/UpdatePost.module.css";
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useForm} from '@mantine/form';
 import {AxiosError} from "axios";
 import {AxiosErrorResponseDto} from "@/common/axios/AxiosErrorResponseDto.ts";
@@ -41,33 +39,29 @@ import {
 export const UpdatePost = () => {
   //const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-  const updatePostMutation = useUpdatePost()
-  const errorData = (updatePostMutation.error as AxiosError)?.response?.data as AxiosErrorResponseDto // TODO: Use or remove
+  const updatePostMutation = useUpdatePost();
+  // TODO: Use or remove
+  const errorData = (updatePostMutation.error as AxiosError)?.response?.data as AxiosErrorResponseDto;
+
   const navigate = useNavigate();
 
   const {id} = useParams();
   const post: Post = useGetPost(id).data;
-
+  const editorRef = React.useRef<MDXEditorMethods>(null);
   //const tags = useGetTags().data?.postTags.map(item => item.title);
   //const categories = useGetCategories().data?.postCategories.map(item => item.title);
 
-
   const onSubmitHandler = async () => {
-    //event.preventDefault();
+    // TODO: is prevent default here?
 
     //form.setFieldValue("content", editorRef);
     const formData = form.getValues();
-    if (editorRef.current) {
-      //formData['content'] = markdownContent;
-      form.setFieldValue("content", editorRef.current.getMarkdown());
-    }
     // TODO: convert to DTO
     // @ts-ignore
     //formData['tags'] = ([].concat(selectedTags)).toString();
 
-    //formData['content'] = content;
+    formData['content'] = editorRef?.current?.getMarkdown();
 
-    console.log(formData);
     const response = updatePostMutation.mutateAsync(formData)
       .catch(
         (error) => {
@@ -82,7 +76,6 @@ export const UpdatePost = () => {
       )
     //navigate(`/admin/posts/view/${response.data?.id}`);
     // TODO: server validation, handle errors
-    console.log(formData);
     navigate('/admin/posts');
   }
 
@@ -96,11 +89,17 @@ export const UpdatePost = () => {
   );
 
   useEffect(() => {
-    form.setValues(post);
-    form.setFieldValue('image', null);
+    if (post) {
+      form.setValues(post);
+      form.setFieldValue('image', null);
+      editorRef.current?.setMarkdown(post.content); // Обновляем состояние содержимого редактора
+      form.resetDirty(post);
+    }
     //form.setFieldValue('category', post?.category?.title);
     //setSelectedTags(post?.tags);
-    form.resetDirty(post);
+    //form.setFieldValue('content', post?.content)
+    //editorRef?.current?.setMarkdown(post?.content)
+    //form.resetDirty(post);
   }, [post]);//n dev, tags, categories]);
 
   const items = [
@@ -111,7 +110,6 @@ export const UpdatePost = () => {
   ));
 
   //const [content, setContent] = useState<string>("");
-  const editorRef = React.useRef<MDXEditorMethods>(null)
 
   return (
     <>
@@ -132,14 +130,19 @@ export const UpdatePost = () => {
             {/*        data={categories}/>*/}
             <Group grow>
               {post?.image && (<Image src={post?.image} h={75} w="auto" fit="contain" mt={10}/>)}
-              <FileInput {...form.getInputProps('image')} key={form.key('image')}
-                         accept="image/png,image/jpeg,image/webp"
-                         clearable label="Post image" placeholder="Upload post image file"/>
+              <TextInput {...form.getInputProps('image')} key={form.key('image')}
+                         label="Image" placeholder="Image"/>
+              {/*<FileInput {...form.getInputProps('image')} key={form.key('image')}*/}
+              {/*           accept="image/png,image/jpeg,image/webp"*/}
+              {/*           clearable label="Post image" placeholder="Upload post image file"/>*/}
             </Group>
             <Textarea {...form.getInputProps('excerpt')} key={form.key('excerpt')}
                       autosize resize="vertical" minRows={2} label="Post excerpt" placeholder="Post excerpt"/>
             <Input.Wrapper withAsterisk label="Post content">
-              <MDXEditor ref={editorRef} markdown="" plugins={[headingsPlugin(), listsPlugin(), quotePlugin(), thematicBreakPlugin()]} />
+              <MDXEditor ref={editorRef}
+                         markdown={post?.content ?? ""} // Используем состояние для содержимого
+                         //onChange={setEditorContent}
+                         plugins={[headingsPlugin(), listsPlugin(), quotePlugin(), thematicBreakPlugin()]}/>
             </Input.Wrapper>
             {/*<TagsInput*/}
             {/*  label="Post tags"*/}

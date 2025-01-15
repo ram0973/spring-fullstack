@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -34,7 +35,7 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("")
-    //@PreAuthorize("hasRole('ADMIN')") // TODO: add front page methods and dto?
+    @PreAuthorize("hasRole('ADMIN')") // TODO: add front page methods and dto?
     public PagedPostsResponse getPosts(
         @RequestParam(required = false) String title, // TODO: search by title
         @RequestParam(defaultValue = "0") int page,

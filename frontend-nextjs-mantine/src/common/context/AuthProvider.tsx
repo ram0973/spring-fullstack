@@ -1,5 +1,5 @@
 import React, {PropsWithChildren, useMemo, useState} from "react";
-import {AuthContext} from "./AuthContext.tsx";
+import {authContext} from "./AuthContext.tsx";
 
 export const AuthProvider: React.FC<PropsWithChildren> = ({children}) => {
   const [user, setUser] = useState({});
@@ -22,8 +22,8 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({children}) => {
   );
 
   return (
-    <AuthContext.Provider value={value}>
+    <authContext.Provider value={value}>
       {children}
-    </AuthContext.Provider>
+    </authContext.Provider>
   );
 }
