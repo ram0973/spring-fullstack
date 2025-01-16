@@ -37,5 +37,5 @@ export const useAxiosInterceptor = function () {
     return () => {
       axiosInstance.interceptors.response.eject(authInterceptor); // remove interceptor on dismount/auth change
     };
-  }, []);
+  }, [location]);
 };

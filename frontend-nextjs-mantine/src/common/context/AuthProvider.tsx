@@ -3,7 +3,6 @@ import {authContext} from "./AuthContext.tsx";
 
 export const AuthProvider: React.FC<PropsWithChildren> = ({children}) => {
   const [user, setUser] = useState({});
-  const [isRedirected, setIsRedirected] = useState(false);
 
   const login = React.useCallback((data: object) => {
     setUser(data);
@@ -13,24 +12,13 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({children}) => {
     setUser({});
   }, [setUser]);
 
-  const setRedirect = React.useCallback(() => {
-    setIsRedirected(true);
-  }, [isRedirected]);
-
-  const clearRedirect = React.useCallback(() => {
-    setIsRedirected(false);
-  }, [isRedirected]);
-
   const value = useMemo(
     () => ({
       user: user,
-      isRedirected: isRedirected,
       login,
       logout,
-      setRedirect,
-      clearRedirect
     }),
-    [login, logout, user, isRedirected, clearRedirect, setRedirect]
+    [login, logout, user]
   );
 
   return (
