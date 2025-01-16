@@ -8,6 +8,7 @@ export default defineConfig({
     alias: {
       '@': '/src',
       // /esm/icons/index.mjs only exports the icons statically, so no separate chunks are created
+      // without this line project fires thousands requests to tabler icons
       '@tabler/icons-react': '@tabler/icons-react/dist/esm/icons/index.mjs',
     }
   },
