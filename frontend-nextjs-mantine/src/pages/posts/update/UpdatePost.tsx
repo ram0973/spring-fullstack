@@ -46,6 +46,7 @@ export const UpdatePost = () => {
   const navigate = useNavigate();
 
   const {id} = useParams();
+  //TODO: use await? here
   const post: Post = useGetPost(id).data;
   const editorRef = React.useRef<MDXEditorMethods>(null);
   //const tags = useGetTags().data?.postTags.map(item => item.title);

@@ -16,7 +16,7 @@ import {
 import {useDisclosure} from '@mantine/hooks';
 import {IconChevronDown,} from '@tabler/icons-react';
 import classes from './Header.module.css';
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {useContext} from "react";
 import {authContext} from "@/common/context/AuthContext.tsx";
 import {useLogout} from "@/pages/auth/logout/useLogout.ts"
@@ -28,7 +28,7 @@ export const Header = () => {
   const [linksOpened, {toggle: toggleLinks}] = useDisclosure(false);
   const theme = useMantineTheme();
   const logoutMutation = useLogout();
-
+  const location = useLocation();
   const onLogoutHandler = async () => {
     const response = await logoutMutation.mutateAsync();
     if (response?.status == 204) {

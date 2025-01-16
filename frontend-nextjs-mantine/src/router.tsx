@@ -1,7 +1,7 @@
 import {createBrowserRouter} from "react-router-dom";
 import {FrontLayout} from "@/common/layout/FrontLayout.tsx";
 import {ErrorPage} from "@/common/layout/ErrorPage.tsx";
-import {ProtectedRoute} from "@/common/layout/ProtectedRoute.tsx";
+import {ProtectedRoute} from "@/common/layout/protectedRoute/ProtectedRoute.tsx";
 import {AdminLayout} from "@/common/layout/AdminLayout.tsx";
 import {Login} from "@/pages/auth/login/Login.tsx";
 import {ForgotPassword} from "@/pages/auth/forgot-password/ForgotPassword.tsx";
@@ -119,5 +119,7 @@ export const router = createBrowserRouter(
   {
     future: {
       v7_relativeSplatPath: true,
+
     },
-  });
+  }
+);

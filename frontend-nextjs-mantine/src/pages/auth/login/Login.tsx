@@ -1,6 +1,6 @@
 import {Anchor, Button, Container, Group, Paper, PasswordInput, Switch, Text, TextInput, Title} from '@mantine/core';
 import classes from './Login.module.css';
-import {Link} from 'react-router-dom';
+import {Link, useLocation, useNavigate} from 'react-router-dom';
 import {useForm} from "@mantine/form";
 import z from "zod";
 import {zodResolver} from "mantine-form-zod-resolver";
@@ -8,7 +8,7 @@ import {loginSchema} from "@/pages/auth/login/zod.ts";
 import {useLogin} from "@/pages/auth/login/useLogin.ts";
 import {authContext} from "@/common/context/AuthContext.tsx";
 import {User} from "@/pages/users";
-import {useContext} from "react";
+import {useContext, useState} from "react";
 
 export function Login() {
   const loginMutation = useLogin();
@@ -18,15 +18,29 @@ export function Login() {
     validateInputOnChange: true,
   });
   const context = useContext(authContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [checked, setChecked] = useState(true);
 
   const onSubmitHandler = async () => {
     const formData = form.getValues();
+    formData['rememberMe'] = checked;
     const response = await loginMutation.mutateAsync(formData);
-    console.log(response);
     if (response.status == 200) {
-      context?.login(response.data as User)
+      context?.login(response.data as User);
+      const from = location?.state?.from || '/';
+      navigate(from, { replace: true });
     }
-    console.log(context)
+    // if (response.status == 200) {
+    //   context?.login(response.data as User)
+    //   if (context?.isRedirected) {
+    //     navigate("/")
+    //     // context.clearRedirect();
+    //     // navigate(-1);
+    //   } else {
+    //     navigate("/")
+    //   }
+    // }
     //navigate(`/admin/users/view/${response.data?.id}`);
     // TODO: server validation
   }
@@ -54,6 +68,8 @@ export function Login() {
                     defaultChecked
                     label="Remember me"
                     onLabel="ON" offLabel="OFF"
+                    checked={checked}
+                    onChange={(event) => setChecked(event.currentTarget.checked)}
             />
             <Link to={"/forgot-password"}>
               <Anchor component="button" size="sm">
@@ -61,6 +77,7 @@ export function Login() {
               </Anchor>
             </Link>
           </Group>
+
           <Button type={"submit"} fullWidth mt="xl">
             Sign in
           </Button>

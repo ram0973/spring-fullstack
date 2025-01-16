@@ -1,6 +1,6 @@
 import React from 'react';
 import {axiosInstance} from "./axiosInstance.ts";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {useAuthContext} from "@/common/context/useAuthContext.tsx";
 import {router} from "@/router.tsx";
 
@@ -8,23 +8,24 @@ import {router} from "@/router.tsx";
 export const useAxiosInterceptor = function () {
   const authContext = useAuthContext();
   const location = useLocation();
+  const navigate = useNavigate();
   //TODO: do it in router on page change
   React.useEffect(() => {
     axiosInstance.get('/api/v1/auth/me')
       .then(res => {
         //console.log(res);
         if (!res.data) {
-          authContext.user = null;
-          router.navigate("/login").then();
+          authContext.logout();
+          navigate('/login', { state: { from: location }, replace: true }); // Редирект с состоянием
         }
       });
     const authInterceptor = axiosInstance.interceptors.response.use(
       function (response) {
         return response;
       }, function (error) {
-        if (authContext.user.email && error.response.status == 401) {
+        if (error.response.status === 401) {
           authContext.user = null;
-          router.navigate("/login").then();
+          navigate('/login', { state: { from: location }, replace: true }); // Редирект с состоянием
         }
         return Promise.reject(error);
       });

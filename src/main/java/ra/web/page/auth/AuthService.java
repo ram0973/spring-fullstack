@@ -37,6 +37,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class AuthService {
     private final SecurityContextRepository securityContextRepository;
     private final AuthenticationManager authManager;
@@ -94,6 +95,8 @@ public class AuthService {
         context.setAuthentication(authentication);
         this.securityContextHolderStrategy.setContext(context);
         this.securityContextRepository.saveContext(context, request, response);
+
+        log.info(dto.rememberMe());
 
         // Устанавливаем срок действия сессии
         HttpSession session = request.getSession(true);
