@@ -6,11 +6,13 @@ import {Post} from "@/pages/posts";
 import {useGetPost} from "@/pages/posts/view/useGetPost.ts";
 import {User} from "@/pages/users";
 import {useGetMe} from "@/common/layout/protectedRoute/useGetMe.ts";
+import {wratchInterceptor} from "@/common/axios/wratchInterceptor.ts";
 
 export const ProtectedRoute: React.FC<PropsWithChildren> = ({children}) => {
   const context = useAuthContext();
   const location = useLocation();
   useAxiosInterceptor();
+  //wratchInterceptor();
   // const me: User = useGetMe().data;
   // if (!me) {
   //   context.logout();

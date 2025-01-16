@@ -15,9 +15,11 @@ export const useAxiosInterceptor = function () {
     axiosInstance.get('/api/v1/auth/me')
       .then(res => {
         //console.log(res);
-        if (!res.data) {
+        if (res.status === 204) {
           authContext.logout();
           navigate('/login', { state: { from: location }, replace: true }); // Редирект с состоянием
+        } else {
+          authContext.login(res.data);
         }
       });
 
@@ -35,5 +37,5 @@ export const useAxiosInterceptor = function () {
     return () => {
       axiosInstance.interceptors.response.eject(authInterceptor); // remove interceptor on dismount/auth change
     };
-  }, [authContext, location]);
+  }, []);
 };

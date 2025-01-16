@@ -61,16 +61,16 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public UserResponse me(Authentication authentication) {
+    public ResponseEntity<UserResponse> me(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
-            return null;
+            return ResponseEntity.noContent().build();
         } else  {
             User user = userService.findUserByEmailIgnoreCase(authentication.getName())
                 .orElseThrow(() -> new UsernameNotFoundException(
                     "User not found with email: " + authentication.getName()));
             log.info("Url: /me user email: {}", user.getEmail());
             UserResponse userResponse = userMapper.map(user);
-            return userResponse;
+            return ResponseEntity.ok(userResponse);
         }
     }
 }

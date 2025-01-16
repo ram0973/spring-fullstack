@@ -77,7 +77,7 @@ export const UpdatePost = () => {
       )
     //navigate(`/admin/posts/view/${response.data?.id}`);
     // TODO: server validation, handle errors
-    navigate('/admin/posts');
+    navigate('/admin/posts/');
   }
 
   const form = useForm<z.infer<typeof postUpdateSchema>>( //createFormContext<z.infer<typeof postUpdateSchema>>();
