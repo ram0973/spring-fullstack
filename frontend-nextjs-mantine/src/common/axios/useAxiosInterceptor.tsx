@@ -9,7 +9,8 @@ export const useAxiosInterceptor = function () {
   const authContext = useAuthContext();
   const location = useLocation();
   const navigate = useNavigate();
-  //TODO: do it in router on page change
+
+  // Проверка авторизации при монтировании компонента
   React.useEffect(() => {
     axiosInstance.get('/api/v1/auth/me')
       .then(res => {
@@ -19,6 +20,8 @@ export const useAxiosInterceptor = function () {
           navigate('/login', { state: { from: location }, replace: true }); // Редирект с состоянием
         }
       });
+
+    // Interceptor для обработки ошибок 401
     const authInterceptor = axiosInstance.interceptors.response.use(
       function (response) {
         return response;
@@ -32,5 +35,5 @@ export const useAxiosInterceptor = function () {
     return () => {
       axiosInstance.interceptors.response.eject(authInterceptor); // remove interceptor on dismount/auth change
     };
-  }, [authContext, location]); // run if user changes
+  }, [authContext, location]);
 };
