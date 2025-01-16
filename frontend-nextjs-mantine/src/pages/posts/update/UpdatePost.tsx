@@ -2,7 +2,6 @@ import {
   Breadcrumbs,
   Button,
   Container,
-  FileInput,
   Group,
   Image,
   Input,
@@ -15,7 +14,7 @@ import {
 } from '@mantine/core';
 import {Link, useNavigate, useParams} from 'react-router-dom';
 import classes from "@/pages/posts/update/UpdatePost.module.css";
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useForm} from '@mantine/form';
 import {AxiosError} from "axios";
 import {AxiosErrorResponseDto} from "@/common/axios/AxiosErrorResponseDto.ts";
@@ -28,17 +27,26 @@ import {useUpdatePost} from "@/pages/posts/update/useUpdatePost.ts";
 import '@mantine/code-highlight/styles.css';
 import {notifications} from "@mantine/notifications";
 import {
-  headingsPlugin,
-  listsPlugin,
+  ChangeCodeMirrorLanguage,
+  codeBlockPlugin,
+  codeMirrorPlugin,
+  ConditionalContents,
+  InsertCodeBlock,
+  InsertSandpack,
   MDXEditor,
   MDXEditorMethods,
-  quotePlugin,
-  thematicBreakPlugin
+  SandpackConfig,
+  sandpackPlugin,
+  ShowSandpackInfo,
+  toolbarPlugin
 } from "@mdxeditor/editor";
+import MDEditor, {commands} from "@uiw/react-md-editor";
+import '@mdxeditor/editor/style.css';
+
 
 export const UpdatePost = () => {
   //const [selectedTags, setSelectedTags] = useState<string[]>([]);
-
+  const [value, setValue] = useState("# Your custom markdown here");
   const updatePostMutation = useUpdatePost();
   // TODO: Use or remove
   const errorData = (updatePostMutation.error as AxiosError)?.response?.data as AxiosErrorResponseDto;
@@ -110,6 +118,33 @@ export const UpdatePost = () => {
     (item.href !== '#') ? <Link to={item.href} key={index}>{item.title}</Link> : <Text key={index}>{item.title}</Text>
   ));
 
+  const defaultSnippetContent = `
+export default function App() {
+return (
+<div className="App">
+<h1>Hello CodeSandbox</h1>
+<h2>Start editing to see some magic happen!</h2>
+</div>
+);
+}
+`.trim()
+
+  const simpleSandpackConfig: SandpackConfig = {
+    defaultPreset: 'react',
+    presets: [
+      {
+        label: 'React',
+        name: 'react',
+        meta: 'live react',
+        sandpackTemplate: 'react',
+        sandpackTheme: 'light',
+        snippetFileName: '/App.js',
+        snippetLanguage: 'jsx',
+        initialSnippetContent: defaultSnippetContent
+      },
+    ]
+  }
+
   //const [content, setContent] = useState<string>("");
 
   return (
@@ -142,9 +177,50 @@ export const UpdatePost = () => {
             <Input.Wrapper withAsterisk label="Post content">
               <MDXEditor ref={editorRef}
                          markdown={post?.content ?? ""} // Используем состояние для содержимого
-                         //onChange={setEditorContent}
-                         plugins={[headingsPlugin(), listsPlugin(), quotePlugin(), thematicBreakPlugin()]}/>
+                //onChange={setEditorContent}
+                         plugins={[
+                           codeBlockPlugin({defaultCodeBlockLanguage: 'js'}),
+                           sandpackPlugin({sandpackConfig: simpleSandpackConfig}),
+                           codeMirrorPlugin({codeBlockLanguages: {js: 'JavaScript', css: 'CSS'}}),
+                           toolbarPlugin({
+                             toolbarContents: () => (
+                               <ConditionalContents
+                                 options={[
+                                   {
+                                     when: (editor) => editor?.editorType === 'codeblock',
+                                     contents: () => <ChangeCodeMirrorLanguage/>
+                                   },
+                                   {
+                                     when: (editor) => editor?.editorType === 'sandpack',
+                                     contents: () => <ShowSandpackInfo/>
+                                   },
+                                   {
+                                     fallback: () => (<>
+                                       <InsertCodeBlock/>
+                                       <InsertSandpack/>
+                                     </>)
+                                   }
+                                 ]}
+                               />)
+                           })
+                         ]}>
+              </MDXEditor>
             </Input.Wrapper>
+            {/*https://dev.to/promathieuthiry/creating-a-markdown-editor-with-uiwreact-md-editor-5foe*/}
+            {/*https://github.com/uiwjs/react-md-editor/issues/83*/}
+            <Input.Wrapper withAsterisk label="Post content">
+              <MDEditor
+                value={value}
+                onChange={(val) => setValue(val || "")}
+                commands={[
+                  commands.bold,
+                  commands.italic,
+                  commands.link,
+                  // Add or remove commands as needed
+                ]}
+              />
+            </Input.Wrapper>
+
             {/*<TagsInput*/}
             {/*  label="Post tags"*/}
             {/*  placeholder="Pick value or enter anything"*/}
