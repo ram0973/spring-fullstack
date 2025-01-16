@@ -54,6 +54,7 @@ export const UsersTable = () => {
         <Link to={"/admin/users/create"}><Button><IconUserPlus/><span>New user</span></Button></Link>
       </Group>
       <DataTable
+        idAccessor="id"
         records={users}
         selectedRecords={selectedRecords}
         onSelectedRecordsChange={setSelectedRecords}
@@ -101,7 +102,7 @@ export const UsersTable = () => {
             accessor: 'roles', sortable: true, render: item => {
               return (<Stack gap={"3"}>{item.roles.map(item => (
                   <Badge variant={item === "ADMIN" || item === "MODERATOR" ? "danger" : "default"}
-                         mr={4}>{item}</Badge>))}</Stack>
+                         mr={4} key={item}>{item}</Badge>))}</Stack>
               );
             }
           },

@@ -39,6 +39,7 @@ export const PostsTable = () => {
         <Link to={"/admin/posts/create"}><Button><IconUserPlus/><span>New post</span></Button></Link>
       </Group>
       <DataTable
+        idAccessor="id"
         records={posts}
         selectedRecords={selectedRecords}
         onSelectedRecordsChange={setSelectedRecords}
