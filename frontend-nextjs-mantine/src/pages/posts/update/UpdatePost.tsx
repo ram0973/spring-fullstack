@@ -31,7 +31,9 @@ import {
   codeBlockPlugin,
   codeMirrorPlugin,
   ConditionalContents,
+  imagePlugin,
   InsertCodeBlock,
+  InsertImage,
   InsertSandpack,
   MDXEditor,
   MDXEditorMethods,
@@ -42,6 +44,8 @@ import {
 } from "@mdxeditor/editor";
 import MDEditor, {commands} from "@uiw/react-md-editor";
 import '@mdxeditor/editor/style.css';
+import { renderToStaticMarkup } from 'react-dom/server';
+import MarkdownPreview from '@uiw/react-markdown-preview';
 
 
 export const UpdatePost = () => {
@@ -69,7 +73,11 @@ export const UpdatePost = () => {
     // @ts-ignore
     //formData['tags'] = ([].concat(selectedTags)).toString();
 
-    formData['content'] = editorRef?.current?.getMarkdown();
+    let markdownContent: string = value;
+    formData['content'] = markdownContent;
+    console.log('Markdown:', markdownContent);
+    const htmlContent = renderToStaticMarkup(<MarkdownPreview source={markdownContent} />);
+    console.log('Отрендеренный HTML:', htmlContent);
 
     const response = updatePostMutation.mutateAsync(formData)
       .catch(
@@ -118,32 +126,7 @@ export const UpdatePost = () => {
     (item.href !== '#') ? <Link to={item.href} key={index}>{item.title}</Link> : <Text key={index}>{item.title}</Text>
   ));
 
-  const defaultSnippetContent = `
-export default function App() {
-return (
-<div className="App">
-<h1>Hello CodeSandbox</h1>
-<h2>Start editing to see some magic happen!</h2>
-</div>
-);
-}
-`.trim()
 
-  const simpleSandpackConfig: SandpackConfig = {
-    defaultPreset: 'react',
-    presets: [
-      {
-        label: 'React',
-        name: 'react',
-        meta: 'live react',
-        sandpackTemplate: 'react',
-        sandpackTheme: 'light',
-        snippetFileName: '/App.js',
-        snippetLanguage: 'jsx',
-        initialSnippetContent: defaultSnippetContent
-      },
-    ]
-  }
 
   //const [content, setContent] = useState<string>("");
 
@@ -174,38 +157,7 @@ return (
             </Group>
             <Textarea {...form.getInputProps('excerpt')} key={form.key('excerpt')}
                       autosize resize="vertical" minRows={2} label="Post excerpt" placeholder="Post excerpt"/>
-            <Input.Wrapper withAsterisk label="Post content">
-              <MDXEditor ref={editorRef}
-                         markdown={post?.content ?? ""} // Используем состояние для содержимого
-                //onChange={setEditorContent}
-                         plugins={[
-                           codeBlockPlugin({defaultCodeBlockLanguage: 'js'}),
-                           sandpackPlugin({sandpackConfig: simpleSandpackConfig}),
-                           codeMirrorPlugin({codeBlockLanguages: {js: 'JavaScript', css: 'CSS'}}),
-                           toolbarPlugin({
-                             toolbarContents: () => (
-                               <ConditionalContents
-                                 options={[
-                                   {
-                                     when: (editor) => editor?.editorType === 'codeblock',
-                                     contents: () => <ChangeCodeMirrorLanguage/>
-                                   },
-                                   {
-                                     when: (editor) => editor?.editorType === 'sandpack',
-                                     contents: () => <ShowSandpackInfo/>
-                                   },
-                                   {
-                                     fallback: () => (<>
-                                       <InsertCodeBlock/>
-                                       <InsertSandpack/>
-                                     </>)
-                                   }
-                                 ]}
-                               />)
-                           })
-                         ]}>
-              </MDXEditor>
-            </Input.Wrapper>
+
             {/*https://dev.to/promathieuthiry/creating-a-markdown-editor-with-uiwreact-md-editor-5foe*/}
             {/*https://github.com/uiwjs/react-md-editor/issues/83*/}
             <Input.Wrapper withAsterisk label="Post content">
