@@ -2,7 +2,7 @@
 import "./globals.css";
 import "@mantine/core/styles.css";
 import React from "react";
-import {AppShell, Burger, ColorSchemeScript, mantineHtmlProps, MantineProvider,} from "@mantine/core";
+import {AppShell, Burger, ColorSchemeScript, Container, mantineHtmlProps, MantineProvider,} from "@mantine/core";
 import {theme} from "@/app/theme";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {ModalsProvider} from "@mantine/modals";
@@ -32,7 +32,8 @@ export default function RootLayout({
       <MantineProvider theme={theme}>
         <Notifications/>
         <ModalsProvider>
-          <AppShell
+
+          <AppShell className={"appshell"}
             header={{height: 60}}
             navbar={{
               width: 300,
@@ -50,9 +51,13 @@ export default function RootLayout({
               />
               <Header/>
             </AppShell.Header>
-            <AppShell.Navbar p="md"><NavbarColored/></AppShell.Navbar>
+
+            <AppShell.Navbar p="sm"><NavbarColored/></AppShell.Navbar>
+
             <AppShell.Main>{children}</AppShell.Main>
+
           </AppShell>
+
         </ModalsProvider>
       </MantineProvider>
     </QueryClientProvider>

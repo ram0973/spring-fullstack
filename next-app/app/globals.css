@@ -21,10 +21,10 @@ body {
 }
 
 .root {
-  min-width: 200px;
   max-width: 1920px;
   min-height: 120px;
   container-type: inline-size;
   overflow: auto;
   resize: horizontal;
+
 }
