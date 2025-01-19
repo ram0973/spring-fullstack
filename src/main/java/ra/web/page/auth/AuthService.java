@@ -31,7 +31,6 @@ import ra.web.page.users.UserMapper;
 import ra.web.page.users.UserRepository;
 import ra.web.page.users.dto.UserResponse;
 
-import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -50,7 +49,7 @@ public class AuthService {
     private final AuthMapper authMapper;
     private final UserMapper userMapper;
 
-    private final int COOKIE_PERIOD_PERMANENT = 180 * 24 * 60 * 60; // пол года в секундах
+    private static final int COOKIE_PERIOD_PERMANENT = 180 * 24 * 60 * 60; // пол года в секундах
 
     @Value("${app.admin.email}")
     private String adminEmail;

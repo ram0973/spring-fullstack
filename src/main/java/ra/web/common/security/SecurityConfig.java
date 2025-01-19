@@ -47,10 +47,10 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
             )
             .authorizeHttpRequests(o -> o
+                    .requestMatchers("/").permitAll()
                     .requestMatchers("/error").permitAll()
                     .requestMatchers("/api/v1/auth/**").permitAll()
                     .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-
                     .anyRequest().authenticated()
                 //.anyRequest().permitAll()
             )

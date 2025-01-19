@@ -1,8 +1,11 @@
+import com.github.gradle.node.npm.task.NpmTask
+
 plugins {
 	java
     checkstyle
 	id("org.springframework.boot") version "3.4.1"
 	id("io.spring.dependency-management") version "1.1.7"
+    id("com.github.node-gradle.node") version "7.1.0"
 }
 
 group = "ra"
@@ -12,6 +15,57 @@ java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(23)
 	}
+}
+
+node {
+    download.set(false)
+    nodeProjectDir.set(file("${project.projectDir}/src/main/react"))
+}
+
+//val buildWebApp = tasks.register<NpmTask>("buildWebapp") {
+//    args.set(listOf("run", "build"))
+//    dependsOn(tasks.npmInstall)
+//    inputs.dir("src/main/react")
+//    inputs.dir("src/main/react/node_modules")
+//    inputs.files("src/main/react/package.json", "src/main/react/package-lock.json",
+//        "src/main/react/tsconfig.json", "src/main/react/tsconfig.node.json")
+//}
+
+val buildReactApp = tasks.register<Exec>("buildReactApp") {
+    group = "build"
+    description = "Запускает команду 'bun run build' в папке ./src/main/react"
+
+    //dependsOn("checkstyleMain")
+
+    commandLine("bun", "run", "build")
+    workingDir = File("src/main/react")
+
+    // Установка переменных окружения
+    environment("NODE_ENV", "dev")
+    environment("PUBLIC_URL", "/static")
+
+    standardOutput = System.out
+    errorOutput = System.err
+
+    doLast {
+        println(">'bun run build' executed.")
+    }
+}
+
+//val cleanWebApp = tasks.register<Delete>("cleanWebApp") {
+//    dependsOn(buildReactApp)
+//    delete("build/resources/main/static")
+//}
+
+val copyWebApp = tasks.register<Copy>("copyWebApp") {
+    dependsOn(buildReactApp)
+    from("$rootDir/src/main/react/dist/.")
+    into("$rootDir/src/main/resources/static")
+
+}
+
+tasks.build {
+    dependsOn(copyWebApp)
 }
 
 configurations {
@@ -64,3 +118,4 @@ dependencies {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
