@@ -47,15 +47,17 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
             )
             .authorizeHttpRequests(o -> o
-                .requestMatchers("/error").permitAll()
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .anyRequest().permitAll()
+                    .requestMatchers("/error").permitAll()
+                    .requestMatchers("/api/v1/auth/**").permitAll()
+                    .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+
+                    .anyRequest().authenticated()
+                //.anyRequest().permitAll()
             )
             .csrf(AbstractHttpConfigurer::disable)
             .cors(Customizer.withDefaults())
             .httpBasic(AbstractHttpConfigurer::disable)
-            .formLogin(AbstractHttpConfigurer::disable)
-        ;
+            .formLogin(AbstractHttpConfigurer::disable);
         return http.build();
     }
 

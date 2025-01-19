@@ -1,6 +1,10 @@
 app:
   admin:
     email: ${APP_ADMIN_EMAIL}
+server:
+  servlet:
+    session:
+      timeout: 1800
 spring:
   application:
     name: web-prod

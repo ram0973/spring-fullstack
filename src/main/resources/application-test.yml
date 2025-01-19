@@ -1,6 +1,10 @@
 app:
   admin:
     email: "gendalf-test-admin@white.com"
+server:
+  servlet:
+    session:
+      timeout: 1800
 spring:
   application:
     name: web-test

@@ -11,13 +11,19 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+import ra.web.page.posts.Post;
+import ra.web.page.posts.PostRepository;
 import ra.web.page.roles.UserRole;
 import ra.web.page.roles.UserRoleRepository;
 import ra.web.page.users.User;
 import ra.web.page.users.UserRepository;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 import java.util.stream.IntStream;
 
 @Configuration
@@ -31,6 +37,8 @@ public class DataGeneratorForDevelopment {
     private final UserRepository userRepository;
     @NonNull
     private final UserRoleRepository userRoleRepository;
+    @NonNull
+    private final PostRepository postRepository;
     @Value("${app.admin.email}")
     private String adminEmail;
 
@@ -103,6 +111,24 @@ public class DataGeneratorForDevelopment {
                 users.add(user);
             });
             userRepository.saveAll(users);
+
+            log.info("Preloading posts");
+
+            List<Post> posts = new ArrayList<>();
+            for (int i = 0; i < 50; i++) {
+                String title = (faker.lorem().sentence(20));
+                String slug = title.toLowerCase(Locale.ROOT).replace(" ", "-");
+                Post post = Post.builder()
+                    .title(title)
+                    .slug(title)
+                    //.excerpt(faker.text(20, 10))
+                    .content(faker.lorem().paragraphs(5).toString())//twitter().text(new String[]{}, 50, 12))
+                    .enabled(true)
+                    .build();
+                posts.add(post);
+            }
+            postRepository.saveAll(posts);
+
         };
     }
 }

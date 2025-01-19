@@ -1,8 +1,5 @@
 package ra.web.page.uploads;
 
-import java.io.IOException;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +16,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.util.stream.Collectors;
+
+// TODO : RestController
 @Controller
 public class FileUploadController {
 
@@ -46,8 +47,9 @@ public class FileUploadController {
 
         Resource file = storageService.loadAsResource(filename);
 
-        if (file == null)
+        if (file == null) {
             return ResponseEntity.notFound().build();
+        }
 
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
             "attachment; filename=\"" + file.getFilename() + "\"").body(file);

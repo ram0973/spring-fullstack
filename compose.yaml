@@ -3,7 +3,8 @@ services:
   postgres-service-dev:
     profiles:
       - dev
-    image: 'postgres:16.6'
+    build:
+      dockerfile: ./docker/postgresql/Dockerfile
     environment:
       - POSTGRES_DB=${DB_NAME-web}
       - POSTGRES_USER=${DB_USER-web}

@@ -18,10 +18,10 @@ public class ApiExceptionResponseDto {
     private final String path;
 
     public ApiExceptionResponseDto(String path, String message, HttpStatusCode status) {
-        this.path = path;
-        this.message = message;
         this.status = status.value();
         this.desc = status.toString();
+        this.message = message;
+        this.path = path;
     }
 }
 

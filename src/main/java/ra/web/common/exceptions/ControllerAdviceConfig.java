@@ -1,8 +1,5 @@
 package ra.web.common.exceptions;
 
-import ra.web.common.exceptions.dto.ApiExceptionResponseDto;
-import ra.web.common.exceptions.dto.FieldViolation;
-import ra.web.common.exceptions.dto.ValidationExceptionResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +18,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import ra.web.common.exceptions.dto.ApiExceptionResponseDto;
+import ra.web.common.exceptions.dto.FieldViolation;
+import ra.web.common.exceptions.dto.ValidationExceptionResponseDto;
 
 import java.util.List;
 
@@ -29,9 +29,13 @@ import java.util.List;
 public class ControllerAdviceConfig extends ResponseEntityExceptionHandler {
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, @NonNull HttpHeaders headers, @NonNull HttpStatusCode status, @NonNull WebRequest request) {
-        List<FieldViolation> fieldViolations = ex.getBindingResult().getFieldErrors().stream().map(o -> new FieldViolation(o.getField(), o.getDefaultMessage())).toList();
-        return new ResponseEntity<>(new ValidationExceptionResponseDto(getUrl(request), status, fieldViolations), status);
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+        @NonNull MethodArgumentNotValidException ex, @NonNull HttpHeaders headers, @NonNull HttpStatusCode status,
+        @NonNull WebRequest request) {
+        List<FieldViolation> fieldViolations = ex.getBindingResult().getFieldErrors().stream().map(
+            o -> new FieldViolation(o.getField(), o.getDefaultMessage())).toList();
+        return new ResponseEntity<>(
+            new ValidationExceptionResponseDto(getUrl(request), status, fieldViolations), status);
     }
 
     // HttpStatus.resolve(status.value())
@@ -91,6 +95,8 @@ public class ControllerAdviceConfig extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(new ApiExceptionResponseDto(getUrl(request), ex.getLocalizedMessage(),
             HttpStatus.UNPROCESSABLE_ENTITY), HttpStatus.UNPROCESSABLE_ENTITY);
     }
+
+    // TODO: catch import org.springframework.security.authentication.DisabledException;
 
     private String getUrl(WebRequest request) {
         return request.getDescription(false).replace("uri=", "");

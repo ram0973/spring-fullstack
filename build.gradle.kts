@@ -1,5 +1,6 @@
 plugins {
 	java
+    checkstyle
 	id("org.springframework.boot") version "3.4.1"
 	id("io.spring.dependency-management") version "1.1.7"
 }
@@ -57,8 +58,7 @@ dependencies {
     testImplementation("org.testcontainers:postgresql")
 
     testImplementation("io.rest-assured:rest-assured:5.5.0")
-
-    testImplementation("io.rest-assured:rest-assured")
+    testImplementation("io.rest-assured:spring-mock-mvc:5.5.0")
 }
 
 tasks.withType<Test> {

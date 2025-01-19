@@ -2,10 +2,20 @@ package ra.web.page.users;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -39,7 +49,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @Column(nullable = false)
     @NotBlank
-    //@JsonIgnore
+    @JsonIgnore
     private String password;
 
     //@Builder.Default
@@ -54,7 +64,7 @@ public class User extends BaseEntity implements UserDetails {
     )
     private Set<UserRole> roles;
 
-    @JsonIgnore
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (roles == null) {
             return new HashSet<>();

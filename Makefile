@@ -1,4 +1,4 @@
-gradle-version = 8.11.1
+gradle-version = 8.12
 ifeq ($(OS),Windows_NT)
 	gradle := .\gradlew
 else
@@ -12,6 +12,11 @@ build:
 	APP_PROFILE=test; $(gradle) clean build
 
 test:
-	APP_PROFILE=test; $(gradle) test
+	$(gradle) test
+	$env:APP_PROFILE="test"; ./gradlew build
+
+checkstyle:
+	$(gradle) checkstyleMain
+	$(gradle) checkstyleTest
 
 .PHONY: test

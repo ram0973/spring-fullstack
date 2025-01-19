@@ -1,11 +1,11 @@
-# FullStack веб - приложение на Spring и React
+# FullStack веб - приложение на Spring Boot (Java) и React (Typescript)
 
 Used tech stack:
 
 - Java 23
 - Spring Boot 3.4+
 - Docker
-- Liquibase
+- Liquibase (sql)
 - Hibernate ORM
 - Postgresql
 - Gradle Kotlin
@@ -15,7 +15,6 @@ Used tech stack:
 - TypeScript
 - Bun
 - Mantine
-- PostCSS (with Mantine)
 
 ## Software
 
@@ -62,17 +61,18 @@ git update-index --chmod=+x gradlew
 Set GraalVM or other JDK here : File - Project structure.
 
 Help - Edit Custom VM Options:
--Xms2048m
--Xmx2048m
+Optional: -Xms2048m
+Optional: -Xmx2048m
 Optional: -XX:+UseShenandoahGC (not working with GraalVM)
 
 Idea settings: search "encoding"
 File Encodings and Console: set UTF-8.
 
 Set: Auto Imports - unambiguous imports on the fly.
+Set: Editor - Code Style - Java - Imports - imports *: 10 items (both usual and static)
 
 Install plugins, as you wish:
-- Mandatory - EnvFile, and in the run settings choose .env file
+- EnvFile, and in the run settings choose .env file
 - JPA Buddy
 - Rainbow Brackets
 

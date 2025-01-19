@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ra.web.common.exceptions.EntityAlreadyExistsException;
 import ra.web.common.exceptions.ForbiddenOperationException;
 import ra.web.common.exceptions.NoSuchEntityException;
-import ra.web.common.util.MultiPartFileUtils;
 import ra.web.common.util.PagedEntityUtils;
 import ra.web.page.roles.UserRole;
 import ra.web.page.roles.UserRoleRepository;
@@ -79,10 +78,9 @@ public class UserService {
                 user.addRole(userRole);
             }
         }
-        // TODO: make file upload
         //if (dto.avatar() != null && dto.avatar().getOriginalFilename() != null) {
-            //String newImagePath = MultiPartFileUtils.saveMultiPartImage(dto.avatar());
-            //user.setAvatar(newImagePath);
+        //String newImagePath = MultiPartFileUtils.saveMultiPartImage(dto.avatar());
+        //user.setAvatar(newImagePath);
         //}
         return userRepository.save(user);
     }
@@ -104,7 +102,6 @@ public class UserService {
                 user.addRole(userRole);
             }
         }
-        // TODO: save avatar
 //        if (dto.avatar() != null && dto.avatar().getOriginalFilename() != null) {
 //            String newImagePath = MultiPartFileUtils.saveMultiPartImage(dto.avatar());
 //            user.setAvatar(newImagePath);
