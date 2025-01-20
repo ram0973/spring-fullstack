@@ -29,7 +29,7 @@ export const useAxiosInterceptor = function () {
         return response;
       }, function (error) {
         if (error.response.status === 401) {
-          authContext.user = null;
+          authContext.logout();
           navigate('/login', { state: { from: location }, replace: true }); // Редирект с состоянием
         }
         return Promise.reject(error);

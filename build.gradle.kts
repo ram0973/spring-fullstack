@@ -41,8 +41,8 @@ val buildReactApp = tasks.register<Exec>("buildReactApp") {
     workingDir = File("src/main/react")
 
     // Установка переменных окружения
-    environment("NODE_ENV", "dev")
-    environment("PUBLIC_URL", "/static")
+    //environment("NODE_ENV", "dev")
+    //environment("PUBLIC_URL", "/static")
 
     standardOutput = System.out
     errorOutput = System.err

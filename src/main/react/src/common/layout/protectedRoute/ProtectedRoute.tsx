@@ -15,18 +15,19 @@ export const ProtectedRoute: React.FC<PropsWithChildren> = ({children}) => {
   const location = useLocation();
   const authContext = useAuthContext();
   const navigate = useNavigate();
-  React.useEffect(() => {
-    axiosInstance.get('/api/v1/auth/me')
-      .then(res => {
-        //console.log(res);
-        if (res.status === 204) {
-          authContext.logout();
-          navigate('/login', {state: {from: location}, replace: true}); // Редирект с состоянием
-        } else {
-          authContext.login(res.data);
-        }
-      });
-  }, [location]);
+  useAxiosInterceptor();
+  // React.useEffect(() => {
+  //   axiosInstance.get('/api/v1/auth/me')
+  //     .then(res => {
+  //       //console.log(res);
+  //       if (res.status === 204) {
+  //         authContext.logout();
+  //         navigate('/login', {state: {from: location}, replace: true}); // Редирект с состоянием
+  //       } else {
+  //         authContext.login(res.data);
+  //       }
+  //     });
+  // }, [location]);
   //useAxiosInterceptor();
   //wratchInterceptor();
   // const me: User = useGetMe().data;

@@ -22,8 +22,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -42,19 +45,30 @@ public class SecurityConfig {
 
     @Bean
     protected SecurityFilterChain filterChain(@NotNull HttpSecurity http) throws Exception {
+        final CsrfTokenRequestAttributeHandler spaCsrfTokenRequestHandler = new SpaCsrfTokenRequestHandler();
+        final CookieCsrfTokenRepository cookieCsrfTokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
+
         http
             .sessionManagement(o -> o
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
             )
             .authorizeHttpRequests(o -> o
-                    .requestMatchers("/").permitAll()
+                    //.requestMatchers("/").permitAll()
                     .requestMatchers("/error").permitAll()
                     .requestMatchers("/api/v1/auth/**").permitAll()
                     .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                    //.requestMatchers("/vite.svg").permitAll()
+                    .requestMatchers("/index.html", "/assets/**").permitAll()
                     .anyRequest().authenticated()
                 //.anyRequest().permitAll()
             )
-            .csrf(AbstractHttpConfigurer::disable)
+            //.csrf(AbstractHttpConfigurer::disable)
+            .csrf((csrf) -> csrf
+                .csrfTokenRepository(cookieCsrfTokenRepository)
+                .csrfTokenRequestHandler(spaCsrfTokenRequestHandler)
+            )
+            .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+            .addFilterAfter(new SpaWebFilter(), CsrfCookieFilter.class)
             .cors(Customizer.withDefaults())
             .httpBasic(AbstractHttpConfigurer::disable)
             .formLogin(AbstractHttpConfigurer::disable);

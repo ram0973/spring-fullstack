@@ -36,6 +36,7 @@
     "@tiptap/starter-kit": "^2.11.2",
     "@uiw/react-md-editor": "^4.0.5",
     "axios": "^1.7.9",
+    "axios-middleware": "^0.4.0",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "lowlight": "^3.3.0",
