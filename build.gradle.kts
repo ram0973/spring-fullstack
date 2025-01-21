@@ -6,6 +6,7 @@ plugins {
 	id("org.springframework.boot") version "3.4.1"
 	id("io.spring.dependency-management") version "1.1.7"
     id("com.github.node-gradle.node") version "7.1.0"
+    id("gg.jte.gradle") version "3.1.12"
 }
 
 group = "ra"
@@ -83,6 +84,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-mail")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
     testAndDevelopmentOnly("org.springframework.boot:spring-boot-docker-compose")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
@@ -104,8 +106,10 @@ dependencies {
 
     implementation("org.openapitools:jackson-databind-nullable:0.2.6")
 
-    testImplementation("org.instancio:instancio-junit:5.2.1")
+    implementation("gg.jte:jte:3.1.12")
+    implementation("gg.jte:jte-spring-boot-starter-3:3.1.12")
 
+    testImplementation("org.instancio:instancio-junit:5.2.1")
 
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.testcontainers:junit-jupiter")

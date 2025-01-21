@@ -1,4 +1,6 @@
 spring:
+  jpa:
+    open-in-view: false
   output:
     ansi:
       enabled: always
@@ -8,5 +10,6 @@ spring:
     multipart:
       max-file-size: 3MB
       max-request-size: 10MB
+
 
 

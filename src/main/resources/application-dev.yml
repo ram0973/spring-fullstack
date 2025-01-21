@@ -1,6 +1,8 @@
 app:
   admin:
     email: "gendalf-dev-admin@white.com"
+  mailing:
+    activation-url: http://localhost:8008/activate-account
 server:
   port: 8008
   servlet:

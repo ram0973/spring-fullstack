@@ -15,11 +15,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ra.web.common.email.EmailTemplateName;
 import ra.web.common.exceptions.EntityAlreadyExistsException;
 import ra.web.common.exceptions.NoSuchEntityException;
 import ra.web.page.auth.dto.LoginRequest;
@@ -31,6 +33,8 @@ import ra.web.page.users.UserMapper;
 import ra.web.page.users.UserRepository;
 import ra.web.page.users.dto.UserResponse;
 
+import java.security.SecureRandom;
+import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -78,8 +82,9 @@ public class AuthService {
         }
         user.addRole(userRole);
         //TODO: refactor to activate user
-        user.setEnabled(true);
+        user.setEnabled(false);
         userRepository.save(user);
+
         return user;
     }
 
@@ -146,5 +151,58 @@ public class AuthService {
         cookie.setSecure(request.isSecure()); // Только для HTTPS (если используется)
         cookie.setMaxAge(0); // удалить вообще
         response.addCookie(cookie);
+    }
+
+    private void sendValidationEmail(User user) throws MessagingException {
+        var newToken = generateAndSaveActivationToken(user);
+        emailService.sendEmail(
+            user.getEmail(),
+            user.getFullName(),
+            EmailTemplateName.ACTIVATE_ACCOUNT,
+            activationUrl,
+            newToken,
+            "Account activation"
+        );
+    }
+
+    private String generateAndSaveActivationToken(User user) {
+        // Generate a token
+        String generatedToken = generateActivationCode(6);
+        var token = Token.builder()
+            .token(generatedToken)
+            .createdAt(LocalDateTime.now())
+            .expiresAt(LocalDateTime.now().plusSeconds(activationExpiration))
+            .user(user)
+            .build();
+        tokenRepository.save(token);
+        return generatedToken;
+    }
+
+
+    private String generateActivationCode(int length) {
+        String characters = "0123456789";
+        StringBuilder codeBuilder = new StringBuilder();
+        SecureRandom secureRandom = new SecureRandom();
+        for (int i = 0; i < length; i++) {
+            int randomIndex = secureRandom.nextInt(characters.length());
+            codeBuilder.append(characters.charAt(randomIndex));
+        }
+        return codeBuilder.toString();
+    }
+
+    public void activateAccount(String token) throws MessagingException {
+        Token savedToken = tokenRepository.findByToken(token)
+            // todo exception has to be defined
+            .orElseThrow(() -> new RuntimeException("Invalid token"));
+        if (LocalDateTime.now().isAfter(savedToken.getExpiresAt())) {
+            sendValidationEmail(savedToken.getUser());
+            throw new RuntimeException("Activation token has expired. A new token has been send to the same email");
+        }
+        var user = userRepository.findById(savedToken.getUser().getId())
+            .orElseThrow(() -> new UsernameNotFoundException("User not found by email token"));
+        user.setEnabled(true);
+        userRepository.save(user);
+        savedToken.setValidatedAt(LocalDateTime.now());
+        tokenRepository.save(savedToken);
     }
 }
