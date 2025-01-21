@@ -50,7 +50,7 @@ class PostControllerIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Value("${app.admin.email}")
+    @Value("${app.mailing.admin-email}")
     private String adminEmail;
 
     @BeforeEach

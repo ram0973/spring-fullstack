@@ -1,5 +1,6 @@
 package ra.web.page.auth;
 
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -34,7 +35,7 @@ public class AuthController {
 
     @PostMapping(path = "/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public User signup(@Valid @RequestBody SignupRequest dto) {
+    public User signup(@Valid @RequestBody SignupRequest dto) throws MessagingException {
         User user = this.authService.signup(dto);
         log.info("User with email: {} has successfully created", dto.email());
         return user;

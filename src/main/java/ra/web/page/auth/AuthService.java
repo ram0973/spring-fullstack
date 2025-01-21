@@ -41,6 +41,7 @@ import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -59,9 +60,10 @@ public class AuthService {
     private final EmailService emailService;
 
     private static final int COOKIE_PERIOD_PERMANENT = 180 * 24 * 60 * 60; // пол года в секундах
+    private static final int USER_ACTIVATION_EXPIRATION = 10 * 60; // десять минут в секундах
     private final UserActivationTokenRepository userActivationTokenRepository;
 
-    @Value("${app.admin.email}")
+    @Value("${app.mailing.admin-email}")
     private String adminEmail;
 
     @Value("${app.mailing.activation-url}")
@@ -71,7 +73,7 @@ public class AuthService {
     private int defaultSessionTimeout;
 
     @Transactional
-    public User signup(@NonNull SignupRequest dto) {
+    public User signup(@NonNull SignupRequest dto) throws MessagingException {
         String email = dto.email().strip().toLowerCase(Locale.ROOT);
         Optional<User> userExisted = userRepository.findByEmailIgnoreCase(email);
         if (userExisted.isPresent()) {
@@ -93,7 +95,7 @@ public class AuthService {
         //TODO: refactor to activate user
         user.setEnabled(false);
         userRepository.save(user);
-
+        sendValidationEmail(user);
         return user;
     }
 
@@ -176,28 +178,27 @@ public class AuthService {
 
     private String generateAndSaveActivationToken(User user) {
         // Generate a token
-        String generatedToken = generateActivationCode(6);
+        String generatedToken = UUID.randomUUID().toString().replace("-", "").substring(0, 32);
         var token = UserActivationToken.builder()
             .token(generatedToken)
             .createdAt(LocalDateTime.now())
-            .expiresAt(LocalDateTime.now().plusSeconds(activationExpiration))
+            .expiresAt(LocalDateTime.now().plusSeconds(USER_ACTIVATION_EXPIRATION))
             .user(user)
             .build();
         userActivationTokenRepository.save(token);
         return generatedToken;
     }
 
-
-    private String generateActivationCode(int length) {
-        String characters = "0123456789";
-        StringBuilder codeBuilder = new StringBuilder();
-        SecureRandom secureRandom = new SecureRandom();
-        for (int i = 0; i < length; i++) {
-            int randomIndex = secureRandom.nextInt(characters.length());
-            codeBuilder.append(characters.charAt(randomIndex));
-        }
-        return codeBuilder.toString();
-    }
+//    private String generateActivationCode(int length) {
+//        String characters = "0123456789";
+//        StringBuilder codeBuilder = new StringBuilder();
+//        SecureRandom secureRandom = new SecureRandom();
+//        for (int i = 0; i < length; i++) {
+//            int randomIndex = secureRandom.nextInt(characters.length());
+//            codeBuilder.append(characters.charAt(randomIndex));
+//        }
+//        return codeBuilder.toString();
+//    }
 
     public void activateAccount(String token) throws MessagingException {
         UserActivationToken savedToken = userActivationTokenRepository.findByToken(token)

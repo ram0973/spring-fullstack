@@ -1,8 +1,10 @@
 app:
-  admin:
-    email: "gendalf-dev-admin@white.com"
   mailing:
     activation-url: http://localhost:8008/activate-account
+    admin-email: "gendalf-dev-admin@white.com"
+gg:
+  jte:
+    developmentMode: true
 server:
   port: 8008
   servlet:
@@ -24,3 +26,18 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create-drop
+  mail:
+    host: localhost
+    protocol: smtp
+    port: 1025
+    properties:
+      mail:
+        smtp:
+          trust: "*"
+        auth: true
+        starttls:
+          enable: true
+  threads:
+    virtual:
+      enabled: true
+

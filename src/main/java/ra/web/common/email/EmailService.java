@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -25,9 +26,9 @@ import static org.springframework.mail.javamail.MimeMessageHelper.MULTIPART_MODE
 @Log4j2
 @RequiredArgsConstructor
 public class EmailService {
-    private final JavaMailSender mailSender; // Idea: no beans found - is bullshit error
+    private final JavaMailSender mailSender = new JavaMailSenderImpl(); // Idea: no beans found - is bullshit error
 
-    @Value("${application.mailing.admin-email}")
+    @Value("${app.mailing.admin-email}")
     private String adminEmail;
 
     @Async

@@ -39,7 +39,7 @@ public class DataGeneratorForDevelopment {
     private final UserRoleRepository userRoleRepository;
     @NonNull
     private final PostRepository postRepository;
-    @Value("${app.admin.email}")
+    @Value("${app.mailing.admin-email}")
     private String adminEmail;
 
     @Bean

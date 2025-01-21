@@ -2,7 +2,6 @@ import React from 'react';
 import {axiosInstance} from "./axiosInstance.ts";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useAuthContext} from "@/common/context/useAuthContext.tsx";
-import {router} from "@/router.tsx";
 
 // hook for intercepting api requests
 export const useAxiosInterceptor = function () {

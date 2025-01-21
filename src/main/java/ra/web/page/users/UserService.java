@@ -38,7 +38,7 @@ public class UserService {
     private final UserRoleRepository userRoleRepository;
     private final UserMapper userMapper;
 
-    @Value("${app.admin.email}")
+    @Value("${app.mailing.admin-email}")
     private String adminEmail;
 
     public UsersResponse findAllPaged(int page, int size, String[] sort) {
