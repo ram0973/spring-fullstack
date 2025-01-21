@@ -12,14 +12,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.mail.javamail.MimeMessageHelper.MULTIPART_MODE_MIXED;
@@ -34,23 +31,24 @@ public class EmailService {
     private String adminEmail;
 
     @Async
-    public void sendActivationEmail(String to, EmailTemplateName emailTemplate, String confirmationUrl,
-                          String activationCode, String subject
+    public void sendUserActivationEmail(String to, String fullName, EmailTemplateName emailTemplate, String confirmationUrl,
+                                        String activationCode, String subject
     ) throws MessagingException {
-        String templateName = (emailTemplate == null) ? "confirm-email" : emailTemplate.name();
-        MimeMessage mimeMessage = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, MULTIPART_MODE_MIXED, UTF_8.name());
 
+        // render user activation email from jte template
+        CodeResolver codeResolver = new DirectoryCodeResolver(Path.of("jte")); // This is the directory where your .jte files are located.
+        TemplateEngine templateEngine = TemplateEngine.create(codeResolver, ContentType.Html); // Two choices: Plain or Html
+        TemplateOutput templateOutput = new StringOutput();
+        String templateName = emailTemplate.name();
         UserActivationProperties properties = UserActivationProperties.builder()
             .activationCode(activationCode)
             .confirmationUrl(confirmationUrl)
             .build();
+        templateEngine.render(templateName, properties, templateOutput);
 
-        CodeResolver codeResolver = new DirectoryCodeResolver(Path.of("jte")); // This is the directory where your .jte files are located.
-        TemplateEngine templateEngine = TemplateEngine.create(codeResolver, ContentType.Html); // Two choices: Plain or Html
-        TemplateOutput templateOutput = new StringOutput();
-        templateEngine.render("example.jte", properties, templateOutput);
-
+        // populate email requisites and send email
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, MULTIPART_MODE_MIXED, UTF_8.name());
         helper.setFrom(adminEmail);
         helper.setTo(to);
         helper.setSubject(subject);

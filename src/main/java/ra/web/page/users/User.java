@@ -101,4 +101,8 @@ public class User extends BaseEntity implements UserDetails {
             this.label = label;
         }
     }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }

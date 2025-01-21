@@ -1,5 +1,6 @@
 package ra.web.page.auth;
 
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,6 +22,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ra.web.common.email.EmailService;
 import ra.web.common.email.EmailTemplateName;
 import ra.web.common.exceptions.EntityAlreadyExistsException;
 import ra.web.common.exceptions.NoSuchEntityException;
@@ -29,6 +31,8 @@ import ra.web.page.auth.dto.SignupRequest;
 import ra.web.page.roles.UserRole;
 import ra.web.page.roles.UserRoleRepository;
 import ra.web.page.users.User;
+import ra.web.page.users.UserActivationToken;
+import ra.web.page.users.UserActivationTokenRepository;
 import ra.web.page.users.UserMapper;
 import ra.web.page.users.UserRepository;
 import ra.web.page.users.dto.UserResponse;
@@ -52,11 +56,16 @@ public class AuthService {
     private final SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
     private final AuthMapper authMapper;
     private final UserMapper userMapper;
+    private final EmailService emailService;
 
     private static final int COOKIE_PERIOD_PERMANENT = 180 * 24 * 60 * 60; // пол года в секундах
+    private final UserActivationTokenRepository userActivationTokenRepository;
 
     @Value("${app.admin.email}")
     private String adminEmail;
+
+    @Value("${app.mailing.activation-url}")
+    private String activationUrl;
 
     @Value("${server.servlet.session.timeout}")
     private int defaultSessionTimeout;
@@ -155,7 +164,7 @@ public class AuthService {
 
     private void sendValidationEmail(User user) throws MessagingException {
         var newToken = generateAndSaveActivationToken(user);
-        emailService.sendEmail(
+        emailService.sendUserActivationEmail(
             user.getEmail(),
             user.getFullName(),
             EmailTemplateName.ACTIVATE_ACCOUNT,
@@ -168,13 +177,13 @@ public class AuthService {
     private String generateAndSaveActivationToken(User user) {
         // Generate a token
         String generatedToken = generateActivationCode(6);
-        var token = Token.builder()
+        var token = UserActivationToken.builder()
             .token(generatedToken)
             .createdAt(LocalDateTime.now())
             .expiresAt(LocalDateTime.now().plusSeconds(activationExpiration))
             .user(user)
             .build();
-        tokenRepository.save(token);
+        userActivationTokenRepository.save(token);
         return generatedToken;
     }
 
@@ -191,7 +200,7 @@ public class AuthService {
     }
 
     public void activateAccount(String token) throws MessagingException {
-        Token savedToken = tokenRepository.findByToken(token)
+        UserActivationToken savedToken = userActivationTokenRepository.findByToken(token)
             // todo exception has to be defined
             .orElseThrow(() -> new RuntimeException("Invalid token"));
         if (LocalDateTime.now().isAfter(savedToken.getExpiresAt())) {
@@ -203,6 +212,6 @@ public class AuthService {
         user.setEnabled(true);
         userRepository.save(user);
         savedToken.setValidatedAt(LocalDateTime.now());
-        tokenRepository.save(savedToken);
+        userActivationTokenRepository.save(savedToken);
     }
 }
