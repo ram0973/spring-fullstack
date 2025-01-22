@@ -4,9 +4,9 @@ export const axiosInstance = axios.create(
   {
     baseURL: 'http://localhost:8008/',
     withCredentials: true,
-    //withXSRFToken: true,
+    withXSRFToken: true,
     xsrfCookieName: 'XSRF-TOKEN',
-    //xsrfHeaderName: 'X-XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
   },
 );
 
